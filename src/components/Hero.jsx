@@ -1,488 +1,581 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
-  ArrowRight, TrendingUp, Sparkles, DollarSign, Target, BarChart3,
-  ShieldCheck, CheckCircle2, Award, Zap, Activity, ChevronRight,
-  Star, Flame, Layers
+  ArrowRight, TrendingUp, TrendingDown, Target, Rocket,
+  LineChart, Home, Grid, Users, Settings, Calendar,
+  Star, ChevronDown, CheckCircle2, ShieldCheck, Zap
 } from 'lucide-react';
-import { personalInfo, sampleDashboardData, heroStats } from '../data/portfolioData';
+import { personalInfo } from '../data/portfolioData';
 
 export default function Hero({ onBookCall }) {
-  const [activeTimeframe, setActiveTimeframe] = useState('7D');
   const shouldReduceMotion = useReducedMotion();
-  const currentData = sampleDashboardData.timeframes[activeTimeframe];
+  const [activeTab, setActiveTab] = useState('home');
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1] },
-    },
-  };
-
-  const floatCardVariants = {
+  // Floating animation variants
+  const floatSlow = {
     animate: {
-      y: [0, -8, 0],
-      transition: {
-        duration: 4.5,
-        repeat: Infinity,
-        ease: 'easeInOut',
-      },
-    },
+      y: [0, -10, 0],
+      transition: { duration: 5, repeat: Infinity, ease: 'easeInOut' }
+    }
   };
 
-  const floatCardDelayedVariants = {
+  const floatReverse = {
     animate: {
-      y: [0, 8, 0],
-      transition: {
-        duration: 5,
-        repeat: Infinity,
-        ease: 'easeInOut',
-        delay: 1.5,
-      },
-    },
+      y: [0, 10, 0],
+      transition: { duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }
+    }
+  };
+
+  const floatBadge = {
+    animate: {
+      y: [0, -7, 0],
+      rotate: [-1, 1, -1],
+      transition: { duration: 4, repeat: Infinity, ease: 'easeInOut' }
+    }
   };
 
   return (
     <section
       id="home"
-      className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden"
-      style={{
-        background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFB 40%, #F0F7F4 80%, #FFFFFF 100%)',
-      }}
+      className="relative pt-24 pb-8 lg:pt-28 lg:pb-12 overflow-hidden bg-gradient-to-b from-slate-50/80 via-white to-blue-50/30 min-h-[calc(100vh-20px)] flex flex-col justify-center"
     >
-      {/* ─── Ambient Decorative Lights ─── */}
+      {/* ─── Ambient Glow Orbs ─── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Top left emerald glow */}
+        {/* Soft blue glow on top right behind dashboard */}
         <div
-          className="absolute -top-24 -left-28 w-[650px] h-[650px] rounded-full pointer-events-none opacity-40"
-          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.14) 0%, transparent 70%)' }}
+          className="absolute top-10 right-1/4 w-[600px] h-[600px] rounded-full opacity-40 blur-3xl"
+          style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.22) 0%, rgba(147, 197, 253, 0.08) 60%, transparent 80%)' }}
         />
-        {/* Right cyan/blue glow */}
+        {/* Subtle indigo glow bottom right */}
         <div
-          className="absolute top-20 -right-28 w-[600px] h-[600px] rounded-full pointer-events-none opacity-30"
-          style={{ background: 'radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, transparent 70%)' }}
+          className="absolute bottom-4 right-10 w-[450px] h-[450px] rounded-full opacity-35 blur-3xl"
+          style={{ background: 'radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, transparent 70%)' }}
         />
-        {/* Center subtle violet glow */}
+        {/* Subtle cyan glow top left */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[850px] rounded-full pointer-events-none opacity-20"
-          style={{ background: 'radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 65%)' }}
+          className="absolute -top-10 left-10 w-[400px] h-[400px] rounded-full opacity-30 blur-3xl"
+          style={{ background: 'radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%)' }}
         />
       </div>
 
-      {/* Subtle Dot Grid */}
-      <div
-        className="absolute inset-0 opacity-[0.035] pointer-events-none"
-        style={{
-          backgroundImage: 'radial-gradient(circle, #059669 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
-        }}
-      />
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
 
-      {/* Floating Animated Particles */}
-      {!shouldReduceMotion && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {[...Array(6)].map((_, i) => (
+          {/* ═════════════════════════════════════════════════════
+              LEFT COLUMN: Compelling Value Pitch
+          ═════════════════════════════════════════════════════ */}
+          <div className="lg:col-span-5 space-y-5 text-left">
+
+            {/* Small Top Badge */}
             <motion.div
-              key={i}
-              className="absolute w-1.5 h-1.5 rounded-full bg-emerald-400/25"
-              style={{
-                left: `${10 + i * 16}%`,
-                top: `${15 + (i % 3) * 26}%`,
-              }}
-              animate={{ y: [0, -22, 0], opacity: [0.15, 0.45, 0.15] }}
-              transition={{
-                duration: 3.5 + i * 0.7,
-                repeat: Infinity,
-                delay: i * 0.7,
-                ease: 'easeInOut',
-              }}
-            />
-          ))}
-        </div>
-      )}
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
-
-          {/* ══════════════════════════════════════════════════
-              LEFT COLUMN: High-Converting Hero Pitch
-          ══════════════════════════════════════════════════ */}
-          <motion.div
-            className="lg:col-span-6 space-y-6 text-left"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Live Availability Badge */}
-            <motion.div variants={itemVariants} className="inline-block">
-              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/70 shadow-soft-sm backdrop-blur-md">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-                </span>
-                <span className="text-[11px] sm:text-xs font-bold text-emerald-800 tracking-wide uppercase">
-                  Available For Q3/Q4 Scaling • Google Ads Growth
-                </span>
-              </div>
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50/90 border border-blue-100 shadow-xs backdrop-blur-sm"
+            >
+              <span className="text-sm">📈</span>
+              <span className="text-xs font-bold text-blue-700 tracking-wide">
+                Driving Results. Delivering Growth.
+              </span>
             </motion.div>
 
-            {/* Main Headline */}
+            {/* Main Bold Headline with Custom Curved Underline */}
             <motion.h1
-              variants={itemVariants}
-              className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-slate-900 tracking-tight leading-[1.1]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl sm:text-5xl lg:text-[3.35rem] font-black text-slate-900 tracking-tight leading-[1.12]"
             >
-              Scale Your E-commerce Brand With{' '}
-              <span className="animated-gradient-text">Google Ads</span>{' '}
-              That Actually Deliver Profit.
+              More Clicks.
+              <br />
+              Better Conversions.
+              <br />
+              <span className="relative inline-block text-blue-600">
+                Maximum Growth.
+                {/* Hand-drawn accent curve */}
+                <svg
+                  className="absolute -bottom-2 left-0 w-full h-3 text-blue-500/85 pointer-events-none"
+                  viewBox="0 0 260 12"
+                  fill="none"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M3 9C65 2 195 2 257 8"
+                    stroke="currentColor"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
             </motion.h1>
 
-            {/* Subtitle / Hook */}
+            {/* Subtitle */}
             <motion.p
-              variants={itemVariants}
-              className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-sm sm:text-base text-slate-600 font-normal leading-relaxed max-w-md"
             >
-              I help 7 & 8-figure DTC brands turn Google Ads into a predictable customer acquisition engine through high-converting Performance Max, granular Search query filtering, and intelligent bid scaling.
+              I help businesses grow with data-driven Google Ads strategies that deliver more traffic, quality leads, and higher ROI.
             </motion.p>
-
-            {/* Credibility & Verified Stats Strip */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap items-center gap-4 sm:gap-6 py-2"
-            >
-              <div className="flex items-center gap-2">
-                <div className="flex items-center -space-x-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <span className="text-xs font-bold text-slate-700">5.0 Client Rating</span>
-              </div>
-              <span className="text-slate-300 hidden sm:inline">•</span>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                <Flame className="w-4 h-4 text-emerald-600" />
-                <span>$15M+ Spend Managed</span>
-              </div>
-              <span className="text-slate-300 hidden sm:inline">•</span>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>50+ Brands Scaled</span>
-              </div>
-            </motion.div>
 
             {/* CTA Buttons */}
             <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-wrap items-center gap-3.5 pt-1"
             >
-              <motion.button
+              <button
                 onClick={onBookCall}
-                whileHover={!shouldReduceMotion ? { scale: 1.02, boxShadow: '0 12px 28px -6px rgba(16, 185, 129, 0.35)' } : {}}
-                whileTap={!shouldReduceMotion ? { scale: 0.98 } : {}}
-                className="px-8 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm sm:text-base rounded-xl transition-all shadow-md flex items-center justify-center gap-2.5 relative overflow-hidden button-shine"
+                className="px-7 py-3.5 rounded-full bg-gradient-to-r from-blue-600 via-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-500/25 hover:shadow-blue-500/45 transition-all flex items-center gap-2 cursor-pointer active:scale-98 button-shine relative overflow-hidden"
               >
-                <span>Book Free Strategy Audit</span>
+                <span>Get Free Audit</span>
                 <ArrowRight className="w-4 h-4" />
-              </motion.button>
+              </button>
 
-              <motion.a
+              <a
                 href="#case-studies"
-                whileHover={!shouldReduceMotion ? { y: -2 } : {}}
-                className="px-7 py-4 bg-white/90 hover:bg-slate-50 text-slate-800 font-bold text-sm sm:text-base rounded-xl border border-slate-200 shadow-soft-sm transition-all flex items-center justify-center gap-2 hover:border-slate-300"
+                className="px-6 py-3.5 rounded-full bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm sm:text-base border border-slate-200/90 shadow-soft-sm hover:border-slate-300 transition-all flex items-center gap-2"
               >
-                <BarChart3 className="w-4 h-4 text-emerald-600" />
-                <span>View Real Case Studies</span>
-              </motion.a>
+                <LineChart className="w-4 h-4 text-blue-600" />
+                <span>View Case Studies</span>
+              </a>
             </motion.div>
 
-            {/* Feature Value Pills */}
+            {/* 3 Pillars / Feature Row at Bottom */}
             <motion.div
-              variants={itemVariants}
-              className="pt-4 border-t border-slate-200/70 flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-semibold text-slate-600"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="grid grid-cols-3 gap-2.5 sm:gap-4 pt-3 border-t border-slate-100"
             >
-              {[
-                'Zero Guesswork Execution',
-                'Server-Side GA4 Tracking',
-                'Custom Margin Feed Tiers',
-                'Weekly ROAS Scaling'
-              ].map((pill, idx) => (
-                <span
-                  key={idx}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/80 border border-slate-200/70 shadow-xs text-slate-700 text-[11px]"
-                >
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>{pill}</span>
-                </span>
-              ))}
+              {/* Pillar 1 */}
+              <div className="flex items-start gap-2.5">
+                <div className="w-9 h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <Target className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-extrabold text-slate-900 leading-tight">Target Right</h4>
+                  <p className="text-[10.5px] text-slate-500 leading-tight mt-0.5">Reach the right audience</p>
+                </div>
+              </div>
+
+              {/* Pillar 2 */}
+              <div className="flex items-start gap-2.5">
+                <div className="w-9 h-9 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <LineChart className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-extrabold text-slate-900 leading-tight">Lower Cost</h4>
+                  <p className="text-[10.5px] text-slate-500 leading-tight mt-0.5">Reduce CPC & get more</p>
+                </div>
+              </div>
+
+              {/* Pillar 3 */}
+              <div className="flex items-start gap-2.5">
+                <div className="w-9 h-9 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <Rocket className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-extrabold text-slate-900 leading-tight">Higher ROI</h4>
+                  <p className="text-[10.5px] text-slate-500 leading-tight mt-0.5">Maximize conversions</p>
+                </div>
+              </div>
             </motion.div>
 
-          </motion.div>
+          </div>
 
-          {/* ══════════════════════════════════════════════════
-              RIGHT COLUMN: Interactive Google Ads Live Hub
-          ══════════════════════════════════════════════════ */}
-          <motion.div
-            className="lg:col-span-6 w-full relative"
-            initial={{ opacity: 0, scale: 0.94, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.215, 0.61, 0.355, 1] }}
-          >
-            {/* Floating Live Badge (Top-Right) */}
+          {/* ═════════════════════════════════════════════════════
+              RIGHT COLUMN: Perspective 3D Google Ads Dashboard
+          ═════════════════════════════════════════════════════ */}
+          <div className="lg:col-span-7 relative flex items-center justify-center">
+
+            {/* ─── Floating 3D Google Ads Logo at Top-Left ─── */}
             {!shouldReduceMotion && (
               <motion.div
-                variants={floatCardVariants}
+                variants={floatBadge}
                 animate="animate"
-                className="absolute -top-6 -right-2 sm:-right-4 z-20 hidden sm:flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/95 border border-emerald-200/80 shadow-soft-lg backdrop-blur-md"
+                className="absolute -top-6 left-6 sm:left-12 z-30 pointer-events-none drop-shadow-xl"
               >
-                <div className="w-8 h-8 rounded-xl bg-emerald-100/80 flex items-center justify-center text-emerald-700 font-extrabold text-xs">
-                  <TrendingUp className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Verified Result</p>
-                  <p className="text-xs font-black text-slate-900">+184% Scaled ROAS</p>
+                <div className="w-14 h-14 sm:w-16 sm:h-16 relative">
+                  {/* Google Ads 3D Emblem */}
+                  <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-lg">
+                    {/* Blue pill */}
+                    <rect x="18" y="24" width="22" height="52" rx="11" transform="rotate(-35 29 50)" fill="#4285F4" />
+                    {/* Green pill */}
+                    <rect x="52" y="32" width="22" height="42" rx="11" transform="rotate(35 63 53)" fill="#34A853" />
+                    {/* Yellow circle */}
+                    <circle cx="34" cy="68" r="14" fill="#FBBC04" />
+                  </svg>
                 </div>
               </motion.div>
             )}
 
-            {/* Floating Live Indicator (Bottom-Left) */}
+            {/* ─── Floating 3D Target Dartboard at Bottom-Right ─── */}
             {!shouldReduceMotion && (
               <motion.div
-                variants={floatCardDelayedVariants}
+                variants={floatReverse}
                 animate="animate"
-                className="absolute -bottom-6 -left-2 sm:-left-4 z-20 hidden sm:flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/95 border border-slate-200 shadow-soft-lg backdrop-blur-md"
+                className="absolute -bottom-8 -right-4 sm:-right-8 z-30 pointer-events-none hidden sm:block"
               >
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-                </span>
-                <div>
-                  <p className="text-xs font-extrabold text-slate-900">Active Campaign Monitoring</p>
-                  <p className="text-[10px] font-semibold text-emerald-700">0% Budget Waste Guardrails</p>
+                <div className="w-24 h-24 sm:w-28 sm:h-28 relative filter drop-shadow-2xl">
+                  <svg viewBox="0 0 120 120" className="w-full h-full">
+                    <defs>
+                      <radialGradient id="targetGrad1" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stopColor="#818CF8" />
+                        <stop offset="100%" stopColor="#4F46E5" />
+                      </radialGradient>
+                      <radialGradient id="targetGrad2" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stopColor="#FFFFFF" />
+                        <stop offset="100%" stopColor="#E0E7FF" />
+                      </radialGradient>
+                    </defs>
+                    {/* Outer 3D Ring */}
+                    <ellipse cx="60" cy="60" rx="52" ry="46" fill="url(#targetGrad1)" opacity="0.9" />
+                    <ellipse cx="60" cy="58" rx="46" ry="40" fill="url(#targetGrad2)" />
+                    <ellipse cx="60" cy="58" rx="34" ry="30" fill="url(#targetGrad1)" />
+                    <ellipse cx="60" cy="58" rx="22" ry="19" fill="url(#targetGrad2)" />
+                    <ellipse cx="60" cy="58" rx="12" ry="10" fill="#4338CA" />
+                    {/* Dart Arrow pointing into center */}
+                    <g transform="translate(68, 30) rotate(-35)">
+                      <rect x="0" y="0" width="6" height="34" rx="2" fill="#3B82F6" />
+                      <polygon points="-4,34 10,34 3,46" fill="#1D4ED8" />
+                      <polygon points="-6,0 12,0 3,-10" fill="#60A5FA" />
+                    </g>
+                  </svg>
                 </div>
               </motion.div>
             )}
 
-            {/* Main Interactive Glass Card */}
-            <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200/90 shadow-soft-lg p-5 sm:p-7 space-y-5 overflow-hidden">
+            {/* ─── Main Perspective Angled Tablet Dashboard ─── */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="relative w-full max-w-[660px] rounded-3xl bg-white shadow-2xl shadow-blue-500/10 border border-slate-200/90 overflow-hidden flex transform lg:rotate-[-2deg] lg:hover:rotate-0 transition-transform duration-500"
+            >
 
-              {/* Card Header Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-slate-100">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                  <div>
-                    <h3 className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight flex items-center gap-2">
-                      Google Ads Growth Dashboard
-                    </h3>
-                    <p className="text-[10px] font-semibold text-slate-400">Live E-commerce Account Telemetry</p>
+              {/* ── Dark Left Sidebar ── */}
+              <div className="w-14 sm:w-16 bg-[#0F172A] text-slate-400 flex flex-col items-center py-5 justify-between shrink-0">
+                {/* Logo top */}
+                <div className="space-y-6 flex flex-col items-center">
+                  <div className="w-9 h-9 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center p-1.5">
+                    <svg viewBox="0 0 40 40" className="w-6 h-6">
+                      <rect x="8" y="10" width="8" height="20" rx="4" transform="rotate(-35 12 20)" fill="#4285F4" />
+                      <rect x="22" y="12" width="8" height="18" rx="4" transform="rotate(35 26 21)" fill="#34A853" />
+                      <circle cx="14" cy="27" r="5" fill="#FBBC04" />
+                    </svg>
+                  </div>
+
+                  {/* Sidebar Nav Icons */}
+                  <div className="space-y-4 flex flex-col items-center">
+                    <button
+                      onClick={() => setActiveTab('home')}
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+                        activeTab === 'home'
+                          ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
+                          : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      }`}
+                    >
+                      <Home className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('analytics')}
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+                        activeTab === 'analytics'
+                          ? 'bg-blue-600 text-white'
+                          : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      }`}
+                    >
+                      <LineChart className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('campaigns')}
+                      className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                    >
+                      <Grid className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('target')}
+                      className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                    >
+                      <Target className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('users')}
+                      className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                    >
+                      <Users className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
 
-                {/* Interactive Timeframe Pill Switcher */}
-                <div className="flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl border border-slate-200/60">
-                  {['7D', '30D', '90D'].map((tf) => {
-                    const isActive = activeTimeframe === tf;
-                    return (
-                      <button
-                        key={tf}
-                        onClick={() => setActiveTimeframe(tf)}
-                        className={`relative px-3 py-1 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
-                          isActive ? 'text-emerald-800' : 'text-slate-500 hover:text-slate-900'
-                        }`}
-                      >
-                        {isActive && (
-                          <motion.div
-                            layoutId="heroTimeframePill"
-                            className="absolute inset-0 bg-white rounded-lg shadow-soft-sm border border-slate-200/50"
-                            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                          />
-                        )}
-                        <span className="relative z-10">{tf}</span>
-                      </button>
-                    );
-                  })}
+                {/* Settings Bottom */}
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                  <Settings className="w-4 h-4" />
                 </div>
               </div>
 
-              {/* 4 Dynamic Metric Tiles */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {/* ROAS Tile */}
-                <div className="p-3.5 bg-gradient-to-br from-emerald-50 to-teal-50/60 rounded-2xl border border-emerald-200/60">
-                  <p className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">ROAS</p>
-                  <motion.p
-                    key={`roas-${activeTimeframe}`}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-xl sm:text-2xl font-black text-emerald-700 mt-0.5 tracking-tight"
-                  >
-                    {currentData.roas}
-                  </motion.p>
-                  <span className="inline-block mt-1 text-[10px] font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-full">
-                    {currentData.roasGrowth}
-                  </span>
+              {/* ── Main Dashboard Body ── */}
+              <div className="flex-1 p-4 sm:p-6 bg-white space-y-4 min-w-0">
+
+                {/* Top Header Row */}
+                <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                  <div>
+                    <h3 className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight">
+                      Google Ads Performance
+                    </h3>
+                  </div>
+                  {/* Date Picker Pill */}
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200/70 text-[11px] font-semibold text-slate-600">
+                    <Calendar className="w-3 h-3 text-slate-400" />
+                    <span>May 1 – May 31, 2024</span>
+                    <ChevronDown className="w-3 h-3 text-slate-400 ml-0.5" />
+                  </div>
                 </div>
 
-                {/* Revenue Tile */}
-                <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/60">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Revenue</p>
-                  <motion.p
-                    key={`rev-${activeTimeframe}`}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5 tracking-tight"
-                  >
-                    {currentData.revenue}
-                  </motion.p>
-                  <span className="inline-block mt-1 text-[10px] font-bold text-emerald-600">
-                    {currentData.revenueGrowth}
-                  </span>
-                </div>
-
-                {/* Ad Spend Tile */}
-                <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/60">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Ad Spend</p>
-                  <motion.p
-                    key={`spend-${activeTimeframe}`}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5 tracking-tight"
-                  >
-                    {currentData.adSpend}
-                  </motion.p>
-                  <span className="inline-block mt-1 text-[10px] font-medium text-slate-500">
-                    {currentData.clicks} clicks
-                  </span>
-                </div>
-
-                {/* CPA Tile */}
-                <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/60">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CPA</p>
-                  <motion.p
-                    key={`cpa-${activeTimeframe}`}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5 tracking-tight"
-                  >
-                    {currentData.cpa}
-                  </motion.p>
-                  <span className="inline-block mt-1 text-[10px] font-bold text-emerald-600">
-                    {currentData.cpaChange}
-                  </span>
-                </div>
-              </div>
-
-              {/* Interactive Performance Graph */}
-              <div className="pt-1">
-                <div className="flex items-center justify-between text-xs text-slate-500 mb-2.5">
-                  <span className="font-bold text-slate-800 flex items-center gap-1.5">
-                    <Activity className="w-3.5 h-3.5 text-emerald-600" /> Revenue & ROAS Scaling Curve
-                  </span>
-                  <span className="text-[11px]">
-                    Conversions: <strong className="text-slate-900 font-bold">{currentData.conversions}</strong> ({currentData.convRate} CVR)
-                  </span>
-                </div>
-
-                {/* SVG Revenue Chart */}
-                <div className="h-44 w-full bg-slate-50/70 rounded-2xl p-4 border border-slate-200/60 relative flex items-end justify-between gap-2 overflow-hidden">
-                  <svg className="absolute inset-0 w-full h-full p-4 overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 40">
-                    <defs>
-                      <linearGradient id="heroChartGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#10B981" stopOpacity="0.25" />
-                        <stop offset="100%" stopColor="#10B981" stopOpacity="0.0" />
-                      </linearGradient>
-                    </defs>
-                    <motion.path
-                      d="M 0 32 L 16 26 L 33 18 L 50 21 L 66 14 L 83 10 L 100 16 L 100 40 L 0 40 Z"
-                      fill="url(#heroChartGradient)"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 1 }}
-                    />
-                    <motion.path
-                      d="M 0 32 L 16 26 L 33 18 L 50 21 L 66 14 L 83 10 L 100 16"
-                      fill="none"
-                      stroke="#059669"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 1.5, ease: 'easeOut' }}
-                    />
-                    {/* Pulsing peak dot */}
-                    <circle cx="83" cy="10" r="3" fill="#059669" />
-                    <circle cx="83" cy="10" r="6" fill="#10B981" opacity="0.3" className="animate-ping" />
-                  </svg>
-
-                  {/* Day Columns with Interactive Tooltips */}
-                  {currentData.chartData.map((item, idx) => (
-                    <div key={idx} className="relative z-10 flex flex-col items-center flex-1 group cursor-pointer">
-                      {/* Tooltip on hover */}
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -top-9 bg-slate-900 text-white text-[10px] py-1 px-2.5 rounded-lg font-bold whitespace-nowrap pointer-events-none shadow-lg z-30">
-                        ${(item.revenue / 1000).toFixed(1)}k • {item.roas}x ROAS
-                      </div>
-                      <div
-                        className="w-full max-w-[22px] bg-emerald-500/20 group-hover:bg-emerald-600 rounded-t-md transition-all duration-300"
-                        style={{ height: `${(item.revenue / 25000) * 100}%` }}
-                      />
-                      <span className="text-[10px] text-slate-400 font-bold mt-1.5">{item.day}</span>
+                {/* 4 Metric Cards Grid (Side-by-side with sparklines) */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  {/* Card 1: Clicks */}
+                  <div className="p-3 rounded-2xl bg-white border border-slate-100 shadow-soft-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
+                      <LineChart className="w-3 h-3 text-blue-500" />
+                      <span>Clicks</span>
                     </div>
-                  ))}
-                </div>
-              </div>
+                    <p className="text-lg sm:text-xl font-black text-slate-900 mt-0.5">12.6K</p>
+                    <p className="text-[10px] font-bold text-blue-600 mt-0.5">↑ 28.5%</p>
+                    {/* Blue sparkline */}
+                    <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
+                      <path d="M0,14 Q10,4 20,11 T40,6 T60,2" fill="none" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </div>
 
-              {/* Campaign Breakdown Rows */}
-              <div className="space-y-2 pt-1">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
-                  <span>Top Performing Campaigns</span>
-                  <span className="text-[11px] text-emerald-700 font-bold">Optimized Structure</span>
+                  {/* Card 2: Conversions */}
+                  <div className="p-3 rounded-2xl bg-white border border-slate-100 shadow-soft-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
+                      <TrendingUp className="w-3 h-3 text-emerald-500" />
+                      <span>Conversions</span>
+                    </div>
+                    <p className="text-lg sm:text-xl font-black text-slate-900 mt-0.5">1.46K</p>
+                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">↑ 32.1%</p>
+                    {/* Green sparkline */}
+                    <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
+                      <path d="M0,15 Q15,6 28,12 T45,7 T60,3" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </div>
+
+                  {/* Card 3: Cost / Conv. */}
+                  <div className="p-3 rounded-2xl bg-white border border-slate-100 shadow-soft-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
+                      <LineChart className="w-3 h-3 text-amber-500" />
+                      <span>Cost / Conv.</span>
+                    </div>
+                    <p className="text-lg sm:text-xl font-black text-slate-900 mt-0.5">$6.23</p>
+                    <p className="text-[10px] font-bold text-amber-600 mt-0.5">↓ 14.3%</p>
+                    {/* Orange sparkline */}
+                    <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
+                      <path d="M0,5 Q15,14 30,8 T45,13 T60,16" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </div>
+
+                  {/* Card 4: Conv. Value */}
+                  <div className="p-3 rounded-2xl bg-white border border-slate-100 shadow-soft-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
+                      <Zap className="w-3 h-3 text-purple-500" />
+                      <span>Conv. Value</span>
+                    </div>
+                    <p className="text-lg sm:text-xl font-black text-slate-900 mt-0.5">$45.2K</p>
+                    <p className="text-[10px] font-bold text-purple-600 mt-0.5">↑ 35.7%</p>
+                    {/* Purple sparkline */}
+                    <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
+                      <path d="M0,16 Q12,8 25,12 T48,6 T60,1" fill="none" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  {currentData.campaigns.slice(0, 3).map((camp, i) => (
-                    <motion.div
-                      key={i}
-                      whileHover={!shouldReduceMotion ? { x: 3 } : {}}
-                      className="flex items-center justify-between p-2.5 bg-slate-50/90 hover:bg-emerald-50/40 rounded-xl text-xs transition-all border border-slate-200/60 group"
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 group-hover:scale-125 transition-transform" />
-                        <div>
-                          <p className="font-bold text-slate-900 group-hover:text-emerald-800 transition-colors">{camp.name}</p>
-                          <p className="text-[10px] text-slate-500">{camp.type}</p>
-                        </div>
+                {/* ── Main Dual-Line Graph Area ── */}
+                <div className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 space-y-2">
+                  <div className="flex items-center justify-between text-[11px] text-slate-500">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
+                        <span className="font-bold text-slate-700">Clicks Trend</span>
                       </div>
-                      <div className="text-right">
-                        <span className="font-extrabold text-emerald-700">{camp.roas} ROAS</span>
-                        <p className="text-[10px] font-semibold text-slate-500">{camp.revenue} rev</p>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                        <span className="font-bold text-slate-700">Conversions</span>
                       </div>
-                    </motion.div>
-                  ))}
+                    </div>
+                    <span className="font-semibold text-slate-400">Daily Updates</span>
+                  </div>
+
+                  {/* SVG Chart with Dual Lines and Grid Lines */}
+                  <div className="h-32 sm:h-36 w-full relative">
+                    {/* Y-axis markers */}
+                    <div className="absolute left-0 inset-y-0 flex flex-col justify-between text-[9px] font-semibold text-slate-400 pointer-events-none pr-2">
+                      <span>1.5K</span>
+                      <span>1K</span>
+                      <span>500</span>
+                      <span>0</span>
+                    </div>
+
+                    <svg className="w-full h-full pl-6 overflow-visible" viewBox="0 0 320 100" preserveAspectRatio="none">
+                      {/* Horizontal Grid lines */}
+                      <line x1="0" y1="10" x2="320" y2="10" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
+                      <line x1="0" y1="40" x2="320" y2="40" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
+                      <line x1="0" y1="70" x2="320" y2="70" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
+                      <line x1="0" y1="98" x2="320" y2="98" stroke="#CBD5E1" strokeWidth="1" />
+
+                      {/* Conversions Area Fill (Green) */}
+                      <defs>
+                        <linearGradient id="greenFill" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#10B981" stopOpacity="0.15" />
+                          <stop offset="100%" stopColor="#10B981" stopOpacity="0.0" />
+                        </linearGradient>
+                        <linearGradient id="blueFill" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.18" />
+                          <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.0" />
+                        </linearGradient>
+                      </defs>
+
+                      <polygon
+                        points="0,85 20,80 45,86 70,72 95,78 120,65 150,68 180,52 210,56 240,42 270,45 295,30 320,38 320,100 0,100"
+                        fill="url(#greenFill)"
+                      />
+                      {/* Green Conversions Line */}
+                      <path
+                        d="M0,85 Q20,80 45,86 T95,78 T150,68 T210,56 T270,45 T320,38"
+                        fill="none"
+                        stroke="#10B981"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+
+                      <polygon
+                        points="0,65 20,62 45,50 70,55 95,38 120,44 150,32 180,36 210,24 240,28 270,16 295,20 320,8 320,100 0,100"
+                        fill="url(#blueFill)"
+                      />
+                      {/* Blue Clicks Line */}
+                      <path
+                        d="M0,65 Q20,62 45,50 T95,38 T150,32 T210,24 T270,16 T320,8"
+                        fill="none"
+                        stroke="#2563EB"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                      />
+
+                      {/* Peak Interactive Ping */}
+                      <circle cx="270" cy="16" r="3.5" fill="#2563EB" />
+                      <circle cx="270" cy="16" r="7" fill="#3B82F6" opacity="0.3" className="animate-ping" />
+                    </svg>
+
+                    {/* Date labels bottom */}
+                    <div className="pl-6 pt-1 flex items-center justify-between text-[9px] font-semibold text-slate-400">
+                      <span>May 1</span>
+                      <span>May 8</span>
+                      <span>May 15</span>
+                      <span>May 21</span>
+                      <span>May 31</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              {/* Bottom Security / Trust Footer */}
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-medium">
-                <span className="flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                  Verified Google Ads & GA4 Attribution
-                </span>
-                <span className="font-bold text-emerald-700">99.8% Data Accuracy</span>
               </div>
+            </motion.div>
 
-            </div>
-          </motion.div>
+            {/* ─── Floating Card 1: 100+ Happy Clients (Bottom-Left) ─── */}
+            {!shouldReduceMotion && (
+              <motion.div
+                variants={floatSlow}
+                animate="animate"
+                className="absolute -bottom-5 -left-4 sm:left-2 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 shadow-xl border border-slate-200/80 flex items-center gap-3"
+              >
+                <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/30 shrink-0">
+                  <Star className="w-5 h-5 fill-white" />
+                </div>
+                <div>
+                  {/* Small avatar overlaps */}
+                  <div className="flex items-center -space-x-1.5 mb-1">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500 border border-white flex items-center justify-center text-[8px] font-black text-white">A</div>
+                    <div className="w-5 h-5 rounded-full bg-blue-500 border border-white flex items-center justify-center text-[8px] font-black text-white">S</div>
+                    <div className="w-5 h-5 rounded-full bg-purple-500 border border-white flex items-center justify-center text-[8px] font-black text-white">M</div>
+                    <div className="w-5 h-5 rounded-full bg-amber-500 border border-white flex items-center justify-center text-[8px] font-black text-white">Z</div>
+                  </div>
+                  <p className="text-xs font-black text-slate-900 leading-tight">100+ Happy Clients</p>
+                  <p className="text-[10px] font-semibold text-slate-400">Across the Globe</p>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ─── Floating Card 2: Campaigns Performance Donut (Bottom-Right) ─── */}
+            {!shouldReduceMotion && (
+              <motion.div
+                variants={floatBadge}
+                animate="animate"
+                className="absolute -bottom-8 right-2 sm:right-6 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-3.5 shadow-xl border border-slate-200/80 hidden sm:flex items-center gap-4"
+              >
+                <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                    Campaigns Performance
+                  </p>
+                  <div className="flex items-center gap-3">
+                    {/* SVG Donut Chart */}
+                    <div className="w-12 h-12 relative flex items-center justify-center shrink-0">
+                      <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+                        {/* Background circle */}
+                        <circle cx="18" cy="18" r="14" fill="transparent" stroke="#E2E8F0" strokeWidth="4" />
+                        {/* Blue Search 55% */}
+                        <circle
+                          cx="18" cy="18" r="14" fill="transparent"
+                          stroke="#2563EB" strokeWidth="4"
+                          strokeDasharray="55 100"
+                          strokeDashoffset="0"
+                        />
+                        {/* Green Display 25% */}
+                        <circle
+                          cx="18" cy="18" r="14" fill="transparent"
+                          stroke="#10B981" strokeWidth="4"
+                          strokeDasharray="25 100"
+                          strokeDashoffset="-55"
+                        />
+                        {/* Orange Shopping 20% */}
+                        <circle
+                          cx="18" cy="18" r="14" fill="transparent"
+                          stroke="#F59E0B" strokeWidth="4"
+                          strokeDasharray="20 100"
+                          strokeDashoffset="-80"
+                        />
+                      </svg>
+                    </div>
+
+                    {/* Donut Legend */}
+                    <div className="space-y-1 text-[10px] font-bold text-slate-700">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="flex items-center gap-1 text-slate-600">
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-600" /> Search
+                        </span>
+                        <span className="text-slate-900 font-extrabold">55%</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="flex items-center gap-1 text-slate-600">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Display
+                        </span>
+                        <span className="text-slate-900 font-extrabold">25%</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="flex items-center gap-1 text-slate-600">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> Shopping
+                        </span>
+                        <span className="text-slate-900 font-extrabold">20%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+          </div>
 
         </div>
       </div>
