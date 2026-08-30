@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { approachSteps } from '../data/portfolioData';
 import {
   Search, Database, Layers, Rocket, Sliders, TrendingUp,
-  ArrowDown
+  ArrowDown, ChevronRight, ChevronLeft
 } from 'lucide-react';
 
 /* ─── Step visual configs (light theme matching website) ─── */
@@ -104,64 +104,62 @@ export default function Approach() {
   const shouldReduceMotion = useReducedMotion();
   const sectionRef = useRef(null);
   const [activeStep, setActiveStep] = useState(0);
-  const [isScrollingDown, setIsScrollingDown] = useState(true);
-  const lastScrollYRef = useRef(0);
+  const isTransitioningRef = useRef(false);
   const totalSteps = approachSteps.length;
 
+  /* ─── 1 Scroll = 1 Card Downward & Zero Trap Upward ─── */
   useEffect(() => {
-    let ticking = false;
+    const el = sectionRef.current;
+    if (!el) return;
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentY = window.scrollY;
-          const isDown = currentY >= lastScrollYRef.current;
-          lastScrollYRef.current = currentY;
-          setIsScrollingDown(isDown);
+    const handleWheel = (e) => {
+      // Ignore tiny unintentional wheel movements
+      if (Math.abs(e.deltaY) < 18) return;
 
-          const el = sectionRef.current;
-          if (!el) {
-            ticking = false;
-            return;
+      const rect = el.getBoundingClientRect();
+      // Only intercept when the section has docked into view
+      const isDocked = rect.top <= 40 && rect.top >= -80;
+
+      if (!isDocked) return;
+
+      // ─── Scrolling DOWN: Advance exactly 1 card per gesture ───
+      if (e.deltaY > 0) {
+        if (activeStep < totalSteps - 1) {
+          e.preventDefault();
+          if (!isTransitioningRef.current) {
+            isTransitioningRef.current = true;
+            setActiveStep((prev) => Math.min(totalSteps - 1, prev + 1));
+            setTimeout(() => {
+              isTransitioningRef.current = false;
+            }, 450); // 450ms cooldown prevents skipping 2 cards
           }
-
-          const rect = el.getBoundingClientRect();
-          const totalScrollDistance = el.offsetHeight - window.innerHeight;
-
-          if (totalScrollDistance <= 0) {
-            ticking = false;
-            return;
-          }
-
-          // How far user has scrolled into this section
-          const scrolledIntoSection = -rect.top;
-          const progress = Math.max(0, Math.min(1, scrolledIntoSection / totalScrollDistance));
-
-          // When user scrolls back up to the top of Approach, reset to Step 1
-          if (progress <= 0.02) {
-            setActiveStep(0);
-            ticking = false;
-            return;
-          }
-
-          // ONLY step cards when moving DOWN from top of the page towards bottom!
-          // When moving UP from bottom of the web towards top, cards DO NOT scroll!
-          if (isDown) {
-            // Steps 0-5 comfortably distributed between 0.02 and 0.85
-            const normalized = Math.max(0, Math.min(1, (progress - 0.02) / 0.83));
-            const calculatedStep = Math.min(totalSteps - 1, Math.floor(normalized * totalSteps));
-            setActiveStep(calculatedStep);
-          }
-
-          ticking = false;
-        });
-        ticking = true;
+        }
+        // If activeStep === totalSteps - 1 (Step 6), do NOT preventDefault!
+        // The page will naturally continue down to WhyChooseMe!
       }
+
+      // ─── Scrolling UP: NEVER intercept! ───
+      // When user scrolls from bottom of the web towards top,
+      // the browser smoothly scrolls straight up with zero resistance and zero delay!
     };
 
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, [activeStep, totalSteps]);
+
+  // Reset to Step 1 when user scrolls above the section
+  useEffect(() => {
+    const handleScroll = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top > 180) {
+        setActiveStep(0);
+      }
+    };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [totalSteps]);
+  }, []);
 
   const currentStep = approachSteps[activeStep];
   const currentVisual = stepVisuals[activeStep];
@@ -172,9 +170,9 @@ export default function Approach() {
       ref={sectionRef}
       id="approach"
       className="relative"
-      style={{ height: '480vh' }}
+      style={{ height: '140vh' }}
     >
-      {/* ─── Sticky Container (Rock-Solid & Fixed in Viewport) ─── */}
+      {/* ─── Sticky Container ─── */}
       <div
         className="sticky top-0 h-screen overflow-hidden"
         style={{
@@ -202,7 +200,7 @@ export default function Approach() {
           }}
         />
 
-        {/* ─── Stable Non-Jumping Layout ─── */}
+        {/* ─── Stable Layout ─── */}
         <div className="relative z-10 h-full flex flex-col justify-start pt-20 sm:pt-24 lg:pt-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* ═══ SECTION HEADER ═══ */}
@@ -285,7 +283,7 @@ export default function Approach() {
               </div>
             </div>
 
-            {/* ─── RIGHT: Permanent Rock-Solid Card (NO UNMOUNTING, ZERO GLITCH) ─── */}
+            {/* ─── RIGHT: Permanent Rock-Solid Card Shell ─── */}
             <div className="lg:col-span-8 relative min-h-[380px] sm:min-h-[400px]">
               {/* Card Glow Behind */}
               <div
@@ -300,12 +298,12 @@ export default function Approach() {
 
                 <div className="p-7 sm:p-9 lg:p-10 flex-1 flex flex-col justify-between">
 
-                  {/* Animated Inner Content (Gentle fade, no container shifts) */}
+                  {/* Animated Inner Content (Gentle fade, zero container pop) */}
                   <motion.div
                     key={activeStep}
-                    initial={isScrollingDown && !shouldReduceMotion ? { opacity: 0, y: 12 } : false}
+                    initial={!shouldReduceMotion ? { opacity: 0, y: 10 } : false}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    transition={{ duration: 0.22, ease: 'easeOut' }}
                   >
                     {/* Step number + icon + name */}
                     <div className="flex items-center gap-3.5 mb-5">
@@ -335,17 +333,39 @@ export default function Approach() {
                     </p>
                   </motion.div>
 
-                  {/* Progress Bar & Counter at Bottom */}
-                  <div className="pt-6 mt-4 border-t border-slate-100 flex items-center gap-4">
-                    <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full bg-gradient-to-r ${currentVisual.gradient} transition-all duration-300`}
-                        style={{ width: `${((activeStep + 1) / totalSteps) * 100}%` }}
-                      />
+                  {/* Progress Bar & Interactive Next/Prev Buttons */}
+                  <div className="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between gap-4">
+                    <div className="flex-1 flex items-center gap-4">
+                      <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full bg-gradient-to-r ${currentVisual.gradient} transition-all duration-300`}
+                          style={{ width: `${((activeStep + 1) / totalSteps) * 100}%` }}
+                        />
+                      </div>
+                      <span className="text-xs font-extrabold text-slate-400 tabular-nums">
+                        {activeStep + 1} / {totalSteps}
+                      </span>
                     </div>
-                    <span className="text-xs font-extrabold text-slate-400 tabular-nums">
-                      {activeStep + 1} / {totalSteps}
-                    </span>
+
+                    {/* Quick navigation step buttons */}
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => setActiveStep(prev => Math.max(0, prev - 1))}
+                        disabled={activeStep === 0}
+                        className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        aria-label="Previous step"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => setActiveStep(prev => Math.min(totalSteps - 1, prev + 1))}
+                        disabled={activeStep === totalSteps - 1}
+                        className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        aria-label="Next step"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
 
                 </div>
@@ -374,7 +394,7 @@ export default function Approach() {
           {/* ─── Scroll Hint ─── */}
           <div className="pb-6 pt-4 text-center shrink-0">
             <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-              <span>{activeStep < totalSteps - 1 ? 'Scroll down for next step' : 'Continue scrolling for next section'}</span>
+              <span>{activeStep < totalSteps - 1 ? 'Scroll down for next step' : 'Scroll down for next section'}</span>
               <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
             </div>
           </div>
