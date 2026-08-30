@@ -1,12 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { motion, useReducedMotion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion, AnimatePresence, useScroll } from 'framer-motion';
 import { approachSteps } from '../data/portfolioData';
 import {
   Search, Database, Layers, Rocket, Sliders, TrendingUp,
   ArrowDown, CheckCircle2, ArrowRight
 } from 'lucide-react';
 
-/* ─── Step visual configs (light theme) ─── */
+/* ─── Step visual configs (light theme matching website) ─── */
 const stepVisuals = [
   {
     icon: Search,
@@ -105,6 +105,7 @@ export default function Approach() {
   const sectionRef = useRef(null);
   const [activeStep, setActiveStep] = useState(0);
   const [isScrollingDown, setIsScrollingDown] = useState(true);
+  const lastProgressRef = useRef(0);
   const prevStepRef = useRef(0);
   const totalSteps = approachSteps.length;
 
@@ -116,10 +117,18 @@ export default function Approach() {
 
   useEffect(() => {
     const unsubscribe = scrollYProgress.on('change', (v) => {
-      const normalized = Math.max(0, Math.min(1, (v - 0.05) / 0.90));
-      const step = Math.min(totalSteps - 1, Math.floor(normalized * totalSteps));
+      // Robust directional tracking
+      const isDown = v >= lastProgressRef.current;
+      lastProgressRef.current = v;
+      setIsScrollingDown(isDown);
+
+      // Steps 0-5 map between 0.0 and 0.82.
+      // Above 0.82, it stays locked on the final step (Step 6)
+      // so continuing to scroll smoothly releases down into the next section!
+      const progressNormalized = Math.max(0, Math.min(1, v / 0.82));
+      const step = Math.min(totalSteps - 1, Math.floor(progressNormalized * totalSteps));
+
       if (step !== prevStepRef.current) {
-        setIsScrollingDown(step > prevStepRef.current);
         prevStepRef.current = step;
         setActiveStep(step);
       }
@@ -131,48 +140,45 @@ export default function Approach() {
   const currentVisual = stepVisuals[activeStep];
   const CurrentIcon = currentVisual.icon;
 
-  /* Animation only when scrolling down */
-  const cardInitial = isScrollingDown && !shouldReduceMotion
-    ? { opacity: 0, y: 20, scale: 0.98 }
-    : { opacity: 1, y: 0, scale: 1 };
-  const cardExit = isScrollingDown && !shouldReduceMotion
-    ? { opacity: 0, y: -15, scale: 0.98 }
-    : { opacity: 1, y: 0, scale: 1 };
-  const cardTransition = isScrollingDown
-    ? { duration: 0.35, ease: [0.215, 0.61, 0.355, 1] }
-    : { duration: 0.1 };
+  // Animation variants: ONLY animate when scrolling downward!
+  // When scrolling upward, zero animation (instant switch, no lag/glitch).
+  const cardAnimationProps = isScrollingDown && !shouldReduceMotion
+    ? {
+        initial: { opacity: 0, y: 18, scale: 0.985 },
+        animate: { opacity: 1, y: 0, scale: 1 },
+        exit: { opacity: 0, y: -14, scale: 0.985 },
+        transition: { duration: 0.32, ease: [0.215, 0.61, 0.355, 1] }
+      }
+    : {
+        initial: false,
+        animate: { opacity: 1, y: 0, scale: 1 },
+        exit: { opacity: 1, y: 0, scale: 1 },
+        transition: { duration: 0 }
+      };
 
   return (
     <section
       ref={sectionRef}
       id="approach"
       className="relative"
-      style={{ height: '320vh' }}
+      style={{ height: '360vh' }}
     >
-      {/* ─── Sticky container ─── */}
+      {/* ─── Sticky Container (Fixed position while in viewport) ─── */}
       <div
         className="sticky top-0 h-screen overflow-hidden"
         style={{
           background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFB 30%, #F0F7F4 60%, #F8FAFB 100%)',
         }}
       >
-        {/* ── Decorative Background ── */}
+        {/* ── Decorative Background Glows ── */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <motion.div
-            key={`blob-main-${activeStep}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.4 }}
-            transition={{ duration: 0.8 }}
-            className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full"
+          <div
+            className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full opacity-35 transition-colors duration-700"
             style={{ background: `radial-gradient(circle, ${currentVisual.glow} 0%, transparent 65%)` }}
           />
           <div
-            className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full opacity-25"
-            style={{ background: 'radial-gradient(circle, rgba(14,165,233,0.10) 0%, transparent 65%)' }}
-          />
-          <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-15"
-            style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 60%)' }}
+            className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full opacity-20"
+            style={{ background: 'radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 65%)' }}
           />
         </div>
 
@@ -185,30 +191,12 @@ export default function Approach() {
           }}
         />
 
-        {/* Floating particles */}
-        {!shouldReduceMotion && (
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {[...Array(5)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1.5 h-1.5 rounded-full bg-emerald-400/20"
-                style={{ left: `${10 + i * 18}%`, top: `${15 + (i % 3) * 28}%` }}
-                animate={{ y: [0, -22, 0], opacity: [0.1, 0.3, 0.1] }}
-                transition={{ duration: 3.5 + i * 0.7, repeat: Infinity, delay: i * 0.9, ease: 'easeInOut' }}
-              />
-            ))}
-          </div>
-        )}
+        {/* ─── Stable, Non-Jumping Inner Layout Container ─── */}
+        <div className="relative z-10 h-full flex flex-col justify-start pt-20 sm:pt-24 lg:pt-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Subtle horizontal lines */}
-        <div className="absolute top-16 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(16,185,129,0.1), transparent)' }} />
-        <div className="absolute bottom-16 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(16,185,129,0.1), transparent)' }} />
-
-        <div className="relative z-10 h-full flex flex-col justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          {/* ═══ HEADER ═══ */}
-          <div className="text-center mb-10 lg:mb-12">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-5">
+          {/* ═══ SECTION HEADER (Fixed Position, Never Jumps) ═══ */}
+          <div className="text-center mb-8 lg:mb-12 shrink-0">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-4">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -220,16 +208,16 @@ export default function Approach() {
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.1]">
               My Approach To{' '}
-              <span className="animated-gradient-text">Google Ads</span>
+              <span className="animated-growth-gradient">Google Ads</span>
             </h2>
           </div>
 
           {/* ═══ MAIN: Left Timeline + Right Card ═══ */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center flex-1 max-h-[500px]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start flex-1">
 
-            {/* ─── LEFT: Vertical step indicator ─── */}
+            {/* ─── LEFT: Stable Vertical step indicator ─── */}
             <div className="lg:col-span-4 hidden lg:block">
-              <div className="relative space-y-0">
+              <div className="relative space-y-1">
                 {approachSteps.map((step, idx) => {
                   const visual = stepVisuals[idx];
                   const StepIcon = visual.icon;
@@ -241,40 +229,37 @@ export default function Approach() {
                       {/* Vertical connecting line */}
                       {idx < totalSteps - 1 && (
                         <div
-                          className="absolute left-6 top-12 w-0.5 h-10 rounded-full transition-all duration-500"
+                          className="absolute left-5 top-11 w-0.5 h-8 rounded-full transition-colors duration-300"
                           style={{
                             background: isPast
-                              ? `linear-gradient(to bottom, ${visual.glow.replace('0.15', '0.6')}, ${stepVisuals[idx + 1]?.glow.replace('0.15', '0.6') || visual.glow})`
-                              : 'rgba(0,0,0,0.06)',
+                              ? 'linear-gradient(to bottom, #10B981, #059669)'
+                              : '#E2E8F0',
                           }}
                         />
                       )}
 
                       {/* Step circle */}
-                      <motion.div
-                        animate={isActive ? { scale: 1.15 } : { scale: 1 }}
-                        transition={{ duration: 0.3 }}
-                        className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all duration-500 ${
+                      <div
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
                           isActive
-                            ? `bg-gradient-to-br ${visual.gradient} shadow-lg ring-4 ${visual.ringColor}`
+                            ? `bg-gradient-to-br ${visual.gradient} shadow-md ring-4 ${visual.ringColor} scale-110`
                             : isPast
-                              ? `bg-gradient-to-br ${visual.gradient} opacity-50`
-                              : 'bg-white border border-slate-200 shadow-soft-sm'
+                              ? `bg-gradient-to-br ${visual.gradient} opacity-60`
+                              : 'bg-white border border-slate-200 shadow-2xs'
                         }`}
-                        style={isActive ? { boxShadow: `0 8px 24px -4px ${visual.glow.replace('0.15', '0.4')}` } : {}}
                       >
-                        <StepIcon className={`w-5 h-5 ${isActive || isPast ? 'text-white' : 'text-slate-400'}`} />
-                      </motion.div>
+                        <StepIcon className={`w-4 h-4 ${isActive || isPast ? 'text-white' : 'text-slate-400'}`} />
+                      </div>
 
                       {/* Step label */}
-                      <div className="pt-1 pb-6">
-                        <p className={`text-[10px] font-bold uppercase tracking-wider transition-colors duration-500 ${
-                          isActive ? visual.lightText : isPast ? 'text-slate-400' : 'text-slate-300'
+                      <div className="pt-0.5 pb-4">
+                        <p className={`text-[10px] font-bold uppercase tracking-wider transition-colors duration-300 ${
+                          isActive ? visual.lightText : isPast ? 'text-slate-500' : 'text-slate-400'
                         }`}>
                           Step {step.step}
                         </p>
-                        <p className={`text-sm font-bold transition-colors duration-500 ${
-                          isActive ? 'text-slate-900' : isPast ? 'text-slate-500' : 'text-slate-300'
+                        <p className={`text-xs sm:text-sm font-bold transition-colors duration-300 ${
+                          isActive ? 'text-slate-900' : isPast ? 'text-slate-600' : 'text-slate-300'
                         }`}>
                           {step.name}
                         </p>
@@ -285,112 +270,100 @@ export default function Approach() {
               </div>
             </div>
 
-            {/* ─── RIGHT: Active step card ─── */}
-            <div className="lg:col-span-8">
-              <AnimatePresence>
+            {/* ─── RIGHT: Stable Active Step Card (Fixed Height, No Jumps) ─── */}
+            <div className="lg:col-span-8 relative min-h-[380px] sm:min-h-[400px]">
+              <AnimatePresence mode="popLayout">
                 <motion.div
                   key={activeStep}
-                  initial={cardInitial}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={cardExit}
-                  transition={cardTransition}
-                  className="relative"
+                  {...cardAnimationProps}
+                  className="w-full relative"
                 >
-                  {/* Card glow behind */}
+                  {/* Card Glow Background */}
                   <div
-                    className="absolute -inset-3 rounded-3xl opacity-40 blur-2xl transition-all duration-700"
+                    className="absolute -inset-2 rounded-3xl opacity-30 blur-xl pointer-events-none transition-all duration-500"
                     style={{ background: `radial-gradient(circle at 30% 50%, ${currentVisual.glow} 0%, transparent 70%)` }}
                   />
 
-                  {/* Card */}
-                  <div
-                    className="relative rounded-3xl bg-white/80 backdrop-blur-xl border border-slate-200/80 overflow-hidden shadow-soft-md"
-                  >
-                    {/* Top gradient accent */}
+                  {/* Card Body */}
+                  <div className="relative rounded-3xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-soft-lg overflow-hidden flex flex-col justify-between min-h-[350px] sm:min-h-[380px]">
+                    {/* Top gradient accent bar */}
                     <div className={`h-1.5 w-full bg-gradient-to-r ${currentVisual.gradient}`} />
 
-                    <div className="p-8 sm:p-10 lg:p-12">
+                    <div className="p-7 sm:p-9 lg:p-10 flex-1 flex flex-col justify-between">
 
                       {/* Step number + name row */}
-                      <div className="flex items-center gap-4 mb-6">
-                        <motion.div
-                          key={`icon-${activeStep}`}
-                          initial={isScrollingDown && !shouldReduceMotion ? { scale: 0.8, rotate: -10 } : { scale: 1, rotate: 0 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          transition={isScrollingDown ? { duration: 0.4, ease: [0.215, 0.61, 0.355, 1] } : { duration: 0.1 }}
-                          className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${currentVisual.gradient} flex items-center justify-center shadow-xl`}
-                          style={{ boxShadow: `0 12px 28px -6px ${currentVisual.glow.replace('0.15', '0.35')}` }}
-                        >
-                          <CurrentIcon className="w-6 h-6 text-white" />
-                        </motion.div>
-                        <div>
-                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                            Step {currentStep.step} of 06
-                          </p>
-                          <p className={`text-sm font-extrabold ${currentVisual.darkText}`}>
-                            {currentStep.name}
-                          </p>
+                      <div>
+                        <div className="flex items-center gap-3.5 mb-5">
+                          <div
+                            className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${currentVisual.gradient} flex items-center justify-center shadow-md text-white`}
+                          >
+                            <CurrentIcon className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <p className="text-[10.5px] font-bold text-slate-400 uppercase tracking-widest">
+                              Step {currentStep.step} of 06
+                            </p>
+                            <p className={`text-sm font-extrabold ${currentVisual.darkText}`}>
+                              {currentStep.name}
+                            </p>
+                          </div>
                         </div>
+
+                        {/* Title */}
+                        <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug mb-3">
+                          {currentStep.title}
+                        </h3>
+
+                        {/* Description */}
+                        <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl">
+                          {currentStep.desc}
+                        </p>
                       </div>
 
-                      {/* Title */}
-                      <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-5">
-                        {currentStep.title}
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-xl mb-8">
-                        {currentStep.desc}
-                      </p>
-
-                      {/* Progress bar */}
-                      <div className="flex items-center gap-4">
+                      {/* Progress Bar & Counter at Bottom */}
+                      <div className="pt-6 mt-4 border-t border-slate-100 flex items-center gap-4">
                         <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <motion.div
-                            className={`h-full rounded-full bg-gradient-to-r ${currentVisual.gradient}`}
-                            initial={{ width: '0%' }}
-                            animate={{ width: `${((activeStep + 1) / totalSteps) * 100}%` }}
-                            transition={{ duration: 0.5, ease: 'easeOut' }}
+                          <div
+                            className={`h-full rounded-full bg-gradient-to-r ${currentVisual.gradient} transition-all duration-300`}
+                            style={{ width: `${((activeStep + 1) / totalSteps) * 100}%` }}
                           />
                         </div>
-                        <span className="text-xs font-bold text-slate-400 tabular-nums">
-                          {activeStep + 1}/{totalSteps}
+                        <span className="text-xs font-extrabold text-slate-400 tabular-nums">
+                          {activeStep + 1} / {totalSteps}
                         </span>
                       </div>
+
                     </div>
                   </div>
                 </motion.div>
               </AnimatePresence>
 
-              {/* Mobile step dots */}
-              <div className="flex lg:hidden items-center justify-center gap-2 mt-6">
+              {/* Mobile Step Dots */}
+              <div className="flex lg:hidden items-center justify-center gap-2 mt-5">
                 {approachSteps.map((_, idx) => (
                   <div
                     key={idx}
-                    className={`h-1.5 rounded-full transition-all duration-500 ${
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
                       idx === activeStep
                         ? `w-8 bg-gradient-to-r ${stepVisuals[idx].gradient}`
                         : idx < activeStep
-                          ? 'w-3 bg-slate-400/40'
+                          ? 'w-3 bg-slate-400/50'
                           : 'w-3 bg-slate-200'
                     }`}
                   />
                 ))}
               </div>
             </div>
+
           </div>
 
-          {/* ─── Scroll hint ─── */}
-          <motion.div
-            animate={shouldReduceMotion ? {} : { y: [0, 6, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1"
-          >
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-              {activeStep < totalSteps - 1 ? 'Scroll to explore' : 'Continue scrolling'}
-            </span>
-            <ArrowDown className="w-4 h-4 text-slate-400" />
-          </motion.div>
+          {/* ─── Scroll Hint (Clean Footer inside sticky) ─── */}
+          <div className="pb-6 pt-4 text-center shrink-0">
+            <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+              <span>{activeStep < totalSteps - 1 ? 'Scroll down for next step' : 'Continue scrolling for next section'}</span>
+              <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
+            </div>
+          </div>
 
         </div>
       </div>
