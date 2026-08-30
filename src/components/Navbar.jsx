@@ -59,16 +59,16 @@ export default function Navbar({ onBookCall }) {
       <div
         className={`mx-auto pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isScrolled
-            ? 'max-w-[940px] rounded-full bg-white/45 backdrop-blur-xl border border-white/60 shadow-lg shadow-emerald-950/5 py-2 px-5 sm:px-7'
-            : 'w-full max-w-full rounded-none bg-white/70 backdrop-blur-md border-b border-slate-200/50 shadow-none py-3.5 px-6 sm:px-10 lg:px-14'
+            ? 'w-[94%] max-w-[1240px] rounded-full bg-white/50 backdrop-blur-2xl border border-white/60 shadow-lg shadow-emerald-950/5 py-2.5 px-5 sm:px-8'
+            : 'w-full max-w-full rounded-none bg-white/75 backdrop-blur-md border-b border-slate-200/50 shadow-none py-3.5 px-6 sm:px-10 lg:px-14'
         }`}
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
 
           {/* ── Left: Clean Brand Logo ── */}
           <a
             href="#home"
-            className="flex items-center gap-2.5 group text-left cursor-pointer"
+            className="flex items-center gap-2.5 group text-left cursor-pointer shrink-0 whitespace-nowrap"
           >
             {/* Google Ads 3D Icon */}
             <div className="w-8 h-8 rounded-xl bg-white shadow-xs border border-slate-200/70 flex items-center justify-center p-1.5 shrink-0 group-hover:scale-105 transition-transform">
@@ -79,9 +79,9 @@ export default function Navbar({ onBookCall }) {
               </svg>
             </div>
 
-            <div>
+            <div className="whitespace-nowrap">
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight leading-none group-hover:text-emerald-700 transition-colors">
+                <span className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight leading-none group-hover:text-emerald-700 transition-colors whitespace-nowrap">
                   {personalInfo.name}
                 </span>
                 <span className="relative flex h-2 w-2">
@@ -89,27 +89,27 @@ export default function Navbar({ onBookCall }) {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
               </div>
-              <span className="text-[10px] font-semibold text-slate-500 tracking-wide block mt-0.5">
+              <span className="text-[10px] font-semibold text-slate-500 tracking-wide block mt-0.5 whitespace-nowrap">
                 Google Ads Expert
               </span>
             </div>
           </a>
 
-          {/* ── Center: Clean, Airy Desktop Navigation Links (No Clumsy Gray Boxes) ── */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-7">
+          {/* ── Center: Clean, Airy Desktop Navigation Links (Never Wrap) ── */}
+          <nav className="hidden lg:flex items-center gap-3.5 xl:gap-5.5 shrink-0 whitespace-nowrap">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.substring(1);
               return (
                 <a
                   key={link.name}
                   href={link.href}
-                  className={`relative py-1 text-xs xl:text-[13px] font-semibold transition-colors duration-200 ${
+                  className={`relative py-1 text-xs xl:text-[13px] font-semibold transition-colors duration-200 whitespace-nowrap ${
                     isActive
                       ? 'text-emerald-700 font-bold'
                       : 'text-slate-600 hover:text-emerald-600'
                   }`}
                 >
-                  <span>{link.name}</span>
+                  <span className="whitespace-nowrap">{link.name}</span>
                   {/* Subtle underline indicator on active link */}
                   {isActive && (
                     <motion.span
@@ -124,14 +124,14 @@ export default function Navbar({ onBookCall }) {
           </nav>
 
           {/* ── Right: Sleek Action CTA Button ── */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3 shrink-0 whitespace-nowrap">
             <motion.button
               onClick={onBookCall}
               whileHover={!shouldReduceMotion ? { scale: 1.03, boxShadow: '0 10px 22px -4px rgba(16, 185, 129, 0.35)' } : {}}
               whileTap={!shouldReduceMotion ? { scale: 0.97 } : {}}
-              className="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold shadow-sm shadow-emerald-500/20 transition-all flex items-center gap-2 cursor-pointer button-shine relative overflow-hidden"
+              className="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold shadow-sm shadow-emerald-500/20 transition-all flex items-center gap-2 cursor-pointer button-shine relative overflow-hidden shrink-0 whitespace-nowrap"
             >
-              <span>Get Free Audit</span>
+              <span className="whitespace-nowrap">Get Free Audit</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </motion.button>
           </div>
