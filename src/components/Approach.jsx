@@ -104,62 +104,76 @@ export default function Approach() {
   const shouldReduceMotion = useReducedMotion();
   const sectionRef = useRef(null);
   const [activeStep, setActiveStep] = useState(0);
-  const isTransitioningRef = useRef(false);
+  const [isScrollingDown, setIsScrollingDown] = useState(true);
+  const lastScrollYRef = useRef(0);
+  const isAutoScrollingUpRef = useRef(false);
   const totalSteps = approachSteps.length;
 
-  /* ─── 1 Scroll = 1 Card Downward & Zero Trap Upward ─── */
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
+    let ticking = false;
 
-    const handleWheel = (e) => {
-      // Ignore tiny unintentional wheel movements
-      if (Math.abs(e.deltaY) < 18) return;
-
-      const rect = el.getBoundingClientRect();
-      // Only intercept when the section has docked into view
-      const isDocked = rect.top <= 40 && rect.top >= -80;
-
-      if (!isDocked) return;
-
-      // ─── Scrolling DOWN: Advance exactly 1 card per gesture ───
-      if (e.deltaY > 0) {
-        if (activeStep < totalSteps - 1) {
-          e.preventDefault();
-          if (!isTransitioningRef.current) {
-            isTransitioningRef.current = true;
-            setActiveStep((prev) => Math.min(totalSteps - 1, prev + 1));
-            setTimeout(() => {
-              isTransitioningRef.current = false;
-            }, 450); // 450ms cooldown prevents skipping 2 cards
-          }
-        }
-        // If activeStep === totalSteps - 1 (Step 6), do NOT preventDefault!
-        // The page will naturally continue down to WhyChooseMe!
-      }
-
-      // ─── Scrolling UP: NEVER intercept! ───
-      // When user scrolls from bottom of the web towards top,
-      // the browser smoothly scrolls straight up with zero resistance and zero delay!
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, [activeStep, totalSteps]);
-
-  // Reset to Step 1 when user scrolls above the section
-  useEffect(() => {
     const handleScroll = () => {
-      const el = sectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      if (rect.top > 180) {
-        setActiveStep(0);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentY = window.scrollY;
+          const isDown = currentY >= lastScrollYRef.current;
+          lastScrollYRef.current = currentY;
+          setIsScrollingDown(isDown);
+
+          const el = sectionRef.current;
+          if (!el) {
+            ticking = false;
+            return;
+          }
+
+          const rect = el.getBoundingClientRect();
+          const totalScrollDistance = el.offsetHeight - window.innerHeight;
+
+          if (totalScrollDistance <= 0) {
+            ticking = false;
+            return;
+          }
+
+          // How far user has scrolled into this section
+          const scrolledIntoSection = -rect.top;
+          const progress = Math.max(0, Math.min(1, scrolledIntoSection / totalScrollDistance));
+
+          // ─── UPWARD SCROLL RELEASE ───
+          // If user is scrolling UP from below (e.g. from WhyChooseMe towards top),
+          // smoothly release directly to the top of Approach so they are NEVER trapped!
+          if (!isDown) {
+            if (rect.top < -80 && rect.bottom > window.innerHeight && !isAutoScrollingUpRef.current) {
+              isAutoScrollingUpRef.current = true;
+              window.scrollTo({
+                top: el.offsetTop,
+                behavior: 'smooth'
+              });
+              setActiveStep(0);
+              setTimeout(() => {
+                isAutoScrollingUpRef.current = false;
+              }, 400);
+            } else if (progress <= 0.05) {
+              setActiveStep(0);
+            }
+            ticking = false;
+            return;
+          }
+
+          // ─── DOWNWARD SCROLL: Step through ALL 6 CARDS ───
+          // Progress 0.0 to 0.85 maps across all 6 steps evenly
+          const normalized = Math.max(0, Math.min(1, progress / 0.85));
+          const calculatedStep = Math.min(totalSteps - 1, Math.floor(normalized * totalSteps));
+          setActiveStep(calculatedStep);
+
+          ticking = false;
+        });
+        ticking = true;
       }
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [totalSteps]);
 
   const currentStep = approachSteps[activeStep];
   const currentVisual = stepVisuals[activeStep];
@@ -170,7 +184,7 @@ export default function Approach() {
       ref={sectionRef}
       id="approach"
       className="relative"
-      style={{ height: '140vh' }}
+      style={{ height: '360vh' }}
     >
       {/* ─── Sticky Container ─── */}
       <div
@@ -283,7 +297,7 @@ export default function Approach() {
               </div>
             </div>
 
-            {/* ─── RIGHT: Permanent Rock-Solid Card Shell ─── */}
+            {/* ─── RIGHT: Permanent Rock-Solid Card Shell (NO JUMP, NO GLITCH) ─── */}
             <div className="lg:col-span-8 relative min-h-[380px] sm:min-h-[400px]">
               {/* Card Glow Behind */}
               <div
@@ -291,7 +305,7 @@ export default function Approach() {
                 style={{ background: `radial-gradient(circle at 30% 50%, ${currentVisual.glow} 0%, transparent 70%)` }}
               />
 
-              {/* Static Card Shell - NEVER unmounts, zero layout thrashing */}
+              {/* Static Card Shell - NEVER unmounts */}
               <div className="relative rounded-3xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-soft-lg overflow-hidden flex flex-col justify-between min-h-[350px] sm:min-h-[380px]">
                 {/* Top gradient accent bar */}
                 <div className={`h-1.5 w-full bg-gradient-to-r ${currentVisual.gradient} transition-all duration-500`} />
@@ -333,7 +347,7 @@ export default function Approach() {
                     </p>
                   </motion.div>
 
-                  {/* Progress Bar & Interactive Next/Prev Buttons */}
+                  {/* Progress Bar & Interactive Step Buttons */}
                   <div className="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between gap-4">
                     <div className="flex-1 flex items-center gap-4">
                       <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -352,7 +366,7 @@ export default function Approach() {
                       <button
                         onClick={() => setActiveStep(prev => Math.max(0, prev - 1))}
                         disabled={activeStep === 0}
-                        className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
                         aria-label="Previous step"
                       >
                         <ChevronLeft className="w-4 h-4" />
@@ -360,7 +374,7 @@ export default function Approach() {
                       <button
                         onClick={() => setActiveStep(prev => Math.min(totalSteps - 1, prev + 1))}
                         disabled={activeStep === totalSteps - 1}
-                        className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
                         aria-label="Next step"
                       >
                         <ChevronRight className="w-4 h-4" />
