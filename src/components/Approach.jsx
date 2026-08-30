@@ -124,9 +124,20 @@ export default function Approach() {
       lastProgressRef.current = v;
       setIsScrollingDown(isDown);
 
-      // Steps 0-5 map between 0.0 and 0.84.
-      // Above 0.84, it stays locked on the final step (Step 6)
-      // so continuing to scroll smoothly releases down into the next section!
+      // Reset to Step 1 (index 0) when user scrolls back to the very top of Approach
+      if (v <= 0.04) {
+        prevStepRef.current = 0;
+        setActiveStep(0);
+        return;
+      }
+
+      // DO NOT scroll cards when moving UP from bottom of the web towards top!
+      // Cards only scroll when the user is scrolling DOWN!
+      if (!isDown) {
+        return;
+      }
+
+      // Steps 0-5 progress ONLY when user is scrolling DOWN
       const progressNormalized = Math.max(0, Math.min(1, v / 0.84));
       const calculatedStep = Math.min(totalSteps - 1, Math.floor(progressNormalized * totalSteps));
 
@@ -135,9 +146,9 @@ export default function Approach() {
         const current = prevStepRef.current;
         let nextStep = calculatedStep;
 
-        // Prevent skipping: enforce exactly 1 step advance per scroll gesture
-        if (Math.abs(calculatedStep - current) > 1 && (now - lastStepTime) < 450) {
-          nextStep = calculatedStep > current ? current + 1 : current - 1;
+        // Prevent skipping: enforce exactly 1 card advance per scroll gesture
+        if (Math.abs(calculatedStep - current) > 1 && (now - lastStepTime) < 400) {
+          nextStep = current + 1;
         }
 
         lastStepTime = now;
@@ -173,7 +184,7 @@ export default function Approach() {
       ref={sectionRef}
       id="approach"
       className="relative"
-      style={{ height: '540vh' }}
+      style={{ height: '360vh' }}
     >
       {/* ─── Sticky Container (Fixed position while in viewport) ─── */}
       <div
