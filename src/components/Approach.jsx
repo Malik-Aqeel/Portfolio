@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { motion, useReducedMotion, AnimatePresence, useScroll } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { approachSteps } from '../data/portfolioData';
 import {
   Search, Database, Layers, Rocket, Sliders, TrendingUp,
-  ArrowDown, CheckCircle2, ArrowRight
+  ArrowDown
 } from 'lucide-react';
 
 /* ─── Step visual configs (light theme matching website) ─── */
@@ -105,88 +105,76 @@ export default function Approach() {
   const sectionRef = useRef(null);
   const [activeStep, setActiveStep] = useState(0);
   const [isScrollingDown, setIsScrollingDown] = useState(true);
-  const lastProgressRef = useRef(0);
-  const prevStepRef = useRef(0);
+  const lastScrollYRef = useRef(0);
   const totalSteps = approachSteps.length;
 
-  /* ─── Scroll-linked step progression ─── */
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  });
-
   useEffect(() => {
-    let lastStepTime = 0;
+    let ticking = false;
 
-    const unsubscribe = scrollYProgress.on('change', (v) => {
-      // Robust directional tracking
-      const isDown = v >= lastProgressRef.current;
-      lastProgressRef.current = v;
-      setIsScrollingDown(isDown);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentY = window.scrollY;
+          const isDown = currentY >= lastScrollYRef.current;
+          lastScrollYRef.current = currentY;
+          setIsScrollingDown(isDown);
 
-      // Reset to Step 1 (index 0) when user scrolls back to the very top of Approach
-      if (v <= 0.04) {
-        prevStepRef.current = 0;
-        setActiveStep(0);
-        return;
+          const el = sectionRef.current;
+          if (!el) {
+            ticking = false;
+            return;
+          }
+
+          const rect = el.getBoundingClientRect();
+          const totalScrollDistance = el.offsetHeight - window.innerHeight;
+
+          if (totalScrollDistance <= 0) {
+            ticking = false;
+            return;
+          }
+
+          // How far user has scrolled into this section
+          const scrolledIntoSection = -rect.top;
+          const progress = Math.max(0, Math.min(1, scrolledIntoSection / totalScrollDistance));
+
+          // When user scrolls back up to the top of Approach, reset to Step 1
+          if (progress <= 0.02) {
+            setActiveStep(0);
+            ticking = false;
+            return;
+          }
+
+          // ONLY step cards when moving DOWN from top of the page towards bottom!
+          // When moving UP from bottom of the web towards top, cards DO NOT scroll!
+          if (isDown) {
+            // Steps 0-5 comfortably distributed between 0.02 and 0.85
+            const normalized = Math.max(0, Math.min(1, (progress - 0.02) / 0.83));
+            const calculatedStep = Math.min(totalSteps - 1, Math.floor(normalized * totalSteps));
+            setActiveStep(calculatedStep);
+          }
+
+          ticking = false;
+        });
+        ticking = true;
       }
+    };
 
-      // DO NOT scroll cards when moving UP from bottom of the web towards top!
-      // Cards only scroll when the user is scrolling DOWN!
-      if (!isDown) {
-        return;
-      }
-
-      // Steps 0-5 progress ONLY when user is scrolling DOWN
-      const progressNormalized = Math.max(0, Math.min(1, v / 0.84));
-      const calculatedStep = Math.min(totalSteps - 1, Math.floor(progressNormalized * totalSteps));
-
-      if (calculatedStep !== prevStepRef.current) {
-        const now = Date.now();
-        const current = prevStepRef.current;
-        let nextStep = calculatedStep;
-
-        // Prevent skipping: enforce exactly 1 card advance per scroll gesture
-        if (Math.abs(calculatedStep - current) > 1 && (now - lastStepTime) < 400) {
-          nextStep = current + 1;
-        }
-
-        lastStepTime = now;
-        prevStepRef.current = nextStep;
-        setActiveStep(nextStep);
-      }
-    });
-    return unsubscribe;
-  }, [scrollYProgress, totalSteps]);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [totalSteps]);
 
   const currentStep = approachSteps[activeStep];
   const currentVisual = stepVisuals[activeStep];
   const CurrentIcon = currentVisual.icon;
-
-  // Animation variants: ONLY animate when scrolling downward!
-  // When scrolling upward, zero animation (instant switch, no lag/glitch).
-  const cardAnimationProps = isScrollingDown && !shouldReduceMotion
-    ? {
-        initial: { opacity: 0, y: 18, scale: 0.985 },
-        animate: { opacity: 1, y: 0, scale: 1 },
-        exit: { opacity: 0, y: -14, scale: 0.985 },
-        transition: { duration: 0.32, ease: [0.215, 0.61, 0.355, 1] }
-      }
-    : {
-        initial: false,
-        animate: { opacity: 1, y: 0, scale: 1 },
-        exit: { opacity: 1, y: 0, scale: 1 },
-        transition: { duration: 0 }
-      };
 
   return (
     <section
       ref={sectionRef}
       id="approach"
       className="relative"
-      style={{ height: '360vh' }}
+      style={{ height: '480vh' }}
     >
-      {/* ─── Sticky Container (Fixed position while in viewport) ─── */}
+      {/* ─── Sticky Container (Rock-Solid & Fixed in Viewport) ─── */}
       <div
         className="sticky top-0 h-screen overflow-hidden"
         style={{
@@ -214,10 +202,10 @@ export default function Approach() {
           }}
         />
 
-        {/* ─── Stable, Non-Jumping Inner Layout Container ─── */}
+        {/* ─── Stable Non-Jumping Layout ─── */}
         <div className="relative z-10 h-full flex flex-col justify-start pt-20 sm:pt-24 lg:pt-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* ═══ SECTION HEADER (Fixed Position, Never Jumps) ═══ */}
+          {/* ═══ SECTION HEADER ═══ */}
           <div className="text-center mb-8 lg:mb-12 shrink-0">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-4">
               <span className="relative flex h-2 w-2">
@@ -238,7 +226,7 @@ export default function Approach() {
           {/* ═══ MAIN: Left Timeline + Right Card ═══ */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start flex-1">
 
-            {/* ─── LEFT: Stable Vertical step indicator ─── */}
+            {/* ─── LEFT: Clickable Vertical Step Indicator ─── */}
             <div className="lg:col-span-4 hidden lg:block">
               <div className="relative space-y-1">
                 {approachSteps.map((step, idx) => {
@@ -248,7 +236,11 @@ export default function Approach() {
                   const isPast = idx < activeStep;
 
                   return (
-                    <div key={idx} className="relative flex items-start gap-4">
+                    <div
+                      key={idx}
+                      onClick={() => setActiveStep(idx)}
+                      className="relative flex items-start gap-4 cursor-pointer group"
+                    >
                       {/* Vertical connecting line */}
                       {idx < totalSteps - 1 && (
                         <div
@@ -263,7 +255,7 @@ export default function Approach() {
 
                       {/* Step circle */}
                       <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105 ${
                           isActive
                             ? `bg-gradient-to-br ${visual.gradient} shadow-md ring-4 ${visual.ringColor} scale-110`
                             : isPast
@@ -293,79 +285,78 @@ export default function Approach() {
               </div>
             </div>
 
-            {/* ─── RIGHT: Stable Active Step Card (Fixed Height, No Jumps) ─── */}
+            {/* ─── RIGHT: Permanent Rock-Solid Card (NO UNMOUNTING, ZERO GLITCH) ─── */}
             <div className="lg:col-span-8 relative min-h-[380px] sm:min-h-[400px]">
-              <AnimatePresence mode="popLayout">
-                <motion.div
-                  key={activeStep}
-                  {...cardAnimationProps}
-                  className="w-full relative"
-                >
-                  {/* Card Glow Background */}
-                  <div
-                    className="absolute -inset-2 rounded-3xl opacity-30 blur-xl pointer-events-none transition-all duration-500"
-                    style={{ background: `radial-gradient(circle at 30% 50%, ${currentVisual.glow} 0%, transparent 70%)` }}
-                  />
+              {/* Card Glow Behind */}
+              <div
+                className="absolute -inset-2 rounded-3xl opacity-30 blur-xl pointer-events-none transition-all duration-500"
+                style={{ background: `radial-gradient(circle at 30% 50%, ${currentVisual.glow} 0%, transparent 70%)` }}
+              />
 
-                  {/* Card Body */}
-                  <div className="relative rounded-3xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-soft-lg overflow-hidden flex flex-col justify-between min-h-[350px] sm:min-h-[380px]">
-                    {/* Top gradient accent bar */}
-                    <div className={`h-1.5 w-full bg-gradient-to-r ${currentVisual.gradient}`} />
+              {/* Static Card Shell - NEVER unmounts, zero layout thrashing */}
+              <div className="relative rounded-3xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-soft-lg overflow-hidden flex flex-col justify-between min-h-[350px] sm:min-h-[380px]">
+                {/* Top gradient accent bar */}
+                <div className={`h-1.5 w-full bg-gradient-to-r ${currentVisual.gradient} transition-all duration-500`} />
 
-                    <div className="p-7 sm:p-9 lg:p-10 flex-1 flex flex-col justify-between">
+                <div className="p-7 sm:p-9 lg:p-10 flex-1 flex flex-col justify-between">
 
-                      {/* Step number + name row */}
+                  {/* Animated Inner Content (Gentle fade, no container shifts) */}
+                  <motion.div
+                    key={activeStep}
+                    initial={isScrollingDown && !shouldReduceMotion ? { opacity: 0, y: 12 } : false}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                  >
+                    {/* Step number + icon + name */}
+                    <div className="flex items-center gap-3.5 mb-5">
+                      <div
+                        className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${currentVisual.gradient} flex items-center justify-center shadow-md text-white transition-all duration-500`}
+                      >
+                        <CurrentIcon className="w-5 h-5" />
+                      </div>
                       <div>
-                        <div className="flex items-center gap-3.5 mb-5">
-                          <div
-                            className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${currentVisual.gradient} flex items-center justify-center shadow-md text-white`}
-                          >
-                            <CurrentIcon className="w-5 h-5" />
-                          </div>
-                          <div>
-                            <p className="text-[10.5px] font-bold text-slate-400 uppercase tracking-widest">
-                              Step {currentStep.step} of 06
-                            </p>
-                            <p className={`text-sm font-extrabold ${currentVisual.darkText}`}>
-                              {currentStep.name}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Title */}
-                        <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug mb-3">
-                          {currentStep.title}
-                        </h3>
-
-                        {/* Description */}
-                        <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl">
-                          {currentStep.desc}
+                        <p className="text-[10.5px] font-bold text-slate-400 uppercase tracking-widest">
+                          Step {currentStep.step} of 06
+                        </p>
+                        <p className={`text-sm font-extrabold ${currentVisual.darkText}`}>
+                          {currentStep.name}
                         </p>
                       </div>
-
-                      {/* Progress Bar & Counter at Bottom */}
-                      <div className="pt-6 mt-4 border-t border-slate-100 flex items-center gap-4">
-                        <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <div
-                            className={`h-full rounded-full bg-gradient-to-r ${currentVisual.gradient} transition-all duration-300`}
-                            style={{ width: `${((activeStep + 1) / totalSteps) * 100}%` }}
-                          />
-                        </div>
-                        <span className="text-xs font-extrabold text-slate-400 tabular-nums">
-                          {activeStep + 1} / {totalSteps}
-                        </span>
-                      </div>
-
                     </div>
+
+                    {/* Title */}
+                    <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug mb-3">
+                      {currentStep.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl">
+                      {currentStep.desc}
+                    </p>
+                  </motion.div>
+
+                  {/* Progress Bar & Counter at Bottom */}
+                  <div className="pt-6 mt-4 border-t border-slate-100 flex items-center gap-4">
+                    <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full bg-gradient-to-r ${currentVisual.gradient} transition-all duration-300`}
+                        style={{ width: `${((activeStep + 1) / totalSteps) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs font-extrabold text-slate-400 tabular-nums">
+                      {activeStep + 1} / {totalSteps}
+                    </span>
                   </div>
-                </motion.div>
-              </AnimatePresence>
+
+                </div>
+              </div>
 
               {/* Mobile Step Dots */}
               <div className="flex lg:hidden items-center justify-center gap-2 mt-5">
                 {approachSteps.map((_, idx) => (
-                  <div
+                  <button
                     key={idx}
+                    onClick={() => setActiveStep(idx)}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       idx === activeStep
                         ? `w-8 bg-gradient-to-r ${stepVisuals[idx].gradient}`
@@ -380,7 +371,7 @@ export default function Approach() {
 
           </div>
 
-          {/* ─── Scroll Hint (Clean Footer inside sticky) ─── */}
+          {/* ─── Scroll Hint ─── */}
           <div className="pb-6 pt-4 text-center shrink-0">
             <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
               <span>{activeStep < totalSteps - 1 ? 'Scroll down for next step' : 'Continue scrolling for next section'}</span>
