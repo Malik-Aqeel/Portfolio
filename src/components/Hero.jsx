@@ -13,7 +13,6 @@ const dateRanges = [
   {
     id: '7D',
     label: 'Last 7 Days',
-    dateRange: 'May 24 – May 31, 2024',
     badge: '+18.4% ROAS',
     clicks: '12.6K',
     clicksGrowth: '↑ 28.5%',
@@ -29,7 +28,7 @@ const dateRanges = [
     convArea: '0,85 20,80 45,86 70,72 95,78 120,65 150,68 180,52 210,56 240,42 270,45 295,30 320,38 320,100 0,100',
     peakX: 320,
     peakY: 8,
-    dates: ['May 24', 'May 26', 'May 28', 'May 30', 'May 31'],
+    dates: ['Day 1', 'Day 2', 'Day 4', 'Day 6', 'Day 7'],
     sparkClicks: 'M0,14 Q10,4 20,11 T40,6 T60,2',
     sparkConv: 'M0,15 Q15,6 28,12 T45,7 T60,3',
     sparkCpa: 'M0,5 Q15,14 30,8 T45,13 T60,16',
@@ -39,7 +38,6 @@ const dateRanges = [
   {
     id: '30D',
     label: 'Last 30 Days',
-    dateRange: 'May 1 – May 31, 2024',
     badge: '+21.5% ROAS',
     clicks: '48.2K',
     clicksGrowth: '↑ 34.2%',
@@ -55,7 +53,7 @@ const dateRanges = [
     convArea: '0,90 25,82 55,70 85,76 110,72 140,62 165,55 195,62 220,58 250,46 275,40 300,38 320,32 320,100 0,100',
     peakX: 320,
     peakY: 12,
-    dates: ['May 1', 'May 8', 'May 15', 'May 21', 'May 31'],
+    dates: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Current'],
     sparkClicks: 'M0,16 Q15,8 30,12 T45,5 T60,2',
     sparkConv: 'M0,17 Q15,10 32,8 T48,4 T60,2',
     sparkCpa: 'M0,4 Q15,10 30,12 T48,15 T60,17',
@@ -65,7 +63,6 @@ const dateRanges = [
   {
     id: '90D',
     label: 'Last 90 Days',
-    dateRange: 'Mar 1 – May 31, 2024',
     badge: '+28.7% ROAS',
     clicks: '154K',
     clicksGrowth: '↑ 48.6%',
@@ -81,7 +78,7 @@ const dateRanges = [
     convArea: '0,95 30,85 65,75 95,80 130,65 160,56 195,48 230,42 260,36 290,28 320,24 320,100 0,100',
     peakX: 320,
     peakY: 6,
-    dates: ['March', 'Mid-Mar', 'April', 'Mid-Apr', 'May 31'],
+    dates: ['Month 1', 'Month 2', 'Month 3', 'Current'],
     sparkClicks: 'M0,17 Q15,12 30,9 T45,4 T60,1',
     sparkConv: 'M0,18 Q16,12 32,8 T48,3 T60,1',
     sparkCpa: 'M0,3 Q16,8 32,12 T48,15 T60,18',
@@ -89,9 +86,8 @@ const dateRanges = [
     donut: { search: 62, pmax: 26, shopping: 12 },
   },
   {
-    id: 'YTD',
-    label: 'Year to Date (YTD)',
-    dateRange: 'Jan 1 – May 31, 2024',
+    id: 'Year',
+    label: 'Year',
     badge: '+34.2% ROAS',
     clicks: '272K',
     clicksGrowth: '↑ 61.2%',
@@ -107,7 +103,7 @@ const dateRanges = [
     convArea: '0,96 35,88 70,78 105,68 140,56 175,46 210,40 245,32 280,26 300,20 320,16 320,100 0,100',
     peakX: 320,
     peakY: 4,
-    dates: ['January', 'February', 'March', 'April', 'May 31'],
+    dates: ['Q1', 'Q2', 'Q3', 'Q4', 'Current'],
     sparkClicks: 'M0,18 Q16,14 32,9 T48,4 T60,1',
     sparkConv: 'M0,18 Q16,13 32,7 T48,3 T60,1',
     sparkCpa: 'M0,2 Q16,8 32,13 T48,16 T60,18',
@@ -460,7 +456,7 @@ export default function Hero({ onBookCall }) {
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 hover:border-emerald-300 text-[11px] font-bold text-slate-700 hover:text-emerald-700 transition-all shadow-xs cursor-pointer select-none"
                     >
                       <Calendar className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>{activeData.dateRange}</span>
+                      <span>{activeData.label}</span>
                       <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isDateDropdownOpen ? 'rotate-180 text-emerald-600' : ''}`} />
                     </button>
 
@@ -472,10 +468,10 @@ export default function Hero({ onBookCall }) {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 6, scale: 0.95 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200 shadow-2xl p-1.5 z-50 text-left"
+                          className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200 shadow-2xl p-1.5 z-50 text-left"
                         >
                           <div className="px-3 py-1.5 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            Select Date Range
+                            Select Timeframe
                           </div>
                           <div className="py-1 space-y-0.5">
                             {dateRanges.map((range, idx) => {
@@ -493,10 +489,7 @@ export default function Hero({ onBookCall }) {
                                       : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
                                   }`}
                                 >
-                                  <div>
-                                    <p className="leading-tight">{range.label}</p>
-                                    <p className="text-[10px] text-slate-400 font-medium leading-tight mt-0.5">{range.dateRange}</p>
-                                  </div>
+                                  <span className="leading-tight">{range.label}</span>
                                   <div className="flex items-center gap-1.5">
                                     <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 px-1.5 py-0.5 rounded-md">
                                       {range.badge}
