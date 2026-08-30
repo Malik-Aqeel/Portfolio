@@ -206,7 +206,7 @@ export default function Approach() {
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.1]">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.22] pb-1">
               My Approach To{' '}
               <span className="animated-growth-gradient">Google Ads</span>
             </h2>

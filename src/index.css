@@ -35,20 +35,29 @@ img {
   content-visibility: auto;
 }
 
-/* Custom Fluid Typography & Spacing Helpers */
+/* Custom Fluid Typography & Spacing Helpers with Safe Descender Padding */
 .text-hero {
   font-size: clamp(1.85rem, 3.2vw, 2.75rem);
-  line-height: 1.15;
+  line-height: 1.22;
   letter-spacing: -0.025em;
+  padding-bottom: 0.12em;
 }
 
 .text-section-heading {
   font-size: clamp(2rem, 3.8vw, 3.5rem);
-  line-height: 1.15;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  padding-bottom: 0.12em;
 }
 
 .text-subheading {
   font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.5;
+}
+
+/* Ensure no headings or text gradients get clipped at the bottom (g, y, p, q, j descenders) */
+h1, h2, h3 {
+  line-height: 1.22;
 }
 
 /* Premium ambient mesh gradient backgrounds */
@@ -107,6 +116,7 @@ img {
   background-clip: text;
   animation: gradient-shift 4s linear infinite;
   display: inline-block;
+  padding-bottom: 0.16em;
 }
 
 @keyframes gradient-shift {
@@ -136,6 +146,7 @@ img {
   background-clip: text;
   animation: growth-color-wave 4s ease-in-out infinite alternate;
   display: inline-block;
+  padding-bottom: 0.16em;
   filter: drop-shadow(0 4px 16px rgba(16, 185, 129, 0.22));
 }
 

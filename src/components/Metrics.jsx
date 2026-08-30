@@ -115,7 +115,7 @@ export default function Metrics() {
           </div>
 
           {/* Headline */}
-          <h2 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-white tracking-tight leading-[1.1] mb-5">
+          <h2 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-white tracking-tight leading-[1.22] pb-1 mb-5">
             Performance Is{' '}
             <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-sky-400 bg-clip-text text-transparent">
               Measured In Results.

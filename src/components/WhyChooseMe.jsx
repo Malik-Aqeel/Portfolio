@@ -179,7 +179,7 @@ export default function WhyChooseMe() {
           </div>
 
           {/* Headline */}
-          <h2 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-5">
+          <h2 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-slate-900 tracking-tight leading-[1.22] pb-1 mb-5">
             Why Brands Choose{' '}
             <br className="hidden sm:block" />
             <span className="animated-gradient-text">

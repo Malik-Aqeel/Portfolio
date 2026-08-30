@@ -19,7 +19,7 @@ export default function FinalCTA({ onBookCall }) {
           </div>
 
           {/* Heading */}
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight max-w-3xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.25] pb-1 max-w-3xl mx-auto">
             Ready To Turn Google Ads Into A Growth Engine?
           </h2>
 
