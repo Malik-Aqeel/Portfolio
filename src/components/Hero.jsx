@@ -221,21 +221,32 @@ export default function Hero({ onBookCall }) {
               Better Conversions.
               <br />
               <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 bg-clip-text text-transparent">
+                <span className="animated-growth-gradient font-black">
                   Maximum Growth.
                 </span>
-                {/* Hand-drawn Emerald accent curve */}
+                {/* Hand-drawn Accent curve with vibrant gradient */}
                 <svg
-                  className="absolute -bottom-2.5 left-0 w-full h-3.5 text-emerald-500/85 pointer-events-none"
+                  className="absolute -bottom-2.5 left-0 w-full h-3.5 pointer-events-none overflow-visible"
                   viewBox="0 0 260 12"
                   fill="none"
                   preserveAspectRatio="none"
                 >
-                  <path
+                  <defs>
+                    <linearGradient id="curveWaveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#059669" />
+                      <stop offset="30%" stopColor="#10B981" />
+                      <stop offset="70%" stopColor="#06B6D4" />
+                      <stop offset="100%" stopColor="#2563EB" />
+                    </linearGradient>
+                  </defs>
+                  <motion.path
                     d="M3 9C65 2 195 2 257 8"
-                    stroke="currentColor"
-                    strokeWidth="3.5"
+                    stroke="url(#curveWaveGrad)"
+                    strokeWidth="4"
                     strokeLinecap="round"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1, ease: 'easeOut' }}
                   />
                 </svg>
               </span>

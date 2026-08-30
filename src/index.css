@@ -106,6 +106,36 @@
   }
 }
 
+/* High-Contrast Dynamic Color Wave Animation for 'Maximum Growth.' */
+.animated-growth-gradient {
+  background: linear-gradient(
+    90deg,
+    #059669 0%,
+    #10B981 16%,
+    #06B6D4 33%,
+    #2563EB 50%,
+    #10B981 66%,
+    #0D9488 83%,
+    #059669 100%
+  );
+  background-size: 300% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: growth-color-wave 4s ease-in-out infinite alternate;
+  display: inline-block;
+  filter: drop-shadow(0 4px 16px rgba(16, 185, 129, 0.22));
+}
+
+@keyframes growth-color-wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
 /* Animated SVG Running Dash Line for Live Graph */
 .animated-graph-line {
   stroke-dasharray: 8 4;
