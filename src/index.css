@@ -20,7 +20,19 @@
   body {
     background-color: var(--color-bg-primary);
     color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+}
+
+/* GPU Hardware Acceleration & Smooth Scroll Optimization */
+.logo-marquee-track {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+img {
+  content-visibility: auto;
 }
 
 /* Custom Fluid Typography & Spacing Helpers */

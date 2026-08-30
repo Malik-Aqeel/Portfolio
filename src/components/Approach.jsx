@@ -116,7 +116,7 @@ export default function Approach() {
 
   useEffect(() => {
     const unsubscribe = scrollYProgress.on('change', (v) => {
-      const normalized = Math.max(0, Math.min(1, (v - 0.08) / 0.84));
+      const normalized = Math.max(0, Math.min(1, (v - 0.05) / 0.90));
       const step = Math.min(totalSteps - 1, Math.floor(normalized * totalSteps));
       if (step !== prevStepRef.current) {
         setIsScrollingDown(step > prevStepRef.current);
@@ -133,21 +133,21 @@ export default function Approach() {
 
   /* Animation only when scrolling down */
   const cardInitial = isScrollingDown && !shouldReduceMotion
-    ? { opacity: 0, y: 30, scale: 0.97 }
+    ? { opacity: 0, y: 20, scale: 0.98 }
     : { opacity: 1, y: 0, scale: 1 };
   const cardExit = isScrollingDown && !shouldReduceMotion
-    ? { opacity: 0, y: -20, scale: 0.97 }
+    ? { opacity: 0, y: -15, scale: 0.98 }
     : { opacity: 1, y: 0, scale: 1 };
   const cardTransition = isScrollingDown
-    ? { duration: 0.45, ease: [0.215, 0.61, 0.355, 1] }
-    : { duration: 0.15 };
+    ? { duration: 0.35, ease: [0.215, 0.61, 0.355, 1] }
+    : { duration: 0.1 };
 
   return (
     <section
       ref={sectionRef}
       id="approach"
       className="relative"
-      style={{ height: `${(totalSteps + 1) * 100}vh` }}
+      style={{ height: '320vh' }}
     >
       {/* ─── Sticky container ─── */}
       <div
@@ -287,7 +287,7 @@ export default function Approach() {
 
             {/* ─── RIGHT: Active step card ─── */}
             <div className="lg:col-span-8">
-              <AnimatePresence mode="wait">
+              <AnimatePresence>
                 <motion.div
                   key={activeStep}
                   initial={cardInitial}

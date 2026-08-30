@@ -19,26 +19,29 @@ export default function Navbar({ onBookCall }) {
   ];
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
 
-      const sections = navLinks.map(link => link.href.substring(1));
-      const scrollPos = window.scrollY + 180;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && el.offsetTop <= scrollPos) {
-          setActiveSection(sections[i]);
-          break;
-        }
+          const scrollPos = window.scrollY + 180;
+          for (let i = navLinks.length - 1; i >= 0; i--) {
+            const id = navLinks[i].href.substring(1);
+            const el = document.getElementById(id);
+            if (el && el.offsetTop <= scrollPos) {
+              setActiveSection(id);
+              break;
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
