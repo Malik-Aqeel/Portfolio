@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Menu, X, ArrowUpRight, Sparkles, TrendingUp, CheckCircle2, Zap } from 'lucide-react';
+import { Menu, X, ArrowRight, Sparkles } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 
 export default function Navbar({ onBookCall }) {
@@ -14,8 +14,7 @@ export default function Navbar({ onBookCall }) {
     { name: 'About', href: '#about' },
     { name: 'Services', href: '#services' },
     { name: 'Case Studies', href: '#case-studies' },
-    { name: 'Approach', href: '#approach' },
-    { name: 'Process', href: '#process' },
+    { name: 'Process', href: '#approach' },
     { name: 'Testimonials', href: '#testimonials' },
     { name: 'FAQ', href: '#faq' },
     { name: 'Contact', href: '#contact' },
@@ -27,7 +26,7 @@ export default function Navbar({ onBookCall }) {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 30);
+          setIsScrolled(window.scrollY > 40);
 
           const scrollPos = window.scrollY + 180;
           for (let i = navLinks.length - 1; i >= 0; i--) {
@@ -52,31 +51,27 @@ export default function Navbar({ onBookCall }) {
     <header
       className={`fixed inset-x-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none ${
         isScrolled
-          ? 'top-2.5 sm:top-3 px-3 sm:px-6'
+          ? 'top-3 sm:top-4 px-3 sm:px-6'
           : 'top-0 px-0'
       }`}
     >
-      {/* ── Dynamic Morphing Navbar Container ── */}
+      {/* ── Dynamic Navbar Container ── */}
       <div
         className={`mx-auto pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isScrolled
-            ? 'max-w-[980px] rounded-full bg-white/92 backdrop-blur-2xl border border-slate-200/85 shadow-lg shadow-slate-900/5 py-1.5 px-3.5 sm:px-5'
-            : 'w-full max-w-full rounded-none bg-white/85 backdrop-blur-xl border-b border-slate-200/60 shadow-xs py-3 px-4 sm:px-8 lg:px-12'
+            ? 'max-w-[940px] rounded-full bg-white/45 backdrop-blur-xl border border-white/60 shadow-lg shadow-emerald-950/5 py-2 px-5 sm:px-7'
+            : 'w-full max-w-full rounded-none bg-white/70 backdrop-blur-md border-b border-slate-200/50 shadow-none py-3.5 px-6 sm:px-10 lg:px-14'
         }`}
       >
         <div className="flex items-center justify-between">
 
-          {/* ── Brand Logo ── */}
+          {/* ── Left: Clean Brand Logo ── */}
           <a
             href="#home"
-            className="flex items-center gap-2 group text-left cursor-pointer"
+            className="flex items-center gap-2.5 group text-left cursor-pointer"
           >
-            {/* Google Ads Iconic Icon Container */}
-            <div
-              className={`transition-all duration-300 rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 text-white flex items-center justify-center p-1.5 shadow-sm shrink-0 ${
-                isScrolled ? 'w-7.5 h-7.5' : 'w-9 h-9'
-              }`}
-            >
+            {/* Google Ads 3D Icon */}
+            <div className="w-8 h-8 rounded-xl bg-white shadow-xs border border-slate-200/70 flex items-center justify-center p-1.5 shrink-0 group-hover:scale-105 transition-transform">
               <svg viewBox="0 0 100 100" className="w-full h-full">
                 <rect x="18" y="24" width="22" height="52" rx="11" transform="rotate(-35 29 50)" fill="#4285F4" />
                 <rect x="52" y="32" width="22" height="42" rx="11" transform="rotate(35 63 53)" fill="#34A853" />
@@ -86,83 +81,66 @@ export default function Navbar({ onBookCall }) {
 
             <div>
               <div className="flex items-center gap-1.5">
-                <span className={`font-black text-slate-900 tracking-tight leading-none group-hover:text-emerald-700 transition-colors ${
-                  isScrolled ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'
-                }`}>
+                <span className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight leading-none group-hover:text-emerald-700 transition-colors">
                   {personalInfo.name}
                 </span>
-                <span className="relative flex h-1.5 w-1.5">
+                <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
               </div>
-              <span className={`font-bold text-emerald-700 tracking-wider uppercase block ${
-                isScrolled ? 'text-[8px] mt-0.2' : 'text-[9px] mt-0.5'
-              }`}>
-                Google Ads Specialist
+              <span className="text-[10px] font-semibold text-slate-500 tracking-wide block mt-0.5">
+                Google Ads Expert
               </span>
             </div>
           </a>
 
-          {/* ── Desktop Navigation Link Pills with Smooth Sliding Highlight ── */}
-          <nav className={`hidden lg:flex items-center gap-0.5 rounded-full border border-slate-200/60 shadow-inner backdrop-blur-sm transition-all duration-300 ${
-            isScrolled ? 'bg-slate-100/60 p-0.5' : 'bg-slate-100/80 p-1'
-          }`}>
+          {/* ── Center: Clean, Airy Desktop Navigation Links (No Clumsy Gray Boxes) ── */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-7">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.substring(1);
               return (
                 <a
                   key={link.name}
                   href={link.href}
-                  className={`relative font-bold transition-colors duration-200 rounded-full select-none ${
-                    isScrolled ? 'px-2.5 py-1 text-[11px]' : 'px-3.5 py-1.5 text-xs'
-                  } ${
-                    isActive ? 'text-white' : 'text-slate-600 hover:text-slate-900'
+                  className={`relative py-1 text-xs xl:text-[13px] font-semibold transition-colors duration-200 ${
+                    isActive
+                      ? 'text-emerald-700 font-bold'
+                      : 'text-slate-600 hover:text-emerald-600'
                   }`}
                 >
-                  {/* Sliding active pill background */}
+                  <span>{link.name}</span>
+                  {/* Subtle underline indicator on active link */}
                   {isActive && (
-                    <motion.div
-                      layoutId="activeNavHighlight"
-                      className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-full shadow-xs"
-                      transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    <motion.span
+                      layoutId="navActiveLine"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-600 to-teal-500 rounded-full"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                  <span className="relative z-10">{link.name}</span>
                 </a>
               );
             })}
           </nav>
 
-          {/* ── Desktop Action CTA Buttons ── */}
-          <div className="hidden lg:flex items-center gap-2.5">
-            {/* Live Client Status Pill (only when unscrolled for ultra-clean slim look) */}
-            {!isScrolled && (
-              <div className="hidden xl:flex items-center gap-1.5 text-[10px] font-bold text-slate-600 bg-emerald-50/70 px-2.5 py-1 rounded-full border border-emerald-200/60 shadow-2xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                <span className="text-emerald-800">Q3 Open for Scaling</span>
-              </div>
-            )}
-
+          {/* ── Right: Sleek Action CTA Button ── */}
+          <div className="hidden lg:flex items-center gap-3">
             <motion.button
               onClick={onBookCall}
-              whileHover={!shouldReduceMotion ? { scale: 1.03, boxShadow: '0 8px 20px -4px rgba(16, 185, 129, 0.35)' } : {}}
+              whileHover={!shouldReduceMotion ? { scale: 1.03, boxShadow: '0 10px 22px -4px rgba(16, 185, 129, 0.35)' } : {}}
               whileTap={!shouldReduceMotion ? { scale: 0.97 } : {}}
-              className={`button-shine bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white font-extrabold rounded-full transition-all shadow-sm flex items-center gap-1.5 cursor-pointer relative overflow-hidden group ${
-                isScrolled ? 'px-3.5 py-1.5 text-[11px]' : 'px-4.5 py-2 text-xs'
-              }`}
+              className="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold shadow-sm shadow-emerald-500/20 transition-all flex items-center gap-2 cursor-pointer button-shine relative overflow-hidden"
             >
-              <Sparkles className="w-3 h-3 text-amber-300 animate-pulse" />
               <span>Get Free Audit</span>
-              <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </motion.button>
           </div>
 
-          {/* ── Mobile Hamburger Toggle ── */}
-          <div className="flex lg:hidden items-center gap-2">
+          {/* ── Mobile Menu Hamburger ── */}
+          <div className="flex lg:hidden items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-slate-800 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors cursor-pointer"
+              className="p-2 text-slate-800 hover:text-emerald-700 bg-white/60 hover:bg-white/90 rounded-full transition-colors cursor-pointer border border-slate-200/50"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -171,24 +149,24 @@ export default function Navbar({ onBookCall }) {
 
         </div>
 
-        {/* ── Mobile Drawer Menu ── */}
+        {/* ── Mobile Dropdown Menu (Transparent Glassmorphic) ── */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              initial={{ opacity: 0, y: -8, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              exit={{ opacity: 0, y: -6, scale: 0.98 }}
               transition={{ duration: 0.2 }}
-              className="lg:hidden mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-3xl shadow-2xl p-5 space-y-4 text-left"
+              className="lg:hidden mt-3 bg-white/80 backdrop-blur-2xl border border-white/60 rounded-3xl shadow-xl p-5 space-y-4 text-left"
             >
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <span className="text-xs font-black text-slate-800 uppercase tracking-wider">Navigation Menu</span>
-                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100/80">
+                <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Navigation Menu</span>
+                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
                   ● Ready to Scale
                 </span>
               </div>
 
-              <nav className="grid grid-cols-2 gap-1.5">
+              <nav className="grid grid-cols-2 gap-2">
                 {navLinks.map((link) => {
                   const isActive = activeSection === link.href.substring(1);
                   return (
@@ -196,10 +174,10 @@ export default function Navbar({ onBookCall }) {
                       key={link.name}
                       href={link.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center justify-between ${
+                      className={`px-3 py-2 text-xs font-semibold rounded-xl transition-all flex items-center justify-between ${
                         isActive
-                          ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-extrabold shadow-sm'
-                          : 'text-slate-700 bg-slate-50 hover:bg-slate-100'
+                          ? 'bg-emerald-600 text-white font-bold shadow-xs'
+                          : 'text-slate-700 bg-white/70 hover:bg-white border border-slate-100'
                       }`}
                     >
                       <span>{link.name}</span>
@@ -209,17 +187,17 @@ export default function Navbar({ onBookCall }) {
                 })}
               </nav>
 
-              <div className="pt-2 border-t border-slate-100">
+              <div className="pt-2 border-t border-slate-100/80">
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
                     onBookCall();
                   }}
-                  className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-extrabold rounded-full shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer button-shine"
+                  className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold rounded-full shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer button-shine"
                 >
-                  <Sparkles className="w-4 h-4 text-amber-300" />
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                   <span>Book Free Strategy Call</span>
-                  <ArrowUpRight className="w-4 h-4" />
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </motion.div>
