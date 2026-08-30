@@ -1,16 +1,140 @@
-import React, { useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight, TrendingUp, TrendingDown, Target, Rocket,
   LineChart, Home, Grid, Users, Settings, Calendar,
-  Star, ChevronDown, CheckCircle2, ShieldCheck, Zap,
+  Star, ChevronDown, Check, CheckCircle2, ShieldCheck, Zap,
   Activity, ArrowUpRight
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 
+// Interactive Date Ranges Dataset
+const dateRanges = [
+  {
+    id: '7D',
+    label: 'Last 7 Days',
+    dateRange: 'May 24 – May 31, 2024',
+    badge: '+18.4% ROAS',
+    clicks: '12.6K',
+    clicksGrowth: '↑ 28.5%',
+    conversions: '1.46K',
+    conversionsGrowth: '↑ 32.1%',
+    cpa: '$6.23',
+    cpaGrowth: '↓ 14.3%',
+    convValue: '$45.2K',
+    convValueGrowth: '↑ 35.7%',
+    clicksLine: 'M0,65 Q20,62 45,50 T95,38 T150,32 T210,24 T270,16 T320,8',
+    clicksArea: '0,65 20,62 45,50 70,55 95,38 120,44 150,32 180,36 210,24 240,28 270,16 295,20 320,8 320,100 0,100',
+    convLine: 'M0,85 Q20,80 45,86 T95,78 T150,68 T210,56 T270,45 T320,38',
+    convArea: '0,85 20,80 45,86 70,72 95,78 120,65 150,68 180,52 210,56 240,42 270,45 295,30 320,38 320,100 0,100',
+    peakX: 320,
+    peakY: 8,
+    dates: ['May 24', 'May 26', 'May 28', 'May 30', 'May 31'],
+    sparkClicks: 'M0,14 Q10,4 20,11 T40,6 T60,2',
+    sparkConv: 'M0,15 Q15,6 28,12 T45,7 T60,3',
+    sparkCpa: 'M0,5 Q15,14 30,8 T45,13 T60,16',
+    sparkVal: 'M0,16 Q12,8 25,12 T48,6 T60,1',
+    donut: { search: 55, pmax: 25, shopping: 20 },
+  },
+  {
+    id: '30D',
+    label: 'Last 30 Days',
+    dateRange: 'May 1 – May 31, 2024',
+    badge: '+21.5% ROAS',
+    clicks: '48.2K',
+    clicksGrowth: '↑ 34.2%',
+    conversions: '5.82K',
+    conversionsGrowth: '↑ 39.4%',
+    cpa: '$5.80',
+    cpaGrowth: '↓ 18.2%',
+    convValue: '$184.6K',
+    convValueGrowth: '↑ 42.1%',
+    clicksLine: 'M0,75 Q25,60 55,42 T110,48 T165,30 T220,35 T275,18 T320,12',
+    clicksArea: '0,75 25,60 55,42 85,52 110,48 140,36 165,30 195,38 220,35 250,22 275,18 300,16 320,12 320,100 0,100',
+    convLine: 'M0,90 Q25,82 55,70 T110,72 T165,55 T220,58 T275,40 T320,32',
+    convArea: '0,90 25,82 55,70 85,76 110,72 140,62 165,55 195,62 220,58 250,46 275,40 300,38 320,32 320,100 0,100',
+    peakX: 320,
+    peakY: 12,
+    dates: ['May 1', 'May 8', 'May 15', 'May 21', 'May 31'],
+    sparkClicks: 'M0,16 Q15,8 30,12 T45,5 T60,2',
+    sparkConv: 'M0,17 Q15,10 32,8 T48,4 T60,2',
+    sparkCpa: 'M0,4 Q15,10 30,12 T48,15 T60,17',
+    sparkVal: 'M0,17 Q14,9 28,10 T46,4 T60,1',
+    donut: { search: 58, pmax: 28, shopping: 14 },
+  },
+  {
+    id: '90D',
+    label: 'Last 90 Days',
+    dateRange: 'Mar 1 – May 31, 2024',
+    badge: '+28.7% ROAS',
+    clicks: '154K',
+    clicksGrowth: '↑ 48.6%',
+    conversions: '18.4K',
+    conversionsGrowth: '↑ 52.8%',
+    cpa: '$5.15',
+    cpaGrowth: '↓ 24.5%',
+    convValue: '$592K',
+    convValueGrowth: '↑ 64.2%',
+    clicksLine: 'M0,82 Q30,70 65,55 T130,45 T195,28 T260,18 T320,6',
+    clicksArea: '0,82 30,70 65,55 95,60 130,45 160,35 195,28 230,24 260,18 290,12 320,6 320,100 0,100',
+    convLine: 'M0,95 Q30,85 65,75 T130,65 T195,48 T260,36 T320,24',
+    convArea: '0,95 30,85 65,75 95,80 130,65 160,56 195,48 230,42 260,36 290,28 320,24 320,100 0,100',
+    peakX: 320,
+    peakY: 6,
+    dates: ['March', 'Mid-Mar', 'April', 'Mid-Apr', 'May 31'],
+    sparkClicks: 'M0,17 Q15,12 30,9 T45,4 T60,1',
+    sparkConv: 'M0,18 Q16,12 32,8 T48,3 T60,1',
+    sparkCpa: 'M0,3 Q16,8 32,12 T48,15 T60,18',
+    sparkVal: 'M0,18 Q15,10 30,7 T48,3 T60,1',
+    donut: { search: 62, pmax: 26, shopping: 12 },
+  },
+  {
+    id: 'YTD',
+    label: 'Year to Date (YTD)',
+    dateRange: 'Jan 1 – May 31, 2024',
+    badge: '+34.2% ROAS',
+    clicks: '272K',
+    clicksGrowth: '↑ 61.2%',
+    conversions: '32.6K',
+    conversionsGrowth: '↑ 68.9%',
+    cpa: '$4.80',
+    cpaGrowth: '↓ 29.8%',
+    convValue: '$1.08M',
+    convValueGrowth: '↑ 84.5%',
+    clicksLine: 'M0,88 Q35,74 70,60 T140,38 T210,22 T280,10 T320,4',
+    clicksArea: '0,88 35,74 70,60 105,50 140,38 175,28 210,22 245,15 280,10 300,6 320,4 320,100 0,100',
+    convLine: 'M0,96 Q35,88 70,78 T140,56 T210,40 T280,26 T320,16',
+    convArea: '0,96 35,88 70,78 105,68 140,56 175,46 210,40 245,32 280,26 300,20 320,16 320,100 0,100',
+    peakX: 320,
+    peakY: 4,
+    dates: ['January', 'February', 'March', 'April', 'May 31'],
+    sparkClicks: 'M0,18 Q16,14 32,9 T48,4 T60,1',
+    sparkConv: 'M0,18 Q16,13 32,7 T48,3 T60,1',
+    sparkCpa: 'M0,2 Q16,8 32,13 T48,16 T60,18',
+    sparkVal: 'M0,18 Q15,9 30,6 T48,2 T60,1',
+    donut: { search: 65, pmax: 24, shopping: 11 },
+  }
+];
+
 export default function Hero({ onBookCall }) {
   const shouldReduceMotion = useReducedMotion();
   const [activeTab, setActiveTab] = useState('home');
+  const [selectedRangeIndex, setSelectedRangeIndex] = useState(1); // Default to Last 30 Days
+  const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const activeData = dateRanges[selectedRangeIndex];
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDateDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Floating micro-animations
   const floatSlow = {
@@ -42,17 +166,14 @@ export default function Hero({ onBookCall }) {
     >
       {/* ─── Ambient Glow Meshes (Matching Website Theme) ─── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Primary Emerald Glow behind dashboard */}
         <div
           className="absolute top-10 right-1/4 w-[650px] h-[650px] rounded-full opacity-35 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(20, 184, 166, 0.08) 60%, transparent 80%)' }}
         />
-        {/* Soft Sky Blue / Cyan Glow */}
         <div
           className="absolute bottom-4 right-10 w-[450px] h-[450px] rounded-full opacity-30 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(14, 165, 233, 0.16) 0%, transparent 70%)' }}
         />
-        {/* Ambient Top Left Glow */}
         <div
           className="absolute -top-16 left-12 w-[450px] h-[450px] rounded-full opacity-25 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.14) 0%, transparent 70%)' }}
@@ -165,7 +286,6 @@ export default function Hero({ onBookCall }) {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="grid grid-cols-3 gap-2.5 sm:gap-4 pt-3 border-t border-slate-200/70"
             >
-              {/* Pillar 1 */}
               <div className="flex items-start gap-2.5 group">
                 <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform shadow-xs">
                   <Target className="w-4 h-4" />
@@ -176,7 +296,6 @@ export default function Hero({ onBookCall }) {
                 </div>
               </div>
 
-              {/* Pillar 2 */}
               <div className="flex items-start gap-2.5 group">
                 <div className="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 border border-teal-100 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform shadow-xs">
                   <LineChart className="w-4 h-4" />
@@ -187,7 +306,6 @@ export default function Hero({ onBookCall }) {
                 </div>
               </div>
 
-              {/* Pillar 3 */}
               <div className="flex items-start gap-2.5 group">
                 <div className="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 border border-sky-100 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform shadow-xs">
                   <Rocket className="w-4 h-4" />
@@ -206,7 +324,7 @@ export default function Hero({ onBookCall }) {
           ═════════════════════════════════════════════════════ */}
           <div className="lg:col-span-7 relative flex items-center justify-center">
 
-            {/* ─── Floating 3D Google Ads Logo at Top-Left ─── */}
+            {/* Floating 3D Google Ads Logo at Top-Left */}
             {!shouldReduceMotion && (
               <motion.div
                 variants={floatBadge}
@@ -215,18 +333,15 @@ export default function Hero({ onBookCall }) {
               >
                 <div className="w-14 h-14 sm:w-16 sm:h-16 relative">
                   <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-md">
-                    {/* Blue pill */}
                     <rect x="18" y="24" width="22" height="52" rx="11" transform="rotate(-35 29 50)" fill="#4285F4" />
-                    {/* Green pill */}
                     <rect x="52" y="32" width="22" height="42" rx="11" transform="rotate(35 63 53)" fill="#34A853" />
-                    {/* Yellow circle */}
                     <circle cx="34" cy="68" r="14" fill="#FBBC04" />
                   </svg>
                 </div>
               </motion.div>
             )}
 
-            {/* ─── Floating 3D Target Dartboard at Bottom-Right (Emerald/Teal Theme) ─── */}
+            {/* Floating 3D Target Dartboard at Bottom-Right */}
             {!shouldReduceMotion && (
               <motion.div
                 variants={floatReverse}
@@ -245,13 +360,11 @@ export default function Hero({ onBookCall }) {
                         <stop offset="100%" stopColor="#ECFDF5" />
                       </radialGradient>
                     </defs>
-                    {/* Outer 3D Ring */}
                     <ellipse cx="60" cy="60" rx="52" ry="46" fill="url(#targetGradEmerald1)" opacity="0.95" />
                     <ellipse cx="60" cy="58" rx="46" ry="40" fill="url(#targetGradWhite)" />
                     <ellipse cx="60" cy="58" rx="34" ry="30" fill="url(#targetGradEmerald1)" />
                     <ellipse cx="60" cy="58" rx="22" ry="19" fill="url(#targetGradWhite)" />
                     <ellipse cx="60" cy="58" rx="12" ry="10" fill="#065F46" />
-                    {/* Dart Arrow pointing into center */}
                     <g transform="translate(68, 30) rotate(-35)">
                       <rect x="0" y="0" width="6" height="34" rx="2" fill="#059669" />
                       <polygon points="-4,34 10,34 3,46" fill="#047857" />
@@ -267,12 +380,11 @@ export default function Hero({ onBookCall }) {
               initial={{ opacity: 0, scale: 0.92, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="relative w-full max-w-[660px] rounded-3xl bg-white shadow-2xl shadow-emerald-950/10 border border-slate-200/90 overflow-hidden flex transform lg:rotate-[-2deg] lg:hover:rotate-0 transition-transform duration-500"
+              className="relative w-full max-w-[660px] rounded-3xl bg-white shadow-2xl shadow-emerald-950/10 border border-slate-200/90 overflow-visible flex transform lg:rotate-[-2deg] lg:hover:rotate-0 transition-transform duration-500"
             >
 
               {/* ── Dark Left Sidebar (Deep Navy Slate with Emerald Active Highlights) ── */}
-              <div className="w-14 sm:w-16 bg-[#0B132B] text-slate-400 flex flex-col items-center py-5 justify-between shrink-0">
-                {/* Logo top */}
+              <div className="w-14 sm:w-16 bg-[#0B132B] text-slate-400 flex flex-col items-center py-5 justify-between shrink-0 rounded-l-3xl">
                 <div className="space-y-6 flex flex-col items-center">
                   <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center p-1.5 shadow-inner">
                     <svg viewBox="0 0 40 40" className="w-6 h-6">
@@ -282,7 +394,6 @@ export default function Hero({ onBookCall }) {
                     </svg>
                   </div>
 
-                  {/* Sidebar Nav Icons */}
                   <div className="space-y-4 flex flex-col items-center">
                     <button
                       onClick={() => setActiveTab('home')}
@@ -325,32 +436,84 @@ export default function Hero({ onBookCall }) {
                   </div>
                 </div>
 
-                {/* Settings Bottom */}
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-all cursor-pointer">
                   <Settings className="w-4 h-4" />
                 </div>
               </div>
 
               {/* ── Main Dashboard Body ── */}
-              <div className="flex-1 p-4 sm:p-6 bg-white space-y-4 min-w-0">
+              <div className="flex-1 p-4 sm:p-6 bg-white space-y-4 min-w-0 rounded-r-3xl relative">
 
-                {/* Top Header Row */}
-                <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                {/* Top Header Row with Interactive Date Dropdown Picker */}
+                <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 relative z-30">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                     <h3 className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight">
                       Google Ads Performance
                     </h3>
                   </div>
-                  {/* Date Picker Pill */}
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200/70 text-[11px] font-semibold text-slate-600">
-                    <Calendar className="w-3 h-3 text-slate-400" />
-                    <span>May 1 – May 31, 2024</span>
-                    <ChevronDown className="w-3 h-3 text-slate-400 ml-0.5" />
+
+                  {/* ── Interactive Date Picker Pill & Dropdown ── */}
+                  <div className="relative" ref={dropdownRef}>
+                    <button
+                      onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 hover:border-emerald-300 text-[11px] font-bold text-slate-700 hover:text-emerald-700 transition-all shadow-xs cursor-pointer select-none"
+                    >
+                      <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>{activeData.dateRange}</span>
+                      <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isDateDropdownOpen ? 'rotate-180 text-emerald-600' : ''}`} />
+                    </button>
+
+                    {/* Animated Dropdown Menu */}
+                    <AnimatePresence>
+                      {isDateDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 6, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200 shadow-2xl p-1.5 z-50 text-left"
+                        >
+                          <div className="px-3 py-1.5 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            Select Date Range
+                          </div>
+                          <div className="py-1 space-y-0.5">
+                            {dateRanges.map((range, idx) => {
+                              const isSelected = selectedRangeIndex === idx;
+                              return (
+                                <button
+                                  key={range.id}
+                                  onClick={() => {
+                                    setSelectedRangeIndex(idx);
+                                    setIsDateDropdownOpen(false);
+                                  }}
+                                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+                                    isSelected
+                                      ? 'bg-emerald-50 text-emerald-900 font-bold'
+                                      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                                  }`}
+                                >
+                                  <div>
+                                    <p className="leading-tight">{range.label}</p>
+                                    <p className="text-[10px] text-slate-400 font-medium leading-tight mt-0.5">{range.dateRange}</p>
+                                  </div>
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 px-1.5 py-0.5 rounded-md">
+                                      {range.badge}
+                                    </span>
+                                    {isSelected && <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />}
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
 
-                {/* 4 Metric Cards Grid (Side-by-side with sparklines) */}
+                {/* 4 Metric Cards Grid (Dynamic values based on Selected Date) */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   {/* Card 1: Clicks */}
                   <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-50/50 to-white border border-emerald-100 shadow-soft-sm hover:shadow-md transition-shadow">
@@ -358,11 +521,19 @@ export default function Hero({ onBookCall }) {
                       <LineChart className="w-3 h-3 text-emerald-600" />
                       <span>Clicks</span>
                     </div>
-                    <p className="text-lg sm:text-xl font-black text-slate-900 mt-0.5">12.6K</p>
-                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">↑ 28.5%</p>
-                    {/* Emerald sparkline */}
+                    <motion.p
+                      key={`clicks-${activeData.id}`}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 tracking-tight"
+                    >
+                      {activeData.clicks}
+                    </motion.p>
+                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">{activeData.clicksGrowth}</p>
+                    {/* Dynamic Sparkline */}
                     <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
-                      <path d="M0,14 Q10,4 20,11 T40,6 T60,2" fill="none" stroke="#059669" strokeWidth="2" strokeLinecap="round" />
+                      <path d={activeData.sparkClicks} fill="none" stroke="#059669" strokeWidth="2" strokeLinecap="round" />
                     </svg>
                   </div>
 
@@ -372,11 +543,19 @@ export default function Hero({ onBookCall }) {
                       <TrendingUp className="w-3 h-3 text-teal-600" />
                       <span>Conversions</span>
                     </div>
-                    <p className="text-lg sm:text-xl font-black text-slate-900 mt-0.5">1.46K</p>
-                    <p className="text-[10px] font-bold text-teal-600 mt-0.5">↑ 32.1%</p>
-                    {/* Teal sparkline */}
+                    <motion.p
+                      key={`conv-${activeData.id}`}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 tracking-tight"
+                    >
+                      {activeData.conversions}
+                    </motion.p>
+                    <p className="text-[10px] font-bold text-teal-600 mt-0.5">{activeData.conversionsGrowth}</p>
+                    {/* Dynamic Sparkline */}
                     <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
-                      <path d="M0,15 Q15,6 28,12 T45,7 T60,3" fill="none" stroke="#0D9488" strokeWidth="2" strokeLinecap="round" />
+                      <path d={activeData.sparkConv} fill="none" stroke="#0D9488" strokeWidth="2" strokeLinecap="round" />
                     </svg>
                   </div>
 
@@ -386,11 +565,19 @@ export default function Hero({ onBookCall }) {
                       <LineChart className="w-3 h-3 text-amber-500" />
                       <span>Cost / Conv.</span>
                     </div>
-                    <p className="text-lg sm:text-xl font-black text-slate-900 mt-0.5">$6.23</p>
-                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">↓ 14.3%</p>
-                    {/* Orange sparkline */}
+                    <motion.p
+                      key={`cpa-${activeData.id}`}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 tracking-tight"
+                    >
+                      {activeData.cpa}
+                    </motion.p>
+                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">{activeData.cpaGrowth}</p>
+                    {/* Dynamic Sparkline */}
                     <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
-                      <path d="M0,5 Q15,14 30,8 T45,13 T60,16" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" />
+                      <path d={activeData.sparkCpa} fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" />
                     </svg>
                   </div>
 
@@ -400,16 +587,24 @@ export default function Hero({ onBookCall }) {
                       <Zap className="w-3 h-3 text-emerald-600" />
                       <span>Conv. Value</span>
                     </div>
-                    <p className="text-lg sm:text-xl font-black text-emerald-800 mt-0.5">$45.2K</p>
-                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">↑ 35.7%</p>
-                    {/* Green sparkline */}
+                    <motion.p
+                      key={`val-${activeData.id}`}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-lg sm:text-xl font-black text-emerald-800 mt-0.5 tracking-tight"
+                    >
+                      {activeData.convValue}
+                    </motion.p>
+                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">{activeData.convValueGrowth}</p>
+                    {/* Dynamic Sparkline */}
                     <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
-                      <path d="M0,16 Q12,8 25,12 T48,6 T60,1" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" />
+                      <path d={activeData.sparkVal} fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" />
                     </svg>
                   </div>
                 </div>
 
-                {/* ── Main Dual-Line Graph Area ── */}
+                {/* ── Main Dual-Line Graph Area (Changes dynamically on date selection) ── */}
                 <div className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 space-y-2">
                   <div className="flex items-center justify-between text-[11px] text-slate-500">
                     <div className="flex items-center gap-4">
@@ -422,10 +617,12 @@ export default function Hero({ onBookCall }) {
                         <span className="font-bold text-slate-800">Conversions</span>
                       </div>
                     </div>
-                    <span className="font-semibold text-emerald-700 text-[10.5px]">Live Telemetry</span>
+                    <span className="font-semibold text-emerald-700 text-[10.5px]">
+                      {activeData.label} Telemetry
+                    </span>
                   </div>
 
-                  {/* SVG Chart with Dual Lines and Grid Lines */}
+                  {/* Dynamic SVG Chart */}
                   <div className="h-32 sm:h-36 w-full relative">
                     {/* Y-axis markers */}
                     <div className="absolute left-0 inset-y-0 flex flex-col justify-between text-[9px] font-semibold text-slate-400 pointer-events-none pr-2">
@@ -453,46 +650,60 @@ export default function Hero({ onBookCall }) {
                         </linearGradient>
                       </defs>
 
-                      {/* Teal Conversions Area Fill */}
-                      <polygon
-                        points="0,85 20,80 45,86 70,72 95,78 120,65 150,68 180,52 210,56 240,42 270,45 295,30 320,38 320,100 0,100"
+                      {/* Conversions Area Fill (Teal) */}
+                      <motion.polygon
+                        key={`convArea-${activeData.id}`}
+                        points={activeData.convArea}
                         fill="url(#tealHeroFill)"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
                       />
-                      {/* Teal Conversions Line */}
-                      <path
-                        d="M0,85 Q20,80 45,86 T95,78 T150,68 T210,56 T270,45 T320,38"
+                      {/* Conversions Line (Teal) */}
+                      <motion.path
+                        key={`convLine-${activeData.id}`}
+                        d={activeData.convLine}
                         fill="none"
                         stroke="#0D9488"
                         strokeWidth="2"
                         strokeLinecap="round"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
                       />
 
-                      {/* Emerald Clicks Area Fill */}
-                      <polygon
-                        points="0,65 20,62 45,50 70,55 95,38 120,44 150,32 180,36 210,24 240,28 270,16 295,20 320,8 320,100 0,100"
+                      {/* Clicks Area Fill (Emerald) */}
+                      <motion.polygon
+                        key={`clicksArea-${activeData.id}`}
+                        points={activeData.clicksArea}
                         fill="url(#emeraldHeroFill)"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
                       />
-                      {/* Emerald Clicks Line */}
-                      <path
-                        d="M0,65 Q20,62 45,50 T95,38 T150,32 T210,24 T270,16 T320,8"
+                      {/* Clicks Line (Emerald) */}
+                      <motion.path
+                        key={`clicksLine-${activeData.id}`}
+                        d={activeData.clicksLine}
                         fill="none"
                         stroke="#059669"
                         strokeWidth="2.5"
                         strokeLinecap="round"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
                       />
 
                       {/* Peak Interactive Radar Ping */}
-                      <circle cx="270" cy="16" r="3.5" fill="#059669" />
-                      <circle cx="270" cy="16" r="7" fill="#10B981" opacity="0.4" className="animate-ping" />
+                      <circle cx={activeData.peakX} cy={activeData.peakY} r="3.5" fill="#059669" />
+                      <circle cx={activeData.peakX} cy={activeData.peakY} r="7" fill="#10B981" opacity="0.4" className="animate-ping" />
                     </svg>
 
-                    {/* Date labels bottom */}
+                    {/* Dynamic Date labels along bottom */}
                     <div className="pl-6 pt-1 flex items-center justify-between text-[9px] font-semibold text-slate-400">
-                      <span>May 1</span>
-                      <span>May 8</span>
-                      <span>May 15</span>
-                      <span>May 21</span>
-                      <span>May 31</span>
+                      {activeData.dates.map((d, i) => (
+                        <span key={i}>{d}</span>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -511,7 +722,6 @@ export default function Hero({ onBookCall }) {
                   <Star className="w-5 h-5 fill-white" />
                 </div>
                 <div>
-                  {/* Avatar circles */}
                   <div className="flex items-center -space-x-1.5 mb-1">
                     <div className="w-5 h-5 rounded-full bg-emerald-500 border border-white flex items-center justify-center text-[8px] font-black text-white">S</div>
                     <div className="w-5 h-5 rounded-full bg-teal-500 border border-white flex items-center justify-center text-[8px] font-black text-white">A</div>
@@ -524,7 +734,7 @@ export default function Hero({ onBookCall }) {
               </motion.div>
             )}
 
-            {/* ─── Floating Card 2: Campaigns Performance Donut (Bottom-Right) ─── */}
+            {/* ─── Floating Card 2: Campaigns Performance Donut (Dynamic based on selected date) ─── */}
             {!shouldReduceMotion && (
               <motion.div
                 variants={floatBadge}
@@ -536,53 +746,53 @@ export default function Hero({ onBookCall }) {
                     Campaigns Performance
                   </p>
                   <div className="flex items-center gap-3">
-                    {/* SVG Donut Chart */}
+                    {/* Dynamic SVG Donut Chart */}
                     <div className="w-12 h-12 relative flex items-center justify-center shrink-0">
                       <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
                         <circle cx="18" cy="18" r="14" fill="transparent" stroke="#E2E8F0" strokeWidth="4" />
-                        {/* Emerald Search 55% */}
+                        {/* Search % */}
                         <circle
                           cx="18" cy="18" r="14" fill="transparent"
                           stroke="#059669" strokeWidth="4"
-                          strokeDasharray="55 100"
+                          strokeDasharray={`${activeData.donut.search} 100`}
                           strokeDashoffset="0"
                         />
-                        {/* Teal Display 25% */}
+                        {/* PMax % */}
                         <circle
                           cx="18" cy="18" r="14" fill="transparent"
                           stroke="#0D9488" strokeWidth="4"
-                          strokeDasharray="25 100"
-                          strokeDashoffset="-55"
+                          strokeDasharray={`${activeData.donut.pmax} 100`}
+                          strokeDashoffset={`-${activeData.donut.search}`}
                         />
-                        {/* Amber Shopping 20% */}
+                        {/* Shopping % */}
                         <circle
                           cx="18" cy="18" r="14" fill="transparent"
                           stroke="#F59E0B" strokeWidth="4"
-                          strokeDasharray="20 100"
-                          strokeDashoffset="-80"
+                          strokeDasharray={`${activeData.donut.shopping} 100`}
+                          strokeDashoffset={`-${activeData.donut.search + activeData.donut.pmax}`}
                         />
                       </svg>
                     </div>
 
-                    {/* Donut Legend */}
+                    {/* Dynamic Donut Legend */}
                     <div className="space-y-1 text-[10px] font-bold text-slate-700">
                       <div className="flex items-center justify-between gap-3">
                         <span className="flex items-center gap-1 text-slate-600">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" /> Search
                         </span>
-                        <span className="text-slate-900 font-extrabold">55%</span>
+                        <span className="text-slate-900 font-extrabold">{activeData.donut.search}%</span>
                       </div>
                       <div className="flex items-center justify-between gap-3">
                         <span className="flex items-center gap-1 text-slate-600">
                           <span className="w-1.5 h-1.5 rounded-full bg-teal-600" /> PMax
                         </span>
-                        <span className="text-slate-900 font-extrabold">25%</span>
+                        <span className="text-slate-900 font-extrabold">{activeData.donut.pmax}%</span>
                       </div>
                       <div className="flex items-center justify-between gap-3">
                         <span className="flex items-center gap-1 text-slate-600">
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> Shopping
                         </span>
-                        <span className="text-slate-900 font-extrabold">20%</span>
+                        <span className="text-slate-900 font-extrabold">{activeData.donut.shopping}%</span>
                       </div>
                     </div>
                   </div>
