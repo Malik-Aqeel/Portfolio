@@ -1,0 +1,271 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-primary: #FFFFFF;
+    --color-bg-secondary: #F7F9F8;
+    --color-bg-soft: #F3F7F5;
+    --color-text-primary: #101828;
+    --color-text-secondary: #667085;
+    --color-border: #E5E7EB;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+  }
+}
+
+/* Custom Fluid Typography & Spacing Helpers */
+.text-hero {
+  font-size: clamp(1.85rem, 3.2vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.text-section-heading {
+  font-size: clamp(2rem, 3.8vw, 3.5rem);
+  line-height: 1.15;
+}
+
+.text-subheading {
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+}
+
+/* Premium ambient mesh gradient backgrounds */
+.hero-gradient-bg {
+  background: 
+    radial-gradient(circle at 12% 25%, rgba(16, 185, 129, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 88% 35%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 50% 90%, rgba(20, 184, 166, 0.1) 0%, transparent 60%),
+    linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+}
+
+.hero-mesh-blob-left {
+  position: absolute;
+  width: 550px;
+  height: 550px;
+  left: -180px;
+  top: -120px;
+  background: radial-gradient(circle, rgba(167, 243, 208, 0.5) 0%, rgba(209, 250, 229, 0.05) 70%);
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-mesh-blob-right {
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  right: -180px;
+  top: -80px;
+  background: radial-gradient(circle, rgba(186, 230, 253, 0.45) 0%, rgba(209, 250, 229, 0.15) 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle dot grid pattern */
+.grid-dots-pattern {
+  background-image: radial-gradient(rgba(16, 185, 129, 0.2) 1.5px, transparent 1.5px);
+  background-size: 16px 16px;
+}
+
+/* Running Gradient Text Animation for Google Ads */
+.animated-gradient-text {
+  background: linear-gradient(
+    90deg,
+    #059669 0%,
+    #10B981 20%,
+    #0284C7 40%,
+    #2563EB 60%,
+    #0D9488 80%,
+    #059669 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradient-shift 4s linear infinite;
+  display: inline-block;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Animated SVG Running Dash Line for Live Graph */
+.animated-graph-line {
+  stroke-dasharray: 8 4;
+  animation: dash-flow 20s linear infinite;
+}
+
+.animated-graph-pulse-line {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: line-draw 3s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+@keyframes dash-flow {
+  from {
+    stroke-dashoffset: 240;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes line-draw {
+  0% {
+    stroke-dashoffset: 300;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Live Graph Pulse Ping Animation */
+.radar-pulse {
+  animation: radar-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes radar-ping {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* Live Data Feed Shimmer Sweep */
+.live-scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.live-scanline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(16, 185, 129, 0.12) 50%,
+    transparent 100%
+  );
+  animation: scanline-pass 3.5s ease-in-out infinite;
+}
+
+@keyframes scanline-pass {
+  0% {
+    left: -100%;
+  }
+  60%, 100% {
+    left: 100%;
+  }
+}
+
+/* Floating animation delays */
+.animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 7s ease-in-out 2.5s infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(0.5deg); }
+}
+
+/* Glass & Card Elevation Shadows */
+.dashboard-card-shadow {
+  box-shadow: 
+    0 25px 50px -12px rgba(16, 24, 40, 0.09),
+    0 0 0 1px rgba(226, 232, 240, 0.9),
+    0 8px 30px rgba(16, 185, 129, 0.08);
+}
+
+.badge-card-shadow {
+  box-shadow: 
+    0 12px 28px -6px rgba(16, 24, 40, 0.09),
+    0 0 0 1px rgba(226, 232, 240, 0.9);
+}
+
+/* Shine Sweep Animation for Primary Buttons */
+.button-shine {
+  position: relative;
+  overflow: hidden;
+}
+.button-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 70%
+  );
+  transform: rotate(30deg);
+  transition: all 0.6s ease;
+  opacity: 0;
+}
+.button-shine:hover::after {
+  opacity: 1;
+  left: 100%;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F7F9F8;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* ─── Infinite Logo Marquee ─── */
+.logo-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+.logo-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
