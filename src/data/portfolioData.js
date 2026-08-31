@@ -210,25 +210,37 @@ export const metricsData = [
 
 export const caseStudies = [
   {
-    id: "dubkart",
-    brand: "Dubkart",
-    logo: "dubkart",
-    industry: "E-commerce Marketplace",
-    campaignType: "PMax + Shopping + Search",
-    challenge: "High customer acquisition costs (CPA $68) and inconsistent monthly revenue with plateaued 2.1x ROAS on existing shopping campaigns.",
-    strategy: "Restructured Google Merchant Center feed with custom labels (Margin/Velocity), separated PMax asset groups by product category, eliminated high-cost non-converting search queries, and scaled bid targets gradually.",
+    id: "industrial-lynx",
+    brand: "Industrial Lynx",
+    logo: "industrialLynx",
+    industry: "Industrial Equipment",
+    campaignType: "PMax + Search + Shopping",
+    timeframe: "Last 365 Days",
+    spend: "US$223,351.47",
+    revenue: "US$1,040,528.90",
+    roas: "4.59",
+    challenge: "High average order values and complex sales cycles required precision campaign architecture to prevent budget wastage on non-converting industrial queries.",
+    strategy: "Restructured Google Ads with high-margin Performance Max feeds, granular negative keyword lists, and value-based target ROAS bidding to capture active commercial buyers.",
     sampleMetrics: {
-      roas: "4.85x",
-      roasBadge: "+131% ROAS",
-      revenueGrowth: "+184%",
-      cpa: "$28.40",
-      cpaBadge: "-58% CPA"
+      roas: "4.59",
+      roasBadge: "365D ROAS",
+      roasLabel: "ROAS",
+      revenueGrowth: "US$1,040,528.90",
+      revenueShort: "$1.04M",
+      revenueLabel: "Revenue",
+      revenueBadge: "365D Revenue",
+      spend: "US$223,351.47",
+      spendShort: "$223.3K",
+      metric3Label: "Ad Spend",
+      cpa: "$223.3K",
+      cpaBadge: "365D Spend"
     },
-    detailOverview: "Dubkart struggled with unprofitable product spend where 20% of catalog was eating 80% of ad spend. By segmenting high-margin products into dedicated PMax campaigns with custom asset creatives and server-side tracking, we unlocked scalable growth.",
+    detailOverview: "Over the last 365 days, Industrial Lynx deployed US$223,351.47 in ad spend generating US$1,040,528.90 in revenue at a 4.59 ROAS through structured Google Ads campaigns, feed optimization, and high-intent commercial keyword targeting.",
     takeaways: [
-      "Implemented custom feed attributes for bestseller prioritization",
-      "Built negative keyword list blocking 4,000+ irremediable non-intent queries",
-      "Deployed GA4 Enhanced Conversions for accurate attribution"
+      "Last 365 Days Spend: US$223,351.47",
+      "Last 365 Days Revenue: US$1,040,528.90",
+      "Last 365 Days ROAS: 4.59",
+      "Deployed margin-tiered Shopping & PMax feeds for high-ticket commercial products"
     ]
   },
   {

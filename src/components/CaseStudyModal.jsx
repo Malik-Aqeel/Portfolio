@@ -31,18 +31,30 @@ export default function CaseStudyModal({ caseStudy, isOpen, onClose, onBookCall 
           {/* Key Metrics Banner */}
           <div className="grid grid-cols-3 gap-2 sm:gap-3 p-3 sm:p-4 bg-emerald-50/60 rounded-xl border border-emerald-100 text-center">
             <div>
-              <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate">ROAS</p>
+              <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate">
+                {caseStudy.sampleMetrics.roasLabel || 'ROAS'}
+              </p>
               <p className="text-lg sm:text-2xl font-extrabold text-emerald-700">{caseStudy.sampleMetrics.roas}</p>
               <span className="text-[9px] sm:text-[10px] text-emerald-600 font-semibold">{caseStudy.sampleMetrics.roasBadge}</span>
             </div>
             <div>
-              <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate">Revenue</p>
-              <p className="text-lg sm:text-2xl font-extrabold text-slate-900">{caseStudy.sampleMetrics.revenueGrowth}</p>
-              <span className="text-[9px] sm:text-[10px] text-slate-500">Growth</span>
+              <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate">
+                {caseStudy.sampleMetrics.revenueLabel || 'Revenue'}
+              </p>
+              <p className="text-sm sm:text-xl font-extrabold text-slate-900 truncate" title={caseStudy.sampleMetrics.revenueGrowth}>
+                {caseStudy.sampleMetrics.revenueGrowth}
+              </p>
+              <span className="text-[9px] sm:text-[10px] text-slate-500">
+                {caseStudy.sampleMetrics.revenueBadge || 'Growth'}
+              </span>
             </div>
             <div>
-              <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate">Acquisition CPA</p>
-              <p className="text-lg sm:text-2xl font-extrabold text-emerald-700">{caseStudy.sampleMetrics.cpa}</p>
+              <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate">
+                {caseStudy.sampleMetrics.metric3Label || 'Acquisition CPA'}
+              </p>
+              <p className="text-sm sm:text-xl font-extrabold text-emerald-700 truncate" title={caseStudy.sampleMetrics.spend || caseStudy.sampleMetrics.cpa}>
+                {caseStudy.sampleMetrics.spend || caseStudy.sampleMetrics.cpa}
+              </p>
               <span className="text-[9px] sm:text-[10px] text-emerald-600 font-semibold">{caseStudy.sampleMetrics.cpaBadge}</span>
             </div>
           </div>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Users, Globe, ShieldCheck, TrendingUp, Sparkles } from 'lucide-react';
 
 // Import company logos
+import logoIndustrialLynx from '../assets/case_study_img1.jpeg';
 import logoPetSupplies from '../assets/Logo Petsupplies.jpeg';
 import logoAG from '../assets/ag.jpeg';
 import logoAO from '../assets/ao.jpeg';
@@ -22,6 +23,7 @@ export default function TrustStrip() {
   ];
 
   const companyLogos = [
+    { src: logoIndustrialLynx, alt: 'Industrial Lynx' },
     { src: logoDubkart, alt: 'Dubkart' },
     { src: logoAO, alt: 'Arabian Oud' },
     { src: logoPetSupplies, alt: 'Pet Supplies' },

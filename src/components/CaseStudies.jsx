@@ -8,12 +8,12 @@ import { caseStudies } from '../data/portfolioData';
 import CaseStudyModal from './CaseStudyModal';
 
 /* ─── Brand logo imports ─── */
-import logoDubkart from '../assets/img.png';
+import logoIndustrialLynx from '../assets/case_study_img1.jpeg';
 import logoArabianOud from '../assets/ao.jpeg';
 import logoPetSupplies from '../assets/Logo Petsupplies.jpeg';
 
 const logoMap = {
-  dubkart: logoDubkart,
+  industrialLynx: logoIndustrialLynx,
   arabianOud: logoArabianOud,
   petSupplies: logoPetSupplies,
 };
@@ -293,6 +293,14 @@ export default function CaseStudies({ onBookCall }) {
                       {study.brand}
                     </h3>
 
+                    {/* Timeframe summary badge if available */}
+                    {study.timeframe && (
+                      <div className="mb-3.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50/80 border border-emerald-200/60 text-[10.5px] font-bold text-emerald-800">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>{study.timeframe}: Spend {study.spend} &bull; Revenue {study.revenue}</span>
+                      </div>
+                    )}
+
                     {/* Challenge snippet */}
                     <p className="text-xs text-slate-500 leading-relaxed mb-5 line-clamp-2 flex-1">
                       <span className="font-bold text-slate-700">Challenge: </span>
@@ -304,7 +312,9 @@ export default function CaseStudies({ onBookCall }) {
                       <div className="grid grid-cols-3 gap-2 sm:gap-3">
                         {/* ROAS */}
                         <div className="text-center">
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">ROAS</p>
+                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                            {study.sampleMetrics.roasLabel || 'ROAS'}
+                          </p>
                           <motion.p
                             className={`text-lg sm:text-xl font-black ${visual.roasColor} tracking-tight leading-none`}
                             initial={{ opacity: 0, scale: 0.8 }}
@@ -321,7 +331,9 @@ export default function CaseStudies({ onBookCall }) {
 
                         {/* Revenue */}
                         <div className="text-center border-x border-slate-200/40">
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Revenue</p>
+                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                            {study.sampleMetrics.revenueLabel || 'Revenue'}
+                          </p>
                           <motion.p
                             className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-none"
                             initial={{ opacity: 0, scale: 0.8 }}
@@ -329,16 +341,18 @@ export default function CaseStudies({ onBookCall }) {
                             viewport={{ once: true }}
                             transition={{ duration: 0.4, delay: 0.4 + idx * 0.1 }}
                           >
-                            {study.sampleMetrics.revenueGrowth}
+                            {study.sampleMetrics.revenueShort || study.sampleMetrics.revenueGrowth}
                           </motion.p>
                           <span className="inline-block mt-1.5 px-2 py-0.5 text-[8px] font-bold rounded-md bg-emerald-50 text-emerald-600">
-                            ↑ Growth
+                            {study.sampleMetrics.revenueBadge || '↑ Growth'}
                           </span>
                         </div>
 
-                        {/* CPA */}
+                        {/* Spend / CPA */}
                         <div className="text-center">
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">CPA</p>
+                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                            {study.sampleMetrics.metric3Label || 'CPA'}
+                          </p>
                           <motion.p
                             className={`text-lg sm:text-xl font-black ${visual.cpaColor} tracking-tight leading-none`}
                             initial={{ opacity: 0, scale: 0.8 }}
@@ -346,7 +360,7 @@ export default function CaseStudies({ onBookCall }) {
                             viewport={{ once: true }}
                             transition={{ duration: 0.4, delay: 0.5 + idx * 0.1 }}
                           >
-                            {study.sampleMetrics.cpa}
+                            {study.sampleMetrics.spendShort || study.sampleMetrics.cpa}
                           </motion.p>
                           <span className="inline-block mt-1.5 px-2 py-0.5 text-[8px] font-bold rounded-md bg-emerald-50 text-emerald-600">
                             {study.sampleMetrics.cpaBadge}
