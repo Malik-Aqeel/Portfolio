@@ -207,7 +207,7 @@ export default function About({ onBookCall }) {
                     {/* Profile image */}
                     <img
                       src={profilePic}
-                      alt="Shahzad Shafiq"
+                      alt={personalInfo.name}
                       className="w-24 h-24 rounded-full object-cover ring-3 ring-emerald-500/40 shadow-lg shadow-emerald-500/20"
                     />
                     {/* Online dot */}
@@ -217,7 +217,7 @@ export default function About({ onBookCall }) {
                   <div className="space-y-3">
                     <div>
                       <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight tracking-tight">
-                        Shahzad Shafiq
+                        {personalInfo.name}
                       </h3>
                       <p className="text-sm font-bold text-emerald-400/80 mt-1 tracking-wide">
                         Google Ads & E-commerce Growth Specialist

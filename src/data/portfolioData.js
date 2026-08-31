@@ -1,5 +1,5 @@
 export const personalInfo = {
-  name: "Shahzad Shafiq",
+  name: "Shehzad Sadiq",
   title: "Google Ads & E-commerce Growth Specialist",
   tagline: "I help e-commerce brands acquire customers and scale profitably through Google Ads.",
   credibility: "Worked with 50+ scaled e-commerce brands",

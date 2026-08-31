@@ -125,15 +125,30 @@ export default function Navbar({ onBookCall }) {
 
           {/* ── Right: Sleek Action CTA Button ── */}
           <div className="hidden lg:flex items-center gap-3 shrink-0 whitespace-nowrap">
-            <motion.button
-              onClick={onBookCall}
-              whileHover={!shouldReduceMotion ? { scale: 1.03, boxShadow: '0 10px 22px -4px rgba(16, 185, 129, 0.35)' } : {}}
-              whileTap={!shouldReduceMotion ? { scale: 0.97 } : {}}
-              className="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold shadow-sm shadow-emerald-500/20 transition-all flex items-center gap-2 cursor-pointer button-shine relative overflow-hidden shrink-0 whitespace-nowrap"
-            >
-              <span className="whitespace-nowrap">Get Free Audit</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </motion.button>
+            <div className="relative group">
+              {/* Ambient Glow Aura on hover */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full blur-sm opacity-0 group-hover:opacity-75 transition-all duration-300 pointer-events-none" />
+
+              <motion.button
+                onClick={onBookCall}
+                whileHover={!shouldReduceMotion ? { 
+                  y: -3, 
+                  scale: 1.05, 
+                  boxShadow: '0 12px 26px -4px rgba(16, 185, 129, 0.45), 0 0 16px rgba(20, 184, 166, 0.35)' 
+                } : {}}
+                whileTap={!shouldReduceMotion ? { scale: 0.96, y: 0 } : {}}
+                transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                className="relative px-5 py-2 rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-md shadow-emerald-500/25 transition-all flex items-center gap-2 cursor-pointer button-shine overflow-hidden shrink-0 whitespace-nowrap group"
+              >
+                {/* Dynamic light sheen sweep on hover */}
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+                <span className="relative z-10 whitespace-nowrap transition-transform duration-200 group-hover:-translate-x-0.5">
+                  Get Free Audit
+                </span>
+                <ArrowRight className="relative z-10 w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110" />
+              </motion.button>
+            </div>
           </div>
 
           {/* ── Mobile Menu Hamburger ── */}
