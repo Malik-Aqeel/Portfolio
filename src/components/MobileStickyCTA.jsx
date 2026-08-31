@@ -5,27 +5,31 @@ export default function MobileStickyCTA({ onBookCall }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const contactSection = document.getElementById('contact');
-      
-      let isNearContact = false;
-      if (contactSection) {
-        const contactTop = contactSection.offsetTop - 400;
-        if (scrollY >= contactTop) {
-          isNearContact = true;
-        }
-      }
+    let ticking = false;
 
-      // Show after scrolling past hero (e.g. > 400px) and hide if near contact section
-      if (scrollY > 400 && !isNearContact) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const contactSection = document.getElementById('contact');
+          let isNearContact = false;
+
+          if (contactSection) {
+            const contactTop = contactSection.offsetTop - 400;
+            if (scrollY >= contactTop) {
+              isNearContact = true;
+            }
+          }
+
+          const shouldShow = scrollY > 400 && !isNearContact;
+          setIsVisible((prev) => (prev !== shouldShow ? shouldShow : prev));
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

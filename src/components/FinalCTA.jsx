@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, MessageSquare, ShieldCheck, Clock, Video, CheckCircle2, Award } from 'lucide-react';
+import { ArrowRight, Sparkles, MessageSquare, ShieldCheck, Clock, Video, CheckCircle2, Award, Mail } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 
 export default function FinalCTA({ onBookCall }) {
@@ -26,14 +26,14 @@ export default function FinalCTA({ onBookCall }) {
             {/* Top Accent Gradient Bar */}
             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-400 to-sky-500" />
 
-            {/* Availability Badge with Pakistani Time */}
+            {/* Availability Badge */}
             <div className="inline-flex flex-wrap items-center justify-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 shadow-soft-sm">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
               </span>
               <span className="text-xs font-extrabold text-emerald-900 tracking-wide">
-                🇵🇰 Booking Open: 11:00 AM – 10:00 PM PKT (Pakistan Standard Time)
+                🇵🇰 Quick Response: Inquiries Reviewed Within 24 Hours
               </span>
             </div>
 
@@ -47,18 +47,18 @@ export default function FinalCTA({ onBookCall }) {
 
             {/* Supporting Text */}
             <p className="text-slate-600 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed font-normal">
-              Book a complimentary 30-minute 1-on-1 strategy call with <strong className="text-slate-900 font-bold">{personalInfo.name}</strong>. We'll audit your current ad account, uncover wasted spend, and identify high-impact scaling opportunities.
+              Send your store details for a complimentary growth audit with <strong className="text-slate-900 font-bold">{personalInfo.name}</strong>. I'll audit your current ad account, uncover wasted spend, and email you a tailored scaling plan.
             </p>
 
             {/* 3 Micro Feature Pills */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl mx-auto pt-2">
               <div className="p-3 rounded-xl bg-slate-50/80 border border-slate-200/70 flex items-center justify-center gap-2 text-xs font-bold text-slate-700">
                 <Clock className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>30-Minute Growth Audit</span>
+                <span>Fast 24-Hour Review</span>
               </div>
               <div className="p-3 rounded-xl bg-slate-50/80 border border-slate-200/70 flex items-center justify-center gap-2 text-xs font-bold text-slate-700">
-                <Video className="w-4 h-4 text-teal-600 shrink-0" />
-                <span>1-on-1 via Google Meet / Zoom</span>
+                <Mail className="w-4 h-4 text-teal-600 shrink-0" />
+                <span>Actionable Audit Breakdown</span>
               </div>
               <div className="p-3 rounded-xl bg-slate-50/80 border border-slate-200/70 flex items-center justify-center gap-2 text-xs font-bold text-slate-700">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -75,7 +75,7 @@ export default function FinalCTA({ onBookCall }) {
                 className="w-full sm:w-auto px-9 py-4 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-base rounded-full shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/50 flex items-center justify-center gap-2.5 cursor-pointer button-shine transition-all"
               >
                 <Sparkles className="w-5 h-5 text-amber-300" />
-                <span>Book A Free Strategy Call</span>
+                <span>Get Free Growth Audit</span>
                 <ArrowRight className="w-5 h-5" />
               </motion.button>
 

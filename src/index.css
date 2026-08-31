@@ -88,8 +88,9 @@ h1, h2, h3 {
   height: 550px;
   left: -180px;
   top: -120px;
-  background: radial-gradient(circle, rgba(167, 243, 208, 0.5) 0%, rgba(209, 250, 229, 0.05) 70%);
-  filter: blur(70px);
+  background: radial-gradient(circle, rgba(167, 243, 208, 0.35) 0%, rgba(209, 250, 229, 0.02) 70%);
+  filter: blur(40px);
+  transform: translate3d(0, 0, 0);
   pointer-events: none;
   z-index: 0;
 }
@@ -100,8 +101,9 @@ h1, h2, h3 {
   height: 650px;
   right: -180px;
   top: -80px;
-  background: radial-gradient(circle, rgba(186, 230, 253, 0.45) 0%, rgba(209, 250, 229, 0.15) 70%);
-  filter: blur(80px);
+  background: radial-gradient(circle, rgba(186, 230, 253, 0.3) 0%, rgba(209, 250, 229, 0.05) 70%);
+  filter: blur(40px);
+  transform: translate3d(0, 0, 0);
   pointer-events: none;
   z-index: 0;
 }

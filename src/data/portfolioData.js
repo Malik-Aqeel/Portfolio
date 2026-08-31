@@ -7,9 +7,9 @@ export const personalInfo = {
   marketsCount: "12+",
   totalAdSpendManaged: "$15M+",
   avgRoasIncrease: "3.4x",
-  email: "hello@yourdomain.com",
+  email: "shehzadsadiq172@gmail.com",
   linkedin: "https://www.linkedin.com/in/shehzad-sadiq/",
-  whatsapp: "+1 (555) 234-5678",
+  whatsapp: "+92 329 9780299",
   location: "Global / Remote",
   bio: "I specialize in Google Ads for e-commerce businesses, combining strategy, data, creative testing, audience insights, and continuous optimization to build campaigns designed for sustainable growth.",
   approach: "I don't just manage campaigns. I build growth systems that lower CPA, unlock new customer cohorts, and maximize return on ad spend (ROAS)."

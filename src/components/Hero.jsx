@@ -548,16 +548,16 @@ export default function Hero({ onBookCall }) {
       {/* ─── Ambient Glow Meshes (Matching Website Theme) ─── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
-          className="absolute top-10 right-1/4 w-[650px] h-[650px] rounded-full opacity-35 blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(20, 184, 166, 0.08) 60%, transparent 80%)' }}
+          className="absolute top-10 right-1/4 w-[650px] h-[650px] rounded-full opacity-30 blur-2xl pointer-events-none transform-gpu"
+          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(20, 184, 166, 0.05) 55%, transparent 75%)' }}
         />
         <div
-          className="absolute bottom-4 right-10 w-[450px] h-[450px] rounded-full opacity-30 blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(14, 165, 233, 0.16) 0%, transparent 70%)' }}
+          className="absolute bottom-4 right-10 w-[450px] h-[450px] rounded-full opacity-25 blur-2xl pointer-events-none transform-gpu"
+          style={{ background: 'radial-gradient(circle, rgba(14, 165, 233, 0.14) 0%, transparent 65%)' }}
         />
         <div
-          className="absolute -top-16 left-12 w-[450px] h-[450px] rounded-full opacity-25 blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.14) 0%, transparent 70%)' }}
+          className="absolute -top-16 left-12 w-[450px] h-[450px] rounded-full opacity-20 blur-2xl pointer-events-none transform-gpu"
+          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 65%)' }}
         />
       </div>
 

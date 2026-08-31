@@ -26,14 +26,15 @@ export default function Navbar({ onBookCall }) {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 40);
+          const scrolled = window.scrollY > 40;
+          setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
 
           const scrollPos = window.scrollY + 180;
           for (let i = navLinks.length - 1; i >= 0; i--) {
             const id = navLinks[i].href.substring(1);
             const el = document.getElementById(id);
             if (el && el.offsetTop <= scrollPos) {
-              setActiveSection(id);
+              setActiveSection((prev) => (prev !== id ? id : prev));
               break;
             }
           }

@@ -99,6 +99,8 @@ const contactChannels = [
 
 export default function Contact({ onBookCall }) {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [focusedField, setFocusedField] = useState(null);
   const shouldReduceMotion = useReducedMotion();
   const [formData, setFormData] = useState({
@@ -112,7 +114,27 @@ export default function Contact({ onBookCall }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const phoneClean = personalInfo.whatsapp.replace(/[^0-9]/g, '');
+      const text = `Hi ${personalInfo.name}, I would like to request a Google Ads Growth Audit:%0A%0A` +
+        `*Name:* ${encodeURIComponent(formData.name.trim())}%0A` +
+        `*Email:* ${encodeURIComponent(formData.email.trim())}%0A` +
+        (formData.company ? `*Brand/Company:* ${encodeURIComponent(formData.company.trim())}%0A` : '') +
+        (formData.website ? `*Website:* ${encodeURIComponent(formData.website.trim())}%0A` : '') +
+        `*Monthly Spend:* ${encodeURIComponent(formData.adSpend)}%0A` +
+        (formData.message.trim() ? `*Goals:* ${encodeURIComponent(formData.message.trim())}%0A` : '');
+
+      window.open(`https://wa.me/${phoneClean}?text=${text}`, '_blank', 'noopener,noreferrer');
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Contact submit error:', err);
+      setSubmitError('Unable to open WhatsApp. You can reach out directly via ' + personalInfo.whatsapp);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
