@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import {
   X, Mail, User, Phone, Globe, Send, CheckCircle2,
-  MessageCircle, AlertCircle, ShieldCheck
+  AlertCircle, ShieldCheck
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 
@@ -63,15 +62,22 @@ export default function BookingModal({ isOpen, onClose }) {
     return Object.keys(errs).length === 0;
   };
 
-  const buildWhatsAppUrl = () => {
-    const phoneClean = personalInfo.whatsapp.replace(/[^0-9]/g, '');
-    const text = `Hi ${personalInfo.name}, I would like to book a Google Ads Growth Consultation:%0A%0A` +
-      `*Name:* ${encodeURIComponent(formData.name.trim())}%0A` +
-      `*Email:* ${encodeURIComponent(formData.email.trim())}%0A` +
-      `*Phone/WhatsApp:* ${encodeURIComponent(formData.phone.trim())}%0A` +
-      `*Website:* ${encodeURIComponent(formData.website.trim())}%0A` +
-      (formData.message.trim() ? `*Notes:* ${encodeURIComponent(formData.message.trim())}%0A` : '');
-    return `https://wa.me/${phoneClean}?text=${text}`;
+  const buildMailtoUrl = () => {
+    const subject = encodeURIComponent(`Google Ads Growth Consultation - ${formData.name.trim()} (${formData.website.trim()})`);
+    const body = encodeURIComponent(
+      `Hi Shehzad,\n\n` +
+      `I would like to request a Google Ads strategy consultation for my e-commerce business.\n\n` +
+      `Here are my details:\n` +
+      `• Full Name: ${formData.name.trim()}\n` +
+      `• Email Address: ${formData.email.trim()}\n` +
+      `• Phone / WhatsApp: ${formData.phone.trim()}\n` +
+      `• Website / Store URL: ${formData.website.trim()}\n` +
+      (formData.message.trim() ? `• Project Notes & Goals: ${formData.message.trim()}\n\n` : '\n') +
+      `Looking forward to discussing our growth strategy.\n\n` +
+      `Best regards,\n` +
+      `${formData.name.trim()}`
+    );
+    return `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
   };
 
   const handleSubmit = (e) => {
@@ -85,12 +91,12 @@ export default function BookingModal({ isOpen, onClose }) {
     setIsSubmitting(true);
 
     try {
-      const waUrl = buildWhatsAppUrl();
-      window.open(waUrl, '_blank', 'noopener,noreferrer');
+      const mailtoUrl = buildMailtoUrl();
+      window.location.href = mailtoUrl;
       setSubmitted(true);
     } catch (err) {
       console.error('Submission error:', err);
-      setErrorMessage('Unable to open WhatsApp. You can reach out directly at ' + personalInfo.whatsapp);
+      setErrorMessage('Unable to open mail client. You can reach out directly at ' + personalInfo.email);
     } finally {
       setIsSubmitting(false);
     }
@@ -132,7 +138,7 @@ export default function BookingModal({ isOpen, onClose }) {
                 Send Your Information
               </h2>
               <p className="text-xs text-slate-500 mt-0.5">
-                Direct message to <strong className="text-emerald-700">{personalInfo.name}</strong> &bull; Google Ads Specialist
+                Direct message to <strong className="text-emerald-700">{personalInfo.email}</strong> &bull; Google Ads Specialist
               </p>
             </div>
           </div>
@@ -142,7 +148,7 @@ export default function BookingModal({ isOpen, onClose }) {
         <div className="p-6">
           {submitted ? (
             /* ═══════════════════════════════════════════════════════════
-               SUCCESS SCREEN (SIMPLE & CLEAN)
+               SUCCESS SCREEN: EMAIL CLIENT OPENED
                ═══════════════════════════════════════════════════════════ */
             <div className="py-6 text-center space-y-4">
               <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
@@ -151,36 +157,35 @@ export default function BookingModal({ isOpen, onClose }) {
 
               <div>
                 <h3 className="text-2xl font-extrabold text-slate-900">
-                  Ready to Connect!
+                  Email Opened!
                 </h3>
                 <p className="text-sm text-slate-600 max-w-sm mx-auto mt-2 leading-relaxed">
-                  Thank you, <strong>{formData.name}</strong>! Your inquiry details are ready. Reach out via WhatsApp or direct email to schedule your strategy session.
+                  Thank you, <strong>{formData.name}</strong>! Your email client has been opened with your consultation details ready to send to <strong>{personalInfo.email}</strong>.
                 </p>
               </div>
 
               {/* Action Buttons */}
               <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a
-                  href={buildWhatsAppUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-full shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  href={buildMailtoUrl()}
+                  className="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-full shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer text-center"
                 >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Chat on WhatsApp</span>
+                  <Mail className="w-4 h-4" />
+                  <span>Send Email</span>
                 </a>
 
-                <a
-                  href={`mailto:${personalInfo.email}?subject=Google Ads Growth Consultation - ${encodeURIComponent(formData.name)}&body=Hi Shehzad,%0D%0A%0D%0AMy Details:%0D%0AName: ${encodeURIComponent(formData.name)}%0D%0AWebsite: ${encodeURIComponent(formData.website)}%0D%0APhone: ${encodeURIComponent(formData.phone)}`}
-                  className="w-full sm:w-auto px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-full transition-colors cursor-pointer text-center"
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="w-full sm:w-auto px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-full transition-colors cursor-pointer"
                 >
-                  Email Instead
-                </a>
+                  Close
+                </button>
               </div>
             </div>
           ) : (
             /* ═══════════════════════════════════════════════════════════
-               SIMPLE FORM (NAME, EMAIL, PHONE, WEBSITE, MESSAGE)
+               FORM (NAME, EMAIL, PHONE, WEBSITE, MESSAGE)
                ═══════════════════════════════════════════════════════════ */
             <form onSubmit={handleSubmit} className="space-y-3.5">
               {errorMessage && (
@@ -295,15 +300,15 @@ export default function BookingModal({ isOpen, onClose }) {
                   disabled={isSubmitting}
                   className="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] disabled:opacity-50"
                 >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Send Consultation Request</span>
+                  <Send className="w-4 h-4" />
+                  <span>Send via Email</span>
                 </button>
               </div>
 
               {/* Trust Badge */}
               <div className="pt-1 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>100% Confidential &bull; No obligation review</span>
+                <span>100% Confidential &bull; Sent directly to {personalInfo.email}</span>
               </div>
             </form>
           )}

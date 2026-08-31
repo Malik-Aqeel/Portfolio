@@ -112,26 +112,37 @@ export default function Contact({ onBookCall }) {
     message: '',
   });
 
+  const buildContactMailtoUrl = () => {
+    const subject = encodeURIComponent(`Growth Audit Request - ${formData.name.trim()} (${formData.company.trim() || formData.website.trim() || 'Store'})`);
+    const body = encodeURIComponent(
+      `Hi Shehzad,\n\n` +
+      `I would like to request a Google Ads Growth Audit for my e-commerce business.\n\n` +
+      `Here are my details:\n` +
+      `• Full Name: ${formData.name.trim()}\n` +
+      `• Email Address: ${formData.email.trim()}\n` +
+      (formData.company.trim() ? `• Brand / Company: ${formData.company.trim()}\n` : '') +
+      (formData.website.trim() ? `• Website / Store: ${formData.website.trim()}\n` : '') +
+      `• Monthly Google Ads Spend: ${formData.adSpend}\n` +
+      (formData.message.trim() ? `• Growth Goals / Challenges:\n${formData.message.trim()}\n\n` : '\n') +
+      `Looking forward to hearing from you.\n\n` +
+      `Best regards,\n` +
+      `${formData.name.trim()}`
+    );
+    return `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError('');
 
     try {
-      const phoneClean = personalInfo.whatsapp.replace(/[^0-9]/g, '');
-      const text = `Hi ${personalInfo.name}, I would like to request a Google Ads Growth Audit:%0A%0A` +
-        `*Name:* ${encodeURIComponent(formData.name.trim())}%0A` +
-        `*Email:* ${encodeURIComponent(formData.email.trim())}%0A` +
-        (formData.company ? `*Brand/Company:* ${encodeURIComponent(formData.company.trim())}%0A` : '') +
-        (formData.website ? `*Website:* ${encodeURIComponent(formData.website.trim())}%0A` : '') +
-        `*Monthly Spend:* ${encodeURIComponent(formData.adSpend)}%0A` +
-        (formData.message.trim() ? `*Goals:* ${encodeURIComponent(formData.message.trim())}%0A` : '');
-
-      window.open(`https://wa.me/${phoneClean}?text=${text}`, '_blank', 'noopener,noreferrer');
+      const mailtoUrl = buildContactMailtoUrl();
+      window.location.href = mailtoUrl;
       setSubmitted(true);
     } catch (err) {
       console.error('Contact submit error:', err);
-      setSubmitError('Unable to open WhatsApp. You can reach out directly via ' + personalInfo.whatsapp);
+      setSubmitError('Unable to open email client. You can reach out directly via ' + personalInfo.email);
     } finally {
       setIsSubmitting(false);
     }
@@ -327,18 +338,27 @@ export default function Contact({ onBookCall }) {
                     >
                       <CheckCircle2 className="w-10 h-10 text-emerald-600" />
                     </motion.div>
-                    <h4 className="text-2xl font-extrabold text-slate-900">Strategy Request Received!</h4>
+                    <h4 className="text-2xl font-extrabold text-slate-900">Email Client Opened!</h4>
                     <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
                       Thank you{formData.name ? ', ' : ''}
                       {formData.name && <span className="font-bold text-slate-900">{formData.name}</span>}
-                      . I have received your message and store link. I will review your request and get back to you shortly.
+                      ! Your email client has been opened with your audit details addressed to <strong className="text-emerald-700">{personalInfo.email}</strong>.
                     </p>
-                    <button
-                      onClick={() => setSubmitted(false)}
-                      className="inline-flex items-center gap-2 px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-all"
-                    >
-                      Send Another Message
-                    </button>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                      <a
+                        href={buildContactMailtoUrl()}
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
+                      >
+                        <Mail className="w-4 h-4" />
+                        <span>Send Email Now</span>
+                      </a>
+                      <button
+                        onClick={() => setSubmitted(false)}
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-all cursor-pointer"
+                      >
+                        Send Another Message
+                      </button>
+                    </div>
                   </motion.div>
                 ) : (
                   /* ── Form ── */
@@ -479,7 +499,7 @@ export default function Contact({ onBookCall }) {
                         whileHover={!shouldReduceMotion ? { scale: 1.01, boxShadow: '0 10px 25px -5px rgba(16, 185, 129, 0.25)' } : {}}
                         whileTap={!shouldReduceMotion ? { scale: 0.98 } : {}}
                       >
-                        <span>Book My Strategy Call</span>
+                        <span>Send Strategy Request via Email</span>
                         <Send className="w-4 h-4" />
                       </motion.button>
                     </motion.div>
