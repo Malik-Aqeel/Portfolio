@@ -175,7 +175,7 @@ export default function About({ onBookCall }) {
               {/* Subtle grid dots */}
               <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
-              <div className="relative z-10 p-7 sm:p-9 flex flex-col h-full min-h-[520px] justify-between">
+              <div className="relative z-10 p-5 sm:p-9 flex flex-col h-full min-h-[460px] sm:min-h-[520px] justify-between">
                 {/* Top badges row */}
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/90">
@@ -234,7 +234,7 @@ export default function About({ onBookCall }) {
                 </div>
 
                 {/* Bottom metric strip */}
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
                   <div className="flex-1 p-3 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
                     <p className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Tracking Integrity</p>
                     <div className="flex items-center gap-2 mt-1.5">

@@ -59,19 +59,19 @@ export default function Navbar({ onBookCall }) {
       <div
         className={`mx-auto pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isScrolled
-            ? 'w-[94%] max-w-[1240px] rounded-full bg-white/50 backdrop-blur-2xl border border-white/60 shadow-lg shadow-emerald-950/5 py-2.5 px-5 sm:px-8'
-            : 'w-full max-w-full rounded-none bg-white/75 backdrop-blur-md border-b border-slate-200/50 shadow-none py-3.5 px-6 sm:px-10 lg:px-14'
+            ? 'w-[96%] sm:w-[94%] max-w-[1240px] rounded-full bg-white/70 backdrop-blur-2xl border border-white/60 shadow-lg shadow-emerald-950/5 py-2 sm:py-2.5 px-3.5 sm:px-8'
+            : 'w-full max-w-full rounded-none bg-white/80 backdrop-blur-md border-b border-slate-200/50 shadow-none py-2.5 sm:py-3.5 px-4 sm:px-10 lg:px-14'
         }`}
       >
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
 
           {/* ── Left: Clean Brand Logo ── */}
           <a
             href="#home"
-            className="flex items-center gap-2.5 group text-left cursor-pointer shrink-0 whitespace-nowrap"
+            className="flex items-center gap-2 sm:gap-2.5 group text-left cursor-pointer shrink-0 whitespace-nowrap"
           >
             {/* Google Ads 3D Icon */}
-            <div className="w-8 h-8 rounded-xl bg-white shadow-xs border border-slate-200/70 flex items-center justify-center p-1.5 shrink-0 group-hover:scale-105 transition-transform">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white shadow-xs border border-slate-200/70 flex items-center justify-center p-1 sm:p-1.5 shrink-0 group-hover:scale-105 transition-transform">
               <svg viewBox="0 0 100 100" className="w-full h-full">
                 <rect x="18" y="24" width="22" height="52" rx="11" transform="rotate(-35 29 50)" fill="#4285F4" />
                 <rect x="52" y="32" width="22" height="42" rx="11" transform="rotate(35 63 53)" fill="#34A853" />
@@ -81,7 +81,7 @@ export default function Navbar({ onBookCall }) {
 
             <div className="whitespace-nowrap">
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight leading-none group-hover:text-emerald-700 transition-colors whitespace-nowrap">
+                <span className="font-extrabold text-slate-900 text-xs sm:text-base tracking-tight leading-none group-hover:text-emerald-700 transition-colors whitespace-nowrap">
                   {personalInfo.name}
                 </span>
                 <span className="relative flex h-2 w-2">
@@ -89,7 +89,7 @@ export default function Navbar({ onBookCall }) {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
               </div>
-              <span className="text-[10px] font-semibold text-slate-500 tracking-wide block mt-0.5 whitespace-nowrap">
+              <span className="text-[9px] sm:text-[10px] font-semibold text-slate-500 tracking-wide block mt-0.5 whitespace-nowrap">
                 Google Ads Expert
               </span>
             </div>
@@ -123,8 +123,8 @@ export default function Navbar({ onBookCall }) {
             })}
           </nav>
 
-          {/* ── Right: Sleek Action CTA Button ── */}
-          <div className="hidden lg:flex items-center gap-3 shrink-0 whitespace-nowrap">
+          {/* ── Right: Sleek Action CTA Button (Visible on tablet & desktop) ── */}
+          <div className="hidden sm:flex items-center gap-3 shrink-0 whitespace-nowrap">
             <div className="relative group">
               {/* Ambient Glow Aura on hover */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full blur-sm opacity-0 group-hover:opacity-75 transition-all duration-300 pointer-events-none" />
@@ -138,7 +138,7 @@ export default function Navbar({ onBookCall }) {
                 } : {}}
                 whileTap={!shouldReduceMotion ? { scale: 0.96, y: 0 } : {}}
                 transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                className="relative px-5 py-2 rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-md shadow-emerald-500/25 transition-all flex items-center gap-2 cursor-pointer button-shine overflow-hidden shrink-0 whitespace-nowrap group"
+                className="relative px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-[11px] sm:text-xs font-bold shadow-md shadow-emerald-500/25 transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer button-shine overflow-hidden shrink-0 whitespace-nowrap group"
               >
                 {/* Dynamic light sheen sweep on hover */}
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
@@ -146,7 +146,7 @@ export default function Navbar({ onBookCall }) {
                 <span className="relative z-10 whitespace-nowrap transition-transform duration-200 group-hover:-translate-x-0.5">
                   Get Free Audit
                 </span>
-                <ArrowRight className="relative z-10 w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110" />
+                <ArrowRight className="relative z-10 w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110" />
               </motion.button>
             </div>
           </div>

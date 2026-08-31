@@ -15,6 +15,8 @@
   html {
     scroll-behavior: smooth;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   body {
@@ -22,7 +24,18 @@
     color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    max-width: 100vw;
+    position: relative;
   }
+}
+
+/* iOS Safe Area & Mobile Ergonomic Helpers */
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
+}
+.bottom-safe {
+  bottom: max(1rem, calc(1rem + env(safe-area-inset-bottom, 0px)));
 }
 
 /* GPU Hardware Acceleration & Smooth Scroll Optimization */

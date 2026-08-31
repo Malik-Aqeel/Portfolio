@@ -32,11 +32,11 @@ export default function MobileStickyCTA({ onBookCall }) {
   if (!isVisible) return null;
 
   return (
-    <div className="md:hidden fixed bottom-4 inset-x-4 z-30 animate-in slide-in-from-bottom duration-300">
-      <div className="bg-white/95 backdrop-blur-md p-2 rounded-2xl border border-emerald-200 shadow-xl">
+    <div className="md:hidden fixed bottom-safe inset-x-3 sm:inset-x-4 z-30 animate-in slide-in-from-bottom duration-300 pointer-events-none">
+      <div className="pointer-events-auto bg-white/95 backdrop-blur-md p-2 rounded-2xl border border-emerald-200/90 shadow-xl shadow-emerald-950/15">
         <button
           onClick={onBookCall}
-          className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl shadow-md flex items-center justify-center gap-2 active:scale-98 transition-all"
+          className="w-full py-3 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm rounded-xl shadow-md shadow-emerald-500/25 flex items-center justify-center gap-2 active:scale-98 transition-all button-shine cursor-pointer"
         >
           <Sparkles className="w-4 h-4 text-emerald-200" />
           <span>Book a Free Strategy Call</span>

@@ -652,11 +652,11 @@ export default function Hero({ onBookCall }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap items-center gap-3.5 pt-1"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-3.5 pt-1"
             >
               <button
                 onClick={onBookCall}
-                className="px-7 py-3.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all flex items-center gap-2 cursor-pointer active:scale-98 button-shine relative overflow-hidden"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 button-shine relative overflow-hidden"
               >
                 <span>Get Free Audit</span>
                 <ArrowRight className="w-4 h-4" />
@@ -664,22 +664,22 @@ export default function Hero({ onBookCall }) {
 
               <a
                 href="#case-studies"
-                className="px-6 py-3.5 rounded-full bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm sm:text-base border border-slate-200/90 shadow-soft-sm hover:border-emerald-300 transition-all flex items-center gap-2"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm sm:text-base border border-slate-200/90 shadow-soft-sm hover:border-emerald-300 transition-all flex items-center justify-center gap-2"
               >
                 <LineChart className="w-4 h-4 text-emerald-600" />
                 <span>View Case Studies</span>
               </a>
             </motion.div>
 
-            {/* 3 Pillars / Feature Row at Bottom (Themed) */}
+            {/* 3 Pillars / Feature Row at Bottom (Responsive on mobile) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="grid grid-cols-3 gap-2.5 sm:gap-4 pt-3 border-t border-slate-200/70"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 pt-3 border-t border-slate-200/70"
             >
-              <div className="flex items-start gap-2.5 group">
-                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform shadow-xs">
+              <div className="flex items-center sm:items-start gap-2.5 group">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
                   <Target className="w-4 h-4" />
                 </div>
                 <div>
@@ -688,8 +688,8 @@ export default function Hero({ onBookCall }) {
                 </div>
               </div>
 
-              <div className="flex items-start gap-2.5 group">
-                <div className="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 border border-teal-100 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform shadow-xs">
+              <div className="flex items-center sm:items-start gap-2.5 group">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-teal-50 text-teal-600 border border-teal-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
                   <LineChart className="w-4 h-4" />
                 </div>
                 <div>
@@ -698,8 +698,8 @@ export default function Hero({ onBookCall }) {
                 </div>
               </div>
 
-              <div className="flex items-start gap-2.5 group">
-                <div className="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 border border-sky-100 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform shadow-xs">
+              <div className="flex items-center sm:items-start gap-2.5 group">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-sky-50 text-sky-600 border border-sky-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
                   <Rocket className="w-4 h-4" />
                 </div>
                 <div>
@@ -714,7 +714,7 @@ export default function Hero({ onBookCall }) {
           {/* ═════════════════════════════════════════════════════
               RIGHT COLUMN: Perspective 3D Google Ads Dashboard
           ═════════════════════════════════════════════════════ */}
-          <div className="lg:col-span-7 relative flex items-center justify-center">
+          <div className="lg:col-span-7 relative flex items-center justify-center pb-8 sm:pb-4 lg:pb-0">
 
             {/* Floating 3D Google Ads Logo at Top-Left */}
             {!shouldReduceMotion && (
@@ -829,18 +829,18 @@ export default function Hero({ onBookCall }) {
               </div>
 
               {/* ── Main Dashboard Body ── */}
-              <div className="flex-1 p-4 sm:p-6 bg-white space-y-4 min-w-0 rounded-r-3xl relative">
+              <div className="flex-1 p-3 sm:p-5 lg:p-6 bg-white space-y-3.5 sm:space-y-4 min-w-0 rounded-r-3xl relative">
 
                 {/* Top Header Row with Interactive Date Dropdown Picker */}
-                <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 relative z-30">
-                  <div className="flex items-center gap-2 min-w-0">
+                <div className="flex items-center justify-between gap-1.5 sm:gap-2 border-b border-slate-100 pb-3 relative z-30">
+                  <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                     <motion.h3
                       key={currentTabConfig.title}
                       initial={{ opacity: 0, x: -4 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.25 }}
-                      className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight truncate"
+                      className="font-extrabold text-slate-900 text-xs sm:text-base tracking-tight truncate"
                     >
                       {currentTabConfig.title}
                     </motion.h3>
@@ -850,10 +850,10 @@ export default function Hero({ onBookCall }) {
                   </div>
 
                   {/* ── Interactive Date Picker Pill & Dropdown ── */}
-                  <div className="relative" ref={dropdownRef}>
+                  <div className="relative shrink-0" ref={dropdownRef}>
                     <button
                       onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 hover:border-emerald-300 text-[11px] font-bold text-slate-700 hover:text-emerald-700 transition-all shadow-xs cursor-pointer select-none"
+                      className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 hover:border-emerald-300 text-[10px] sm:text-[11px] font-bold text-slate-700 hover:text-emerald-700 transition-all shadow-xs cursor-pointer select-none"
                     >
                       <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                       <span>{activeData.label}</span>
@@ -907,7 +907,7 @@ export default function Hero({ onBookCall }) {
                 </div>
 
                 {/* 4 Metric Cards Grid (Dynamic values based on Selected Tab & Date) */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
                   {currentMetrics.map((metric, idx) => {
                     const MetricIcon = metric.icon;
                     return (
@@ -916,16 +916,16 @@ export default function Hero({ onBookCall }) {
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.25, delay: idx * 0.04 }}
-                        className={`p-3 rounded-2xl bg-gradient-to-br ${metric.bgGradient} border ${metric.border} shadow-soft-sm hover:shadow-md transition-all`}
+                        className={`p-2.5 sm:p-3 rounded-2xl bg-gradient-to-br ${metric.bgGradient} border ${metric.border} shadow-soft-sm hover:shadow-md transition-all`}
                       >
-                        <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
+                        <div className="flex items-center gap-1 text-[9.5px] sm:text-[10px] font-bold text-slate-400">
                           <MetricIcon className={`w-3 h-3 ${metric.iconColor}`} />
                           <span className="truncate">{metric.label}</span>
                         </div>
-                        <p className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 tracking-tight truncate">
+                        <p className="text-base sm:text-lg lg:text-xl font-black text-slate-900 mt-0.5 tracking-tight truncate">
                           {metric.value}
                         </p>
-                        <p className={`text-[10px] font-bold ${metric.growthColor} mt-0.5 truncate`}>
+                        <p className={`text-[9.5px] sm:text-[10px] font-bold ${metric.growthColor} mt-0.5 truncate`}>
                           {metric.growth}
                         </p>
                         {/* Dynamic Sparkline */}
@@ -1056,9 +1056,9 @@ export default function Hero({ onBookCall }) {
               <motion.div
                 variants={floatSlow}
                 animate="animate"
-                className="absolute -bottom-5 -left-4 sm:left-2 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 shadow-xl border border-slate-200/80 flex items-center gap-3"
+                className="absolute -bottom-6 left-1.5 sm:left-2 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-xl border border-slate-200/80 flex items-center gap-2.5 sm:gap-3 max-w-[calc(100%-12px)] sm:max-w-none"
               >
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-md shadow-emerald-500/30 shrink-0">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-md shadow-emerald-500/30 shrink-0">
                   <Star className="w-5 h-5 fill-white" />
                 </div>
                 <div>

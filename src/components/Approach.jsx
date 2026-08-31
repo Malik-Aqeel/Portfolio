@@ -188,7 +188,7 @@ export default function Approach() {
     >
       {/* ─── Sticky Container ─── */}
       <div
-        className="sticky top-0 h-screen overflow-hidden"
+        className="sticky top-0 h-screen min-h-[100dvh] overflow-hidden"
         style={{
           background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFB 30%, #F0F7F4 60%, #F8FAFB 100%)',
         }}
@@ -215,21 +215,21 @@ export default function Approach() {
         />
 
         {/* ─── Stable Layout ─── */}
-        <div className="relative z-10 h-full flex flex-col justify-start pt-20 sm:pt-24 lg:pt-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 h-full flex flex-col justify-between pt-16 sm:pt-20 lg:pt-24 pb-3 sm:pb-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* ═══ SECTION HEADER ═══ */}
-          <div className="text-center mb-8 lg:mb-12 shrink-0">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-4">
+          <div className="text-center mb-3 sm:mb-6 lg:mb-10 shrink-0">
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1 sm:py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-2 sm:mb-4">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
-              <span className="text-[11px] font-bold text-emerald-700 tracking-widest uppercase">
+              <span className="text-[10px] sm:text-[11px] font-bold text-emerald-700 tracking-widest uppercase">
                 6-Step Methodology
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.22] pb-1">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.22] pb-1">
               My Approach To{' '}
               <span className="animated-growth-gradient">Google Ads</span>
             </h2>
@@ -298,7 +298,7 @@ export default function Approach() {
             </div>
 
             {/* ─── RIGHT: Permanent Rock-Solid Card Shell (NO JUMP, NO GLITCH) ─── */}
-            <div className="lg:col-span-8 relative min-h-[380px] sm:min-h-[400px]">
+            <div className="lg:col-span-8 relative min-h-[290px] sm:min-h-[380px]">
               {/* Card Glow Behind */}
               <div
                 className="absolute -inset-2 rounded-3xl opacity-30 blur-xl pointer-events-none transition-all duration-500"
@@ -306,11 +306,11 @@ export default function Approach() {
               />
 
               {/* Static Card Shell - NEVER unmounts */}
-              <div className="relative rounded-3xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-soft-lg overflow-hidden flex flex-col justify-between min-h-[350px] sm:min-h-[380px]">
+              <div className="relative rounded-3xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-soft-lg overflow-hidden flex flex-col justify-between min-h-[280px] sm:min-h-[350px]">
                 {/* Top gradient accent bar */}
                 <div className={`h-1.5 w-full bg-gradient-to-r ${currentVisual.gradient} transition-all duration-500`} />
 
-                <div className="p-7 sm:p-9 lg:p-10 flex-1 flex flex-col justify-between">
+                <div className="p-5 sm:p-8 lg:p-10 flex-1 flex flex-col justify-between">
 
                   {/* Animated Inner Content (Gentle fade, zero container pop) */}
                   <motion.div
@@ -320,36 +320,36 @@ export default function Approach() {
                     transition={{ duration: 0.22, ease: 'easeOut' }}
                   >
                     {/* Step number + icon + name */}
-                    <div className="flex items-center gap-3.5 mb-5">
+                    <div className="flex items-center gap-3 sm:gap-3.5 mb-3 sm:mb-5">
                       <div
-                        className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${currentVisual.gradient} flex items-center justify-center shadow-md text-white transition-all duration-500`}
+                        className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br ${currentVisual.gradient} flex items-center justify-center shadow-md text-white transition-all duration-500`}
                       >
-                        <CurrentIcon className="w-5 h-5" />
+                        <CurrentIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
                       <div>
-                        <p className="text-[10.5px] font-bold text-slate-400 uppercase tracking-widest">
+                        <p className="text-[9.5px] sm:text-[10.5px] font-bold text-slate-400 uppercase tracking-widest">
                           Step {currentStep.step} of 06
                         </p>
-                        <p className={`text-sm font-extrabold ${currentVisual.darkText}`}>
+                        <p className={`text-xs sm:text-sm font-extrabold ${currentVisual.darkText}`}>
                           {currentStep.name}
                         </p>
                       </div>
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug mb-3">
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug mb-2 sm:mb-3">
                       {currentStep.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl">
+                    <p className="text-slate-600 text-xs sm:text-sm lg:text-base leading-relaxed max-w-xl">
                       {currentStep.desc}
                     </p>
                   </motion.div>
 
                   {/* Progress Bar & Interactive Step Buttons */}
-                  <div className="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between gap-4">
-                    <div className="flex-1 flex items-center gap-4">
+                  <div className="pt-4 sm:pt-6 mt-3 sm:mt-4 border-t border-slate-100 flex items-center justify-between gap-4">
+                    <div className="flex-1 flex items-center gap-3 sm:gap-4">
                       <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full bg-gradient-to-r ${currentVisual.gradient} transition-all duration-300`}
@@ -386,17 +386,17 @@ export default function Approach() {
               </div>
 
               {/* Mobile Step Dots */}
-              <div className="flex lg:hidden items-center justify-center gap-2 mt-5">
+              <div className="flex lg:hidden items-center justify-center gap-1.5 sm:gap-2 mt-3 sm:mt-5">
                 {approachSteps.map((_, idx) => (
                   <button
                     key={idx}
                     onClick={() => setActiveStep(idx)}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       idx === activeStep
-                        ? `w-8 bg-gradient-to-r ${stepVisuals[idx].gradient}`
+                        ? `w-7 sm:w-8 bg-gradient-to-r ${stepVisuals[idx].gradient}`
                         : idx < activeStep
-                          ? 'w-3 bg-slate-400/50'
-                          : 'w-3 bg-slate-200'
+                          ? 'w-2.5 sm:w-3 bg-slate-400/50'
+                          : 'w-2.5 sm:w-3 bg-slate-200'
                     }`}
                   />
                 ))}
@@ -406,8 +406,8 @@ export default function Approach() {
           </div>
 
           {/* ─── Scroll Hint ─── */}
-          <div className="pb-6 pt-4 text-center shrink-0">
-            <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+          <div className="pb-3 sm:pb-6 pt-1 sm:pt-4 text-center shrink-0">
+            <div className="inline-flex items-center gap-1.5 text-[9.5px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest">
               <span>{activeStep < totalSteps - 1 ? 'Scroll down for next step' : 'Scroll down for next section'}</span>
               <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
             </div>

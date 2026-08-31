@@ -353,7 +353,7 @@ export default function Contact({ onBookCall }) {
                             onFocus={() => setFocusedField('name')}
                             onBlur={() => setFocusedField(null)}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full pl-10 pr-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200"
+                            className="w-full pl-10 pr-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200"
                           />
                         </div>
                       </div>
@@ -369,7 +369,7 @@ export default function Contact({ onBookCall }) {
                             onFocus={() => setFocusedField('email')}
                             onBlur={() => setFocusedField(null)}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            className="w-full pl-10 pr-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200"
+                            className="w-full pl-10 pr-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200"
                           />
                         </div>
                       </div>
@@ -388,7 +388,7 @@ export default function Contact({ onBookCall }) {
                             onFocus={() => setFocusedField('company')}
                             onBlur={() => setFocusedField(null)}
                             onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                            className="w-full pl-10 pr-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200"
+                            className="w-full pl-10 pr-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200"
                           />
                         </div>
                       </div>
@@ -404,7 +404,7 @@ export default function Contact({ onBookCall }) {
                             onFocus={() => setFocusedField('website')}
                             onBlur={() => setFocusedField(null)}
                             onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                            className="w-full pl-10 pr-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200"
+                            className="w-full pl-10 pr-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200"
                           />
                         </div>
                       </div>
@@ -420,7 +420,7 @@ export default function Contact({ onBookCall }) {
                           onFocus={() => setFocusedField('adSpend')}
                           onBlur={() => setFocusedField(null)}
                           onChange={(e) => setFormData({ ...formData, adSpend: e.target.value })}
-                          className="w-full pl-10 pr-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-sm text-slate-800 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200 appearance-none cursor-pointer"
+                          className="w-full pl-10 pr-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-base sm:text-sm text-slate-800 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200 appearance-none cursor-pointer"
                           style={{
                             backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
                             backgroundRepeat: 'no-repeat',
@@ -445,7 +445,7 @@ export default function Contact({ onBookCall }) {
                         onFocus={() => setFocusedField('message')}
                         onBlur={() => setFocusedField(null)}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full p-4 bg-slate-50/80 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200 resize-none"
+                        className="w-full p-4 bg-slate-50/80 border border-slate-200 rounded-xl text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 transition-all duration-200 resize-none"
                       />
                     </motion.div>
 

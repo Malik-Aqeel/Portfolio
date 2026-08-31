@@ -221,7 +221,7 @@ export default function CaseStudies({ onBookCall }) {
 
         {/* ═══ CASE STUDY CARDS ═══ */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -254,13 +254,13 @@ export default function CaseStudies({ onBookCall }) {
                   {/* Top gradient accent bar */}
                   <div className={`h-1 w-full bg-gradient-to-r ${visual.gradient} transition-all duration-300 ${isHovered ? 'h-1.5' : ''}`} />
 
-                  <div className="p-6 sm:p-7 flex-1 flex flex-col">
+                  <div className="p-5 sm:p-7 flex-1 flex flex-col">
 
                     {/* Header: Brand Logo + Industry + Campaign Type */}
                     <div className="flex items-start justify-between mb-5">
                       {/* Logo */}
                       <motion.div
-                        className="w-14 h-14 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center shadow-soft-sm overflow-hidden p-1.5"
+                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center shadow-soft-sm overflow-hidden p-1.5 shrink-0"
                         animate={isHovered && !shouldReduceMotion ? { scale: 1.08 } : { scale: 1 }}
                         transition={{ duration: 0.3 }}
                       >
@@ -300,13 +300,13 @@ export default function CaseStudies({ onBookCall }) {
                     </p>
 
                     {/* ─── Metrics dashboard ─── */}
-                    <div className={`rounded-xl ${visual.metricBg} border ${visual.metricBorder} p-4 mb-5`}>
-                      <div className="grid grid-cols-3 gap-3">
+                    <div className={`rounded-xl ${visual.metricBg} border ${visual.metricBorder} p-3 sm:p-4 mb-5`}>
+                      <div className="grid grid-cols-3 gap-2 sm:gap-3">
                         {/* ROAS */}
                         <div className="text-center">
                           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">ROAS</p>
                           <motion.p
-                            className={`text-xl font-black ${visual.roasColor} tracking-tight leading-none`}
+                            className={`text-lg sm:text-xl font-black ${visual.roasColor} tracking-tight leading-none`}
                             initial={{ opacity: 0, scale: 0.8 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
@@ -323,7 +323,7 @@ export default function CaseStudies({ onBookCall }) {
                         <div className="text-center border-x border-slate-200/40">
                           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Revenue</p>
                           <motion.p
-                            className="text-xl font-black text-slate-900 tracking-tight leading-none"
+                            className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-none"
                             initial={{ opacity: 0, scale: 0.8 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
@@ -340,7 +340,7 @@ export default function CaseStudies({ onBookCall }) {
                         <div className="text-center">
                           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">CPA</p>
                           <motion.p
-                            className={`text-xl font-black ${visual.cpaColor} tracking-tight leading-none`}
+                            className={`text-lg sm:text-xl font-black ${visual.cpaColor} tracking-tight leading-none`}
                             initial={{ opacity: 0, scale: 0.8 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
