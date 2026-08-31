@@ -112,6 +112,388 @@ const dateRanges = [
   }
 ];
 
+// Interactive Dashboard Sidebar Tabs
+const sidebarTabs = [
+  { id: 'home', name: 'Overview', icon: Home },
+  { id: 'analytics', name: 'ROAS & Profit', icon: LineChart },
+  { id: 'campaigns', name: 'Campaign Mix', icon: Grid },
+  { id: 'target', name: 'CPA & Conv.', icon: Target },
+  { id: 'users', name: 'Audiences & LTV', icon: Users },
+];
+
+const tabConfigs = {
+  home: {
+    id: 'home',
+    title: 'Google Ads Performance',
+    badge: 'Live Overview',
+    legend1: 'Clicks Trend',
+    legend2: 'Conversions',
+    yAxis: ['1.5K', '1K', '500', '0'],
+    telemetrySuffix: 'Telemetry',
+    getMetrics: (data) => [
+      {
+        icon: LineChart,
+        iconColor: 'text-emerald-600',
+        bgGradient: 'from-emerald-50/50 to-white',
+        border: 'border-emerald-100',
+        label: 'Clicks',
+        value: data.clicks,
+        growth: data.clicksGrowth,
+        growthColor: 'text-emerald-600',
+        spark: data.sparkClicks,
+        sparkStroke: '#059669',
+      },
+      {
+        icon: TrendingUp,
+        iconColor: 'text-teal-600',
+        bgGradient: 'from-teal-50/50 to-white',
+        border: 'border-teal-100',
+        label: 'Conversions',
+        value: data.conversions,
+        growth: data.conversionsGrowth,
+        growthColor: 'text-teal-600',
+        spark: data.sparkConv,
+        sparkStroke: '#0D9488',
+      },
+      {
+        icon: LineChart,
+        iconColor: 'text-amber-500',
+        bgGradient: 'from-amber-50/30 to-white',
+        border: 'border-slate-100',
+        label: 'Cost / Conv.',
+        value: data.cpa,
+        growth: data.cpaGrowth,
+        growthColor: 'text-emerald-600',
+        spark: data.sparkCpa,
+        sparkStroke: '#F59E0B',
+      },
+      {
+        icon: Zap,
+        iconColor: 'text-emerald-600',
+        bgGradient: 'from-emerald-50/60 to-teal-50/40',
+        border: 'border-emerald-200/60',
+        label: 'Conv. Value',
+        value: data.convValue,
+        growth: data.convValueGrowth,
+        growthColor: 'text-emerald-600',
+        spark: data.sparkVal,
+        sparkStroke: '#10B981',
+      },
+    ],
+    getGraph: (data) => ({
+      line1: data.clicksLine,
+      area1: data.clicksArea,
+      color1: '#059669',
+      fill1: 'url(#emeraldHeroFill)',
+      strokeWidth1: '2.5',
+      line2: data.convLine,
+      area2: data.convArea,
+      color2: '#0D9488',
+      fill2: 'url(#tealHeroFill)',
+      strokeWidth2: '2',
+      peakX: data.peakX,
+      peakY: data.peakY,
+    }),
+  },
+  analytics: {
+    id: 'analytics',
+    title: 'ROAS & Revenue Analytics',
+    badge: 'Profit Focus',
+    legend1: 'Net Revenue',
+    legend2: 'Target ROAS',
+    yAxis: ['6.0x', '4.0x', '2.0x', '1.0x'],
+    telemetrySuffix: 'Real-Time ROI',
+    getMetrics: (data) => {
+      const roasMap = { '7D': '4.12x', '30D': '4.85x', '90D': '5.20x', 'Year': '5.64x' };
+      const spendMap = { '7D': '$9.8K', '30D': '$38.2K', '90D': '$114K', 'Year': '$218K' };
+      const profitMap = { '7D': '64.2%', '30D': '68.5%', '90D': '71.2%', 'Year': '74.8%' };
+      return [
+        {
+          icon: Zap,
+          iconColor: 'text-emerald-600',
+          bgGradient: 'from-emerald-50/50 to-white',
+          border: 'border-emerald-200/70',
+          label: 'Target ROAS',
+          value: roasMap[data.id] || '4.85x',
+          growth: data.badge,
+          growthColor: 'text-emerald-600',
+          spark: 'M0,17 Q15,8 30,12 T45,5 T60,2',
+          sparkStroke: '#059669',
+        },
+        {
+          icon: TrendingUp,
+          iconColor: 'text-teal-600',
+          bgGradient: 'from-teal-50/50 to-white',
+          border: 'border-teal-100',
+          label: 'Net Revenue',
+          value: data.convValue,
+          growth: data.convValueGrowth,
+          growthColor: 'text-teal-600',
+          spark: 'M0,16 Q15,10 32,8 T48,4 T60,2',
+          sparkStroke: '#0D9488',
+        },
+        {
+          icon: ShieldCheck,
+          iconColor: 'text-blue-500',
+          bgGradient: 'from-blue-50/30 to-white',
+          border: 'border-blue-100',
+          label: 'Profit Margin',
+          value: profitMap[data.id] || '68.5%',
+          growth: '↑ 14.8% net',
+          growthColor: 'text-blue-600',
+          spark: 'M0,15 Q15,11 30,7 T48,4 T60,1',
+          sparkStroke: '#3B82F6',
+        },
+        {
+          icon: LineChart,
+          iconColor: 'text-indigo-600',
+          bgGradient: 'from-indigo-50/40 to-white',
+          border: 'border-indigo-100',
+          label: 'Ad Spend',
+          value: spendMap[data.id] || '$38.2K',
+          growth: 'Optimized Pace',
+          growthColor: 'text-indigo-600',
+          spark: 'M0,8 Q15,12 30,9 T48,14 T60,16',
+          sparkStroke: '#6366F1',
+        },
+      ];
+    },
+    getGraph: (data) => ({
+      line1: 'M0,72 Q25,55 60,40 T120,32 T180,22 T240,14 T320,6',
+      area1: '0,72 25,55 60,40 90,46 120,32 150,30 180,22 210,24 240,14 280,10 320,6 320,100 0,100',
+      color1: '#059669',
+      fill1: 'url(#emeraldHeroFill)',
+      strokeWidth1: '2.8',
+      line2: 'M0,86 Q25,78 60,65 T120,54 T180,44 T240,32 T320,20',
+      area2: '0,86 25,78 60,65 90,70 120,54 150,56 180,44 210,48 240,32 280,26 320,20 320,100 0,100',
+      color2: '#0284C7',
+      fill2: 'url(#blueHeroFill)',
+      strokeWidth2: '2',
+      peakX: 320,
+      peakY: 6,
+    }),
+  },
+  campaigns: {
+    id: 'campaigns',
+    title: 'Campaign Mix & Scaling',
+    badge: 'Multi-Channel',
+    legend1: 'Performance Max',
+    legend2: 'Search & Shopping',
+    yAxis: ['100%', '75%', '50%', '25%'],
+    telemetrySuffix: 'Channel Mix',
+    getMetrics: (data) => [
+      {
+        icon: Grid,
+        iconColor: 'text-emerald-600',
+        bgGradient: 'from-emerald-50/50 to-white',
+        border: 'border-emerald-100',
+        label: 'PMax Share',
+        value: `${data.donut.pmax + 35}%`,
+        growth: '↑ Primary Scale',
+        growthColor: 'text-emerald-600',
+        spark: 'M0,16 Q15,7 30,10 T45,4 T60,1',
+        sparkStroke: '#059669',
+      },
+      {
+        icon: Rocket,
+        iconColor: 'text-teal-600',
+        bgGradient: 'from-teal-50/50 to-white',
+        border: 'border-teal-100',
+        label: 'Search ROAS',
+        value: '5.42x',
+        growth: '↑ 26.4% Intent',
+        growthColor: 'text-teal-600',
+        spark: 'M0,17 Q15,10 32,8 T48,4 T60,2',
+        sparkStroke: '#0D9488',
+      },
+      {
+        icon: Target,
+        iconColor: 'text-amber-500',
+        bgGradient: 'from-amber-50/30 to-white',
+        border: 'border-amber-100',
+        label: 'Shopping CPA',
+        value: '$4.20',
+        growth: '↓ 31.8% Cheaper',
+        growthColor: 'text-emerald-600',
+        spark: 'M0,4 Q15,10 30,12 T48,15 T60,17',
+        sparkStroke: '#F59E0B',
+      },
+      {
+        icon: Activity,
+        iconColor: 'text-emerald-600',
+        bgGradient: 'from-emerald-50/60 to-teal-50/40',
+        border: 'border-emerald-200/60',
+        label: 'Active SKUs',
+        value: '1,420+',
+        growth: 'Top Tier Tiered',
+        growthColor: 'text-emerald-600',
+        spark: 'M0,18 Q15,9 30,6 T48,2 T60,1',
+        sparkStroke: '#10B981',
+      },
+    ],
+    getGraph: (data) => ({
+      line1: 'M0,80 Q30,68 65,50 T130,36 T195,24 T260,14 T320,5',
+      area1: '0,80 30,68 65,50 95,56 130,36 160,32 195,24 230,22 260,14 290,10 320,5 320,100 0,100',
+      color1: '#059669',
+      fill1: 'url(#emeraldHeroFill)',
+      strokeWidth1: '2.5',
+      line2: 'M0,88 Q30,80 65,72 T130,60 T195,50 T260,42 T320,34',
+      area2: '0,88 30,80 65,72 95,78 130,60 160,58 195,50 230,48 260,42 290,38 320,34 320,100 0,100',
+      color2: '#0D9488',
+      fill2: 'url(#tealHeroFill)',
+      strokeWidth2: '2',
+      peakX: 320,
+      peakY: 5,
+    }),
+  },
+  target: {
+    id: 'target',
+    title: 'CPA Reduction & Conversion Engine',
+    badge: 'Efficiency Boost',
+    legend1: 'Conv. Rate %',
+    legend2: 'CPA Drop ($)',
+    yAxis: ['6.0%', '4.5%', '3.0%', '1.5%'],
+    telemetrySuffix: 'Cost Down / Conv Up',
+    getMetrics: (data) => [
+      {
+        icon: Target,
+        iconColor: 'text-emerald-600',
+        bgGradient: 'from-emerald-50/50 to-white',
+        border: 'border-emerald-100',
+        label: 'Conv. Rate',
+        value: '4.85%',
+        growth: '↑ +48.2% boost',
+        growthColor: 'text-emerald-600',
+        spark: 'M0,17 Q15,11 30,8 T45,4 T60,1',
+        sparkStroke: '#059669',
+      },
+      {
+        icon: TrendingDown,
+        iconColor: 'text-teal-600',
+        bgGradient: 'from-teal-50/50 to-white',
+        border: 'border-teal-100',
+        label: 'Blended CPA',
+        value: data.cpa,
+        growth: data.cpaGrowth,
+        growthColor: 'text-emerald-600',
+        spark: data.sparkCpa,
+        sparkStroke: '#0D9488',
+      },
+      {
+        icon: CheckCircle2,
+        iconColor: 'text-blue-500',
+        bgGradient: 'from-blue-50/30 to-white',
+        border: 'border-blue-100',
+        label: 'Cart-to-Order',
+        value: '21.4%',
+        growth: '↑ 18.6% checkout',
+        growthColor: 'text-blue-600',
+        spark: 'M0,16 Q15,10 32,7 T48,3 T60,1',
+        sparkStroke: '#3B82F6',
+      },
+      {
+        icon: ShieldCheck,
+        iconColor: 'text-emerald-600',
+        bgGradient: 'from-emerald-50/60 to-teal-50/40',
+        border: 'border-emerald-200/60',
+        label: 'Quality Score',
+        value: '9.4 / 10',
+        growth: 'Lowest CPC tier',
+        growthColor: 'text-emerald-600',
+        spark: 'M0,17 Q15,8 30,12 T45,5 T60,2',
+        sparkStroke: '#10B981',
+      },
+    ],
+    getGraph: (data) => ({
+      line1: 'M0,82 Q25,66 60,48 T120,38 T180,26 T240,16 T320,6',
+      area1: '0,82 25,66 60,48 90,52 120,38 150,34 180,26 210,22 240,16 280,12 320,6 320,100 0,100',
+      color1: '#059669',
+      fill1: 'url(#emeraldHeroFill)',
+      strokeWidth1: '2.6',
+      line2: 'M0,25 Q25,36 60,48 T120,58 T180,68 T240,78 T320,86',
+      area2: '0,25 25,36 60,48 90,44 120,58 150,60 180,68 210,72 240,78 280,82 320,86 320,100 0,100',
+      color2: '#F59E0B',
+      fill2: 'url(#amberHeroFill)',
+      strokeWidth2: '2',
+      peakX: 320,
+      peakY: 6,
+    }),
+  },
+  users: {
+    id: 'users',
+    title: 'Audience Cohorts & Customer LTV',
+    badge: 'Customer Retention',
+    legend1: 'New Buyers',
+    legend2: 'Repeat Buyers (LTV)',
+    yAxis: ['80%', '60%', '40%', '20%'],
+    telemetrySuffix: 'Cohort Scaling',
+    getMetrics: (data) => [
+      {
+        icon: Users,
+        iconColor: 'text-emerald-600',
+        bgGradient: 'from-emerald-50/50 to-white',
+        border: 'border-emerald-100',
+        label: 'New Cust. Share',
+        value: '74.5%',
+        growth: '↑ Scaled Top-Funnel',
+        growthColor: 'text-emerald-600',
+        spark: 'M0,16 Q15,8 30,12 T45,5 T60,2',
+        sparkStroke: '#059669',
+      },
+      {
+        icon: TrendingUp,
+        iconColor: 'text-teal-600',
+        bgGradient: 'from-teal-50/50 to-white',
+        border: 'border-teal-100',
+        label: 'Repeat Buyers',
+        value: '25.5%',
+        growth: '↑ 54.2% LTV',
+        growthColor: 'text-teal-600',
+        spark: 'M0,17 Q15,10 32,8 T48,4 T60,2',
+        sparkStroke: '#0D9488',
+      },
+      {
+        icon: Zap,
+        iconColor: 'text-blue-500',
+        bgGradient: 'from-blue-50/30 to-white',
+        border: 'border-blue-100',
+        label: 'Avg Order Value',
+        value: '$148.50',
+        growth: '↑ +$32.00 uplift',
+        growthColor: 'text-blue-600',
+        spark: 'M0,16 Q15,10 32,7 T48,3 T60,1',
+        sparkStroke: '#3B82F6',
+      },
+      {
+        icon: Star,
+        iconColor: 'text-amber-500',
+        bgGradient: 'from-amber-50/30 to-white',
+        border: 'border-amber-100',
+        label: '90-Day LTV',
+        value: '$386.00',
+        growth: 'Compounding Value',
+        growthColor: 'text-emerald-600',
+        spark: 'M0,18 Q15,9 30,6 T48,2 T60,1',
+        sparkStroke: '#F59E0B',
+      },
+    ],
+    getGraph: (data) => ({
+      line1: 'M0,78 Q25,62 60,46 T120,34 T180,24 T240,14 T320,4',
+      area1: '0,78 25,62 60,46 90,50 120,34 150,30 180,24 210,20 240,14 280,8 320,4 320,100 0,100',
+      color1: '#059669',
+      fill1: 'url(#emeraldHeroFill)',
+      strokeWidth1: '2.6',
+      line2: 'M0,90 Q25,82 60,72 T120,60 T180,48 T240,36 T320,24',
+      area2: '0,90 25,82 60,72 90,76 120,60 150,56 180,48 210,44 240,36 280,30 320,24 320,100 0,100',
+      color2: '#0D9488',
+      fill2: 'url(#tealHeroFill)',
+      strokeWidth2: '2',
+      peakX: 320,
+      peakY: 4,
+    }),
+  },
+};
+
 export default function Hero({ onBookCall }) {
   const shouldReduceMotion = useReducedMotion();
   const [activeTab, setActiveTab] = useState('home');
@@ -120,6 +502,9 @@ export default function Hero({ onBookCall }) {
   const dropdownRef = useRef(null);
 
   const activeData = dateRanges[selectedRangeIndex];
+  const currentTabConfig = tabConfigs[activeTab] || tabConfigs.home;
+  const currentMetrics = currentTabConfig.getMetrics(activeData);
+  const currentGraph = currentTabConfig.getGraph(activeData);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -401,51 +786,46 @@ export default function Hero({ onBookCall }) {
                     </svg>
                   </div>
 
-                  <div className="space-y-4 flex flex-col items-center">
-                    <button
-                      onClick={() => setActiveTab('home')}
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
-                        activeTab === 'home'
-                          ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/40'
-                          : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
-                      }`}
-                    >
-                      <Home className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('analytics')}
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
-                        activeTab === 'analytics'
-                          ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white'
-                          : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
-                      }`}
-                    >
-                      <LineChart className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('campaigns')}
-                      className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all"
-                    >
-                      <Grid className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('target')}
-                      className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all"
-                    >
-                      <Target className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('users')}
-                      className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all"
-                    >
-                      <Users className="w-4 h-4" />
-                    </button>
+                  <div className="space-y-3 flex flex-col items-center">
+                    {sidebarTabs.map((tab) => {
+                      const Icon = tab.icon;
+                      const isActive = activeTab === tab.id;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveTab(tab.id)}
+                          className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer relative group ${
+                            isActive
+                              ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/40 ring-2 ring-emerald-400/40 scale-105'
+                              : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
+                          }`}
+                          aria-label={tab.name}
+                        >
+                          <Icon className="w-4 h-4" />
+                          {/* Tooltip on hover */}
+                          <span className="absolute left-full ml-3 px-2.5 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-slate-700 hidden sm:block">
+                            {tab.name}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-all cursor-pointer">
+                <button
+                  onClick={() => {
+                    setActiveTab('home');
+                    setSelectedRangeIndex(1);
+                  }}
+                  title="Reset to Default Overview"
+                  className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all cursor-pointer relative group"
+                  aria-label="Reset to Default"
+                >
                   <Settings className="w-4 h-4" />
-                </div>
+                  <span className="absolute left-full ml-3 px-2 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-slate-700 hidden sm:block">
+                    Reset View
+                  </span>
+                </button>
               </div>
 
               {/* ── Main Dashboard Body ── */}
@@ -453,11 +833,20 @@ export default function Hero({ onBookCall }) {
 
                 {/* Top Header Row with Interactive Date Dropdown Picker */}
                 <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 relative z-30">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <h3 className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight">
-                      Google Ads Performance
-                    </h3>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                    <motion.h3
+                      key={currentTabConfig.title}
+                      initial={{ opacity: 0, x: -4 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight truncate"
+                    >
+                      {currentTabConfig.title}
+                    </motion.h3>
+                    <span className="hidden md:inline-flex text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full shrink-0">
+                      {currentTabConfig.badge}
+                    </span>
                   </div>
 
                   {/* ── Interactive Date Picker Pill & Dropdown ── */}
@@ -517,112 +906,52 @@ export default function Hero({ onBookCall }) {
                   </div>
                 </div>
 
-                {/* 4 Metric Cards Grid (Dynamic values based on Selected Date) */}
+                {/* 4 Metric Cards Grid (Dynamic values based on Selected Tab & Date) */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                  {/* Card 1: Clicks */}
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-50/50 to-white border border-emerald-100 shadow-soft-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
-                      <LineChart className="w-3 h-3 text-emerald-600" />
-                      <span>Clicks</span>
-                    </div>
-                    <motion.p
-                      key={`clicks-${activeData.id}`}
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 tracking-tight"
-                    >
-                      {activeData.clicks}
-                    </motion.p>
-                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">{activeData.clicksGrowth}</p>
-                    {/* Dynamic Sparkline */}
-                    <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
-                      <path d={activeData.sparkClicks} fill="none" stroke="#059669" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                  </div>
-
-                  {/* Card 2: Conversions */}
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-teal-50/50 to-white border border-teal-100 shadow-soft-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
-                      <TrendingUp className="w-3 h-3 text-teal-600" />
-                      <span>Conversions</span>
-                    </div>
-                    <motion.p
-                      key={`conv-${activeData.id}`}
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 tracking-tight"
-                    >
-                      {activeData.conversions}
-                    </motion.p>
-                    <p className="text-[10px] font-bold text-teal-600 mt-0.5">{activeData.conversionsGrowth}</p>
-                    {/* Dynamic Sparkline */}
-                    <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
-                      <path d={activeData.sparkConv} fill="none" stroke="#0D9488" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                  </div>
-
-                  {/* Card 3: Cost / Conv. */}
-                  <div className="p-3 rounded-2xl bg-white border border-slate-100 shadow-soft-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
-                      <LineChart className="w-3 h-3 text-amber-500" />
-                      <span>Cost / Conv.</span>
-                    </div>
-                    <motion.p
-                      key={`cpa-${activeData.id}`}
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 tracking-tight"
-                    >
-                      {activeData.cpa}
-                    </motion.p>
-                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">{activeData.cpaGrowth}</p>
-                    {/* Dynamic Sparkline */}
-                    <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
-                      <path d={activeData.sparkCpa} fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                  </div>
-
-                  {/* Card 4: Conv. Value */}
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-50/60 to-teal-50/40 border border-emerald-200/60 shadow-soft-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-800">
-                      <Zap className="w-3 h-3 text-emerald-600" />
-                      <span>Conv. Value</span>
-                    </div>
-                    <motion.p
-                      key={`val-${activeData.id}`}
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="text-lg sm:text-xl font-black text-emerald-800 mt-0.5 tracking-tight"
-                    >
-                      {activeData.convValue}
-                    </motion.p>
-                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">{activeData.convValueGrowth}</p>
-                    {/* Dynamic Sparkline */}
-                    <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
-                      <path d={activeData.sparkVal} fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                  </div>
+                  {currentMetrics.map((metric, idx) => {
+                    const MetricIcon = metric.icon;
+                    return (
+                      <motion.div
+                        key={`${activeTab}-${metric.label}-${activeData.id}`}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.25, delay: idx * 0.04 }}
+                        className={`p-3 rounded-2xl bg-gradient-to-br ${metric.bgGradient} border ${metric.border} shadow-soft-sm hover:shadow-md transition-all`}
+                      >
+                        <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
+                          <MetricIcon className={`w-3 h-3 ${metric.iconColor}`} />
+                          <span className="truncate">{metric.label}</span>
+                        </div>
+                        <p className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 tracking-tight truncate">
+                          {metric.value}
+                        </p>
+                        <p className={`text-[10px] font-bold ${metric.growthColor} mt-0.5 truncate`}>
+                          {metric.growth}
+                        </p>
+                        {/* Dynamic Sparkline */}
+                        <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
+                          <path d={metric.spark} fill="none" stroke={metric.sparkStroke} strokeWidth="2" strokeLinecap="round" />
+                        </svg>
+                      </motion.div>
+                    );
+                  })}
                 </div>
 
-                {/* ── Main Dual-Line Graph Area (Changes dynamically on date selection) ── */}
+                {/* ── Main Dual-Line Graph Area (Changes dynamically on tab & date selection) ── */}
                 <div className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 space-y-2">
                   <div className="flex items-center justify-between text-[11px] text-slate-500">
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
-                        <span className="font-bold text-slate-800">Clicks Trend</span>
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: currentGraph.color1 }} />
+                        <span className="font-bold text-slate-800">{currentTabConfig.legend1}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-teal-500" />
-                        <span className="font-bold text-slate-800">Conversions</span>
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: currentGraph.color2 }} />
+                        <span className="font-bold text-slate-800">{currentTabConfig.legend2}</span>
                       </div>
                     </div>
                     <span className="font-semibold text-emerald-700 text-[10.5px]">
-                      {activeData.label} Telemetry
+                      {activeData.label} • {currentTabConfig.telemetrySuffix}
                     </span>
                   </div>
 
@@ -630,10 +959,9 @@ export default function Hero({ onBookCall }) {
                   <div className="h-32 sm:h-36 w-full relative">
                     {/* Y-axis markers */}
                     <div className="absolute left-0 inset-y-0 flex flex-col justify-between text-[9px] font-semibold text-slate-400 pointer-events-none pr-2">
-                      <span>1.5K</span>
-                      <span>1K</span>
-                      <span>500</span>
-                      <span>0</span>
+                      {currentTabConfig.yAxis.map((val, idx) => (
+                        <span key={idx}>{val}</span>
+                      ))}
                     </div>
 
                     <svg className="w-full h-full pl-6 overflow-visible" viewBox="0 0 320 100" preserveAspectRatio="none">
@@ -649,58 +977,66 @@ export default function Hero({ onBookCall }) {
                           <stop offset="100%" stopColor="#059669" stopOpacity="0.0" />
                         </linearGradient>
                         <linearGradient id="tealHeroFill" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#0D9488" stopOpacity="0.16" />
+                          <stop offset="0%" stopColor="#0D9488" stopOpacity="0.18" />
                           <stop offset="100%" stopColor="#0D9488" stopOpacity="0.0" />
+                        </linearGradient>
+                        <linearGradient id="amberHeroFill" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.18" />
+                          <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.0" />
+                        </linearGradient>
+                        <linearGradient id="blueHeroFill" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#0284C7" stopOpacity="0.18" />
+                          <stop offset="100%" stopColor="#0284C7" stopOpacity="0.0" />
                         </linearGradient>
                       </defs>
 
-                      {/* Conversions Area Fill (Teal) */}
+                      {/* Area 2 Fill */}
                       <motion.polygon
-                        key={`convArea-${activeData.id}`}
-                        points={activeData.convArea}
-                        fill="url(#tealHeroFill)"
+                        key={`area2-${activeTab}-${activeData.id}`}
+                        points={currentGraph.area2}
+                        fill={currentGraph.fill2}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
+                        transition={{ duration: 0.35 }}
                       />
-                      {/* Conversions Line (Teal) */}
+                      {/* Line 2 */}
                       <motion.path
-                        key={`convLine-${activeData.id}`}
-                        d={activeData.convLine}
+                        key={`line2-${activeTab}-${activeData.id}`}
+                        d={currentGraph.line2}
                         fill="none"
-                        stroke="#0D9488"
-                        strokeWidth="2"
+                        stroke={currentGraph.color2}
+                        strokeWidth={currentGraph.strokeWidth2}
                         strokeLinecap="round"
                         initial={{ pathLength: 0 }}
                         animate={{ pathLength: 1 }}
-                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                        transition={{ duration: 0.65, ease: 'easeOut' }}
                       />
 
-                      {/* Clicks Area Fill (Emerald) */}
+                      {/* Area 1 Fill */}
                       <motion.polygon
-                        key={`clicksArea-${activeData.id}`}
-                        points={activeData.clicksArea}
-                        fill="url(#emeraldHeroFill)"
+                        key={`area1-${activeTab}-${activeData.id}`}
+                        points={currentGraph.area1}
+                        fill={currentGraph.fill1}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
+                        transition={{ duration: 0.35 }}
                       />
-                      {/* Clicks Line (Emerald) */}
+                      {/* Line 1 */}
                       <motion.path
-                        key={`clicksLine-${activeData.id}`}
-                        d={activeData.clicksLine}
+                        key={`line1-${activeTab}-${activeData.id}`}
+                        d={currentGraph.line1}
                         fill="none"
-                        stroke="#059669"
-                        strokeWidth="2.5"
+                        stroke={currentGraph.color1}
+                        strokeWidth={currentGraph.strokeWidth1}
                         strokeLinecap="round"
                         initial={{ pathLength: 0 }}
                         animate={{ pathLength: 1 }}
-                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                        transition={{ duration: 0.65, ease: 'easeOut' }}
                       />
 
                       {/* Peak Interactive Radar Ping */}
-                      <circle cx={activeData.peakX} cy={activeData.peakY} r="3.5" fill="#059669" />
-                      <circle cx={activeData.peakX} cy={activeData.peakY} r="7" fill="#10B981" opacity="0.4" className="animate-ping" />
+                      <circle cx={currentGraph.peakX} cy={currentGraph.peakY} r="3.5" fill={currentGraph.color1} />
+                      <circle cx={currentGraph.peakX} cy={currentGraph.peakY} r="7" fill={currentGraph.color1} opacity="0.4" className="animate-ping" />
                     </svg>
 
                     {/* Dynamic Date labels along bottom */}
