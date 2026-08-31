@@ -7,6 +7,7 @@ import {
   Activity, ArrowUpRight
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
+import googleAdsImg from '../assets/google_ads_img.jpeg';
 
 // Interactive Date Ranges Dataset
 const dateRanges = [
@@ -716,23 +717,6 @@ export default function Hero({ onBookCall }) {
           ═════════════════════════════════════════════════════ */}
           <div className="lg:col-span-7 relative flex items-center justify-center pb-8 sm:pb-4 lg:pb-0">
 
-            {/* Floating 3D Google Ads Logo at Top-Left */}
-            {!shouldReduceMotion && (
-              <motion.div
-                variants={floatBadge}
-                animate="animate"
-                className="absolute -top-6 left-6 sm:left-12 z-30 pointer-events-none drop-shadow-2xl"
-              >
-                <div className="w-14 h-14 sm:w-16 sm:h-16 relative">
-                  <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-md">
-                    <rect x="18" y="24" width="22" height="52" rx="11" transform="rotate(-35 29 50)" fill="#4285F4" />
-                    <rect x="52" y="32" width="22" height="42" rx="11" transform="rotate(35 63 53)" fill="#34A853" />
-                    <circle cx="34" cy="68" r="14" fill="#FBBC04" />
-                  </svg>
-                </div>
-              </motion.div>
-            )}
-
             {/* Floating 3D Target Dartboard at Bottom-Right */}
             {!shouldReduceMotion && (
               <motion.div
@@ -778,12 +762,12 @@ export default function Hero({ onBookCall }) {
               {/* ── Dark Left Sidebar (Deep Navy Slate with Emerald Active Highlights) ── */}
               <div className="w-14 sm:w-16 bg-[#0B132B] text-slate-400 flex flex-col items-center py-5 justify-between shrink-0 rounded-l-3xl">
                 <div className="space-y-6 flex flex-col items-center">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center p-1.5 shadow-inner">
-                    <svg viewBox="0 0 40 40" className="w-6 h-6">
-                      <rect x="8" y="10" width="8" height="20" rx="4" transform="rotate(-35 12 20)" fill="#4285F4" />
-                      <rect x="22" y="12" width="8" height="18" rx="4" transform="rotate(35 26 21)" fill="#34A853" />
-                      <circle cx="14" cy="27" r="5" fill="#FBBC04" />
-                    </svg>
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white shadow-xs border border-slate-200/60 flex items-center justify-center p-1.5 overflow-hidden">
+                    <img
+                      src={googleAdsImg}
+                      alt="Google Ads"
+                      className="w-full h-full object-contain"
+                    />
                   </div>
 
                   <div className="space-y-3 flex flex-col items-center">

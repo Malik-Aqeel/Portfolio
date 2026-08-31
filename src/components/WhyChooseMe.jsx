@@ -19,7 +19,7 @@ export default function WhyChooseMe() {
     Zap: Zap,
   };
 
-  // Unique gradient combos per card — light theme
+  // Unique gradient combos per card (light theme)
   const cardThemes = [
     {
       iconBg: 'bg-gradient-to-br from-emerald-500 to-teal-600',

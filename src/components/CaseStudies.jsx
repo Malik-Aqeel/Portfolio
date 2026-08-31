@@ -309,64 +309,93 @@ export default function CaseStudies({ onBookCall }) {
 
                     {/* ─── Metrics dashboard ─── */}
                     <div className={`rounded-xl ${visual.metricBg} border ${visual.metricBorder} p-3 sm:p-4 mb-5`}>
-                      <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                        {/* ROAS */}
-                        <div className="text-center">
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                            {study.sampleMetrics.roasLabel || 'ROAS'}
-                          </p>
-                          <motion.p
-                            className={`text-lg sm:text-xl font-black ${visual.roasColor} tracking-tight leading-none`}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.4, delay: 0.3 + idx * 0.1 }}
-                          >
-                            {study.sampleMetrics.roas}
-                          </motion.p>
-                          <span className={`inline-block mt-1.5 px-2 py-0.5 text-[8px] font-bold rounded-md ${visual.accentLight} ${visual.accentText}`}>
-                            {study.sampleMetrics.roasBadge}
-                          </span>
+                      {study.sampleMetrics.metricsList ? (
+                        <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
+                          {study.sampleMetrics.metricsList.map((m, mIdx) => (
+                            <div
+                              key={mIdx}
+                              className="bg-white/85 backdrop-blur-xs rounded-xl p-2.5 sm:p-3 text-center border border-white/60 shadow-2xs"
+                            >
+                              <p className="text-[9px] font-bold text-slate-500 uppercase tracking-tight mb-1 truncate" title={m.label}>
+                                {m.label}
+                              </p>
+                              <motion.p
+                                className={`text-base sm:text-lg font-black ${m.highlight ? visual.roasColor : 'text-slate-900'} tracking-tight leading-none`}
+                                initial={{ opacity: 0, scale: 0.85 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.35, delay: 0.2 + mIdx * 0.08 }}
+                              >
+                                {m.value}
+                              </motion.p>
+                              {m.badge && (
+                                <span className={`inline-block mt-1 px-1.5 py-0.5 text-[8px] font-bold rounded-md ${m.highlight ? visual.accentLight + ' ' + visual.accentText : 'bg-slate-100 text-slate-600'}`}>
+                                  {m.badge}
+                                </span>
+                              )}
+                            </div>
+                          ))}
                         </div>
+                      ) : (
+                        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                          {/* ROAS */}
+                          <div className="text-center">
+                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                              {study.sampleMetrics.roasLabel || 'ROAS'}
+                            </p>
+                            <motion.p
+                              className={`text-lg sm:text-xl font-black ${visual.roasColor} tracking-tight leading-none`}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              whileInView={{ opacity: 1, scale: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.4, delay: 0.3 + idx * 0.1 }}
+                            >
+                              {study.sampleMetrics.roas}
+                            </motion.p>
+                            <span className={`inline-block mt-1.5 px-2 py-0.5 text-[8px] font-bold rounded-md ${visual.accentLight} ${visual.accentText}`}>
+                              {study.sampleMetrics.roasBadge}
+                            </span>
+                          </div>
 
-                        {/* Revenue */}
-                        <div className="text-center border-x border-slate-200/40">
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                            {study.sampleMetrics.revenueLabel || 'Revenue'}
-                          </p>
-                          <motion.p
-                            className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-none"
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.4, delay: 0.4 + idx * 0.1 }}
-                          >
-                            {study.sampleMetrics.revenueShort || study.sampleMetrics.revenueGrowth}
-                          </motion.p>
-                          <span className="inline-block mt-1.5 px-2 py-0.5 text-[8px] font-bold rounded-md bg-emerald-50 text-emerald-600">
-                            {study.sampleMetrics.revenueBadge || '↑ Growth'}
-                          </span>
-                        </div>
+                          {/* Revenue */}
+                          <div className="text-center border-x border-slate-200/40">
+                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                              {study.sampleMetrics.revenueLabel || 'Revenue'}
+                            </p>
+                            <motion.p
+                              className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-none"
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              whileInView={{ opacity: 1, scale: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.4, delay: 0.4 + idx * 0.1 }}
+                            >
+                              {study.sampleMetrics.revenueShort || study.sampleMetrics.revenueGrowth}
+                            </motion.p>
+                            <span className="inline-block mt-1.5 px-2 py-0.5 text-[8px] font-bold rounded-md bg-emerald-50 text-emerald-600">
+                              {study.sampleMetrics.revenueBadge || '↑ Growth'}
+                            </span>
+                          </div>
 
-                        {/* Spend / CPA */}
-                        <div className="text-center">
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                            {study.sampleMetrics.metric3Label || 'CPA'}
-                          </p>
-                          <motion.p
-                            className={`text-lg sm:text-xl font-black ${visual.cpaColor} tracking-tight leading-none`}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.4, delay: 0.5 + idx * 0.1 }}
-                          >
-                            {study.sampleMetrics.spendShort || study.sampleMetrics.cpa}
-                          </motion.p>
-                          <span className="inline-block mt-1.5 px-2 py-0.5 text-[8px] font-bold rounded-md bg-emerald-50 text-emerald-600">
-                            {study.sampleMetrics.cpaBadge}
-                          </span>
+                          {/* Spend / CPA */}
+                          <div className="text-center">
+                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                              {study.sampleMetrics.metric3Label || 'CPA'}
+                            </p>
+                            <motion.p
+                              className={`text-lg sm:text-xl font-black ${visual.cpaColor} tracking-tight leading-none`}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              whileInView={{ opacity: 1, scale: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.4, delay: 0.5 + idx * 0.1 }}
+                            >
+                              {study.sampleMetrics.spendShort || study.sampleMetrics.cpa}
+                            </motion.p>
+                            <span className="inline-block mt-1.5 px-2 py-0.5 text-[8px] font-bold rounded-md bg-emerald-50 text-emerald-600">
+                              {study.sampleMetrics.cpaBadge}
+                            </span>
+                          </div>
                         </div>
-                      </div>
+                      )}
 
                       {/* Mini chart */}
                       <div className={visual.accentText}>
@@ -422,6 +451,7 @@ export default function CaseStudies({ onBookCall }) {
       {/* Modal */}
       <CaseStudyModal
         caseStudy={selectedCaseStudy}
+        logoSrc={selectedCaseStudy && logoMap[selectedCaseStudy.logo] ? logoMap[selectedCaseStudy.logo] : null}
         isOpen={!!selectedCaseStudy}
         onClose={() => setSelectedCaseStudy(null)}
         onBookCall={onBookCall}

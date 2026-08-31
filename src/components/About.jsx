@@ -334,7 +334,7 @@ export default function About({ onBookCall }) {
               Ready to turn your ad spend into scalable revenue?
             </p>
             <p className="text-sm text-slate-500 mt-1">
-              Book a free strategy call — no commitment, just actionable insights.
+              Book a free strategy call with zero commitment and actionable insights.
             </p>
           </div>
 

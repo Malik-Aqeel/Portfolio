@@ -123,7 +123,7 @@ export default function Metrics() {
           </h2>
 
           <p className="text-white/40 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Every campaign decision is grounded in unit economics, revenue expansion, and profitable ROAS goals — not vanity metrics.
+            Every campaign decision is grounded in unit economics, revenue expansion, and profitable ROAS goals, not vanity metrics.
           </p>
         </motion.div>
 

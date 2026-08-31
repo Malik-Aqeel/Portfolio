@@ -244,6 +244,46 @@ export const caseStudies = [
     ]
   },
   {
+    id: "pet-supplies-usa",
+    brand: "Pet Supplies Client USA",
+    logo: "petSupplies",
+    industry: "Pet Care & Supplies (USA)",
+    campaignType: "Search + Shopping + PMax",
+    timeframe: "US Campaign",
+    spend: "$180.6K",
+    revenue: "798K",
+    roas: "4.41",
+    challenge: "Scaling high-volume pet supplies in the competitive US market while maintaining efficient acquisition costs and margin targets.",
+    strategy: "Restructured Merchant Center product feeds with margin-based custom labels, implemented value-based smart bidding targeting high-cart value pet owners, and dialed in negative search terms to reduce CPA.",
+    sampleMetrics: {
+      roas: "4.41",
+      roasBadge: "Conv. value / cost",
+      roasLabel: "Conv. value / cost",
+      revenueGrowth: "798K",
+      revenueShort: "798K",
+      revenueLabel: "Conv. value",
+      revenueBadge: "Revenue",
+      spend: "$180.6K",
+      spendShort: "$180.6K",
+      metric3Label: "Cost",
+      cpa: "$28.89",
+      cpaBadge: "Cost / conv.",
+      metricsList: [
+        { label: "Conv. value", value: "798K", badge: "Revenue", highlight: false },
+        { label: "Cost", value: "$180.6K", badge: "Ad Spend", highlight: false },
+        { label: "Conv. value / cost", value: "4.41", badge: "ROAS", highlight: true },
+        { label: "Cost / conv.", value: "$28.89", badge: "CPA", highlight: false }
+      ]
+    },
+    detailOverview: "Pet Supplies Client USA scaled Google Ads performance across competitive US states, generating 798K in conversion value from $180.6K total ad spend at an exceptional 4.41 Conv. value / cost (ROAS) and an efficient $28.89 Cost / conv.",
+    takeaways: [
+      "Conv. value: 798K generated with optimized shopping feeds",
+      "Cost: $180.6K deployed profitably across high-intent campaigns",
+      "Conv. value / cost: 4.41 ROAS achieved through margin-based bidding",
+      "Cost / conv.: $28.89 maintained with strict negative keyword controls"
+    ]
+  },
+  {
     id: "arabian-oud",
     brand: "Arabian Oud",
     logo: "arabianOud",
@@ -263,28 +303,6 @@ export const caseStudies = [
       "Captured high-converting active search intent for luxury fragrances",
       "Optimized product title keywords with search volume data",
       "Scaled ad spend from $5,000/mo to $45,000/mo while maintaining >5.0x ROAS"
-    ]
-  },
-  {
-    id: "pet-supplies",
-    brand: "Pet Supplies",
-    logo: "petSupplies",
-    industry: "Pet Care & Supplies",
-    campaignType: "Search + Shopping Feed Optimization",
-    challenge: "High average order value ($320+) led to long conversion windows and misaligned smart bidding strategies that wasted budget on low-intent clicks.",
-    strategy: "Built value-based bidding models using Google offline conversion imports, refined Search campaign match types, and implemented custom price-tier shopping campaigns.",
-    sampleMetrics: {
-      roas: "4.40x",
-      roasBadge: "+95% ROAS",
-      revenueGrowth: "+145%",
-      cpa: "$54.00",
-      cpaBadge: "-35% CPA"
-    },
-    detailOverview: "Pet Supplies required structured target ROAS strategies and extended conversion window attribution. We aligned Google Ads target ROAS with true gross product margins for sustainable scaling.",
-    takeaways: [
-      "Value-based bidding optimized for higher cart value orders",
-      "Restructured Shopping feeds by product margin tiers",
-      "Achieved consistent month-over-month revenue scaling"
     ]
   }
 ];
@@ -346,7 +364,7 @@ export const whyChooseMe = [
   },
   {
     title: "Scalable Growth Architecture",
-    desc: "Systems built to handle growth—from $10k/mo spend to $100k+/mo spend without sacrificing acquisition efficiency.",
+    desc: "Systems built to handle growth from $10k/mo spend to $100k+/mo spend without sacrificing acquisition efficiency.",
     iconName: "Layers"
   },
   {
@@ -433,7 +451,7 @@ export const processSteps = [
 export const faqs = [
   {
     q: "How much should I spend on Google Ads to see results?",
-    a: "While Google Ads can work at various budget levels, for e-commerce brands looking to systematically test, gather statistical conversion data, and scale, I typically recommend a minimum ad spend budget of $3,000–$5,000 per month."
+    a: "While Google Ads can work at various budget levels, for e-commerce brands looking to systematically test, gather statistical conversion data, and scale, I typically recommend a minimum ad spend budget of $3,000 to $5,000 per month."
   },
   {
     q: "Do you work with e-commerce brands only?",

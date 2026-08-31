@@ -111,7 +111,7 @@ export default function Process({ onBookCall }) {
           </h2>
 
           <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            From initial discovery to continuous scaling — a proven 4-phase system designed to turn your ad spend into predictable, profitable revenue.
+            From initial discovery to continuous scaling with a proven 4-phase system designed to turn your ad spend into predictable, profitable revenue.
           </p>
         </motion.div>
 

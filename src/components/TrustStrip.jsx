@@ -79,7 +79,7 @@ export default function TrustStrip() {
 
       </div>
 
-      {/* Infinite Horizontal Scrolling Logo Marquee — full width, 100% Original Colors */}
+      {/* Infinite Horizontal Scrolling Logo Marquee (full width, 100% Original Colors) */}
       <div className="relative w-full overflow-hidden py-2">
         {/* Soft edge blur masks */}
         <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-36 z-10 pointer-events-none" style={{ background: 'linear-gradient(90deg, #FFFFFF 0%, transparent 100%)' }} />

@@ -64,7 +64,7 @@ export default function Services({ onBookCall }) {
           </h2>
 
           <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            From campaign architecture to profitable scaling — end-to-end Google Ads systems engineered around your business goals and margins.
+            From campaign architecture to profitable scaling with end-to-end Google Ads systems engineered around your business goals and margins.
           </p>
         </motion.div>
 

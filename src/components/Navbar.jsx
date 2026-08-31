@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Menu, X, ArrowRight, Sparkles } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
+import googleAdsImg from '../assets/google_ads_img.jpeg';
 
 export default function Navbar({ onBookCall }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -71,13 +72,13 @@ export default function Navbar({ onBookCall }) {
             href="#home"
             className="flex items-center gap-2 sm:gap-2.5 group text-left cursor-pointer shrink-0 whitespace-nowrap"
           >
-            {/* Google Ads 3D Icon */}
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white shadow-xs border border-slate-200/70 flex items-center justify-center p-1 sm:p-1.5 shrink-0 group-hover:scale-105 transition-transform">
-              <svg viewBox="0 0 100 100" className="w-full h-full">
-                <rect x="18" y="24" width="22" height="52" rx="11" transform="rotate(-35 29 50)" fill="#4285F4" />
-                <rect x="52" y="32" width="22" height="42" rx="11" transform="rotate(35 63 53)" fill="#34A853" />
-                <circle cx="34" cy="68" r="14" fill="#FBBC04" />
-              </svg>
+            {/* Google Ads Icon */}
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white shadow-xs border border-slate-200/70 flex items-center justify-center p-1 sm:p-1.5 shrink-0 group-hover:scale-105 transition-transform overflow-hidden">
+              <img
+                src={googleAdsImg}
+                alt="Google Ads"
+                className="w-full h-full object-contain"
+              />
             </div>
 
             <div className="whitespace-nowrap">
