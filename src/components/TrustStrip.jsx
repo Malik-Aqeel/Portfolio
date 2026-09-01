@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Globe, ShieldCheck, TrendingUp, Sparkles } from 'lucide-react';
+import { Users, Globe, ShieldCheck, TrendingUp } from 'lucide-react';
 
 // Import company logos
 import logoIndustrialLynx from '../assets/case_study_img1.jpeg';
@@ -97,6 +97,7 @@ export default function TrustStrip() {
                 alt={logo.alt}
                 className="max-h-full max-w-full object-contain filter-none transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
+                decoding="async"
               />
             </div>
           ))}
@@ -112,6 +113,7 @@ export default function TrustStrip() {
                 alt={logo.alt}
                 className="max-h-full max-w-full object-contain filter-none transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
+                decoding="async"
               />
             </div>
           ))}

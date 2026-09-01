@@ -47,7 +47,7 @@ export default function Services({ onBookCall }) {
           className="text-center max-w-3xl mx-auto mb-16 lg:mb-20"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-emerald-200/60 shadow-sm mb-6">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -92,7 +92,7 @@ export default function Services({ onBookCall }) {
                 />
 
                 {/* Card */}
-                <div className="relative h-full rounded-3xl bg-white/90 backdrop-blur-sm border border-slate-200/70 shadow-sm hover:shadow-xl hover:border-slate-300/80 transition-all duration-500 overflow-hidden flex flex-col">
+                <div className="relative h-full rounded-3xl bg-white border border-slate-200/70 shadow-sm hover:shadow-xl hover:border-slate-300/80 transition-all duration-300 overflow-hidden flex flex-col">
 
                   {/* Top accent bar */}
                   <div className={`h-1 w-full bg-gradient-to-r ${accent.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />

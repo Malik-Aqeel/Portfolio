@@ -206,7 +206,7 @@ export default function Contact({ onBookCall }) {
         {/* ── Section Header ── */}
         <motion.div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20" variants={fadeUpVariants}>
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-emerald-200/60 shadow-sm mb-6">
             <Phone className="w-3.5 h-3.5 text-emerald-600" />
             <span className="text-[11px] font-bold text-emerald-700 tracking-widest uppercase">
               Get In Touch
@@ -243,7 +243,7 @@ export default function Contact({ onBookCall }) {
 
             {/* Intro card */}
             <motion.div
-              className="p-6 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-200/80 shadow-soft-sm"
+              className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-soft-sm"
               whileHover={!shouldReduceMotion ? { y: -2, transition: { duration: 0.2 } } : {}}
             >
               <div className="flex items-center gap-3 mb-4">
@@ -267,7 +267,7 @@ export default function Contact({ onBookCall }) {
                     href={channel.href}
                     target={channel.external ? '_blank' : undefined}
                     rel={channel.external ? 'noopener noreferrer' : undefined}
-                    className={`group flex items-center gap-4 p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/80 shadow-soft-sm ${channel.hoverBorder} transition-all duration-300`}
+                    className={`group flex items-center gap-4 p-4 bg-white rounded-xl border border-slate-200/80 shadow-soft-sm ${channel.hoverBorder} transition-all duration-300`}
                     whileHover={!shouldReduceMotion ? { x: 6, transition: { duration: 0.2 } } : {}}
                   >
                     <div className={`w-12 h-12 rounded-xl ${channel.iconBg} ${channel.iconColor} flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
@@ -287,7 +287,7 @@ export default function Contact({ onBookCall }) {
 
             {/* Response time badge */}
             <motion.div
-              className="p-5 rounded-2xl border border-emerald-200/60 bg-gradient-to-br from-emerald-50/80 to-teal-50/50 backdrop-blur-sm"
+              className="p-5 rounded-2xl border border-emerald-200/60 bg-gradient-to-br from-emerald-50/90 to-teal-50/70"
               whileHover={!shouldReduceMotion ? { y: -2, transition: { duration: 0.2 } } : {}}
             >
               <div className="flex items-start gap-3">
@@ -310,7 +310,7 @@ export default function Contact({ onBookCall }) {
             variants={formSlideVariants}
           >
             <div
-              className="rounded-2xl p-6 sm:p-8 lg:p-10 border border-slate-200/80 shadow-soft-md bg-white/80 backdrop-blur-sm relative overflow-hidden"
+              className="rounded-2xl p-6 sm:p-8 lg:p-10 border border-slate-200/80 shadow-soft-md bg-white relative overflow-hidden"
             >
               {/* Subtle gradient accent at top of form card */}
               <div

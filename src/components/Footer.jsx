@@ -109,7 +109,7 @@ export default function Footer() {
                   href={social.href}
                   target={social.external ? '_blank' : undefined}
                   rel={social.external ? 'noopener noreferrer' : undefined}
-                  className={`group p-3 bg-white/70 backdrop-blur-sm text-slate-500 rounded-xl border border-slate-200/60 ${social.hoverBg} ${social.hoverText} transition-all duration-300 shadow-soft-sm`}
+                  className={`group p-3 bg-white text-slate-500 rounded-xl border border-slate-200/60 ${social.hoverBg} ${social.hoverText} transition-all duration-300 shadow-soft-sm`}
                   aria-label={social.label}
                   whileHover={!shouldReduceMotion ? { y: -3, scale: 1.05 } : {}}
                   whileTap={!shouldReduceMotion ? { scale: 0.95 } : {}}

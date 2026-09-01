@@ -5,23 +5,29 @@ export default function MobileStickyCTA({ onBookCall }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    let ticking = false;
+    let isNearContact = false;
 
+    const contactSection = document.getElementById('contact');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isNearContact = entry.isIntersecting;
+          const shouldShow = window.scrollY > 400 && !isNearContact;
+          setIsVisible(shouldShow);
+        });
+      },
+      { rootMargin: '200px 0px 0px 0px', threshold: 0 }
+    );
+
+    if (contactSection) {
+      observer.observe(contactSection);
+    }
+
+    let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const scrollY = window.scrollY;
-          const contactSection = document.getElementById('contact');
-          let isNearContact = false;
-
-          if (contactSection) {
-            const contactTop = contactSection.offsetTop - 400;
-            if (scrollY >= contactTop) {
-              isNearContact = true;
-            }
-          }
-
-          const shouldShow = scrollY > 400 && !isNearContact;
+          const shouldShow = window.scrollY > 400 && !isNearContact;
           setIsVisible((prev) => (prev !== shouldShow ? shouldShow : prev));
           ticking = false;
         });
@@ -30,7 +36,10 @@ export default function MobileStickyCTA({ onBookCall }) {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   if (!isVisible) return null;

@@ -45,7 +45,7 @@ function TestimonialCard({ item, index, isActive, shouldReduceMotion }) {
       {/* Hover glow */}
       <div className="absolute -inset-px rounded-3xl bg-gradient-to-b from-emerald-500/15 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
 
-      <div className="relative h-full rounded-3xl bg-white/80 backdrop-blur-xl border border-slate-200/80 p-7 sm:p-8 overflow-hidden flex flex-col justify-between transition-all duration-500 group-hover:bg-white group-hover:shadow-2xl group-hover:shadow-emerald-500/[0.06] group-hover:border-emerald-200/60">
+      <div className="relative h-full rounded-3xl bg-white border border-slate-200/80 p-7 sm:p-8 overflow-hidden flex flex-col justify-between transition-all duration-300 group-hover:shadow-xl group-hover:border-emerald-200/60">
 
         {/* Decorative quote watermark */}
         <div className="absolute top-4 right-4 pointer-events-none select-none">
@@ -55,18 +55,10 @@ function TestimonialCard({ item, index, isActive, shouldReduceMotion }) {
         {/* Content */}
         <div className="space-y-5 relative z-10">
 
-          {/* Stars row with animation */}
+          {/* Stars row */}
           <div className="flex items-center gap-1">
             {[...Array(item.rating)].map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 + i * 0.08, duration: 0.3, ease: 'backOut' }}
-              >
-                <Star className="w-4.5 h-4.5 fill-amber-400 text-amber-400 drop-shadow-sm" />
-              </motion.div>
+              <Star key={i} className="w-4.5 h-4.5 fill-amber-400 text-amber-400 drop-shadow-sm" />
             ))}
             <span className="text-[10px] font-extrabold text-amber-600 ml-1.5 bg-amber-50 px-1.5 py-0.5 rounded-md">
               5.0
@@ -219,7 +211,7 @@ export default function Testimonials() {
           className="text-center max-w-3xl mx-auto mb-20"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-emerald-200/60 shadow-sm mb-6">
             <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
             <span className="text-[11px] font-bold text-emerald-700 tracking-widest uppercase">
               Client Feedback
@@ -247,7 +239,7 @@ export default function Testimonials() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="inline-flex items-center gap-3 mt-6 px-5 py-2.5 rounded-full bg-white/70 border border-slate-200/70 shadow-sm backdrop-blur-sm"
+            className="inline-flex items-center gap-3 mt-6 px-5 py-2.5 rounded-full bg-white border border-slate-200/70 shadow-sm"
           >
             <div className="flex items-center gap-0.5">
               {[...Array(5)].map((_, i) => (
@@ -360,7 +352,7 @@ export default function Testimonials() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/80 border border-slate-200/70 shadow-sm backdrop-blur-sm">
+          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-white border border-slate-200/70 shadow-sm">
             <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
             <span className="text-sm font-bold text-slate-700">
               Join <strong className="text-emerald-700">50+ brands</strong> already scaling profitably with Google Ads

@@ -189,7 +189,7 @@ export default function CaseStudies({ onBookCall }) {
           className="text-center max-w-3xl mx-auto mb-16 lg:mb-20"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-emerald-200/60 shadow-sm mb-6">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -248,7 +248,7 @@ export default function CaseStudies({ onBookCall }) {
 
                 {/* Card */}
                 <div
-                  className={`relative h-full rounded-2xl bg-white/90 backdrop-blur-sm border border-slate-200/80 overflow-hidden flex flex-col transition-all duration-500
+                  className={`relative h-full rounded-2xl bg-white border border-slate-200/80 overflow-hidden flex flex-col transition-all duration-300
                     ${isHovered ? 'shadow-soft-lg ring-1 ' + visual.ringHover.replace('hover:', '') : 'shadow-soft-sm'}`}
                 >
                   {/* Top gradient accent bar */}
@@ -314,7 +314,7 @@ export default function CaseStudies({ onBookCall }) {
                           {study.sampleMetrics.metricsList.map((m, mIdx) => (
                             <div
                               key={mIdx}
-                              className="bg-white/85 backdrop-blur-xs rounded-xl p-2.5 sm:p-3 text-center border border-white/60 shadow-2xs"
+                              className="bg-white rounded-xl p-2.5 sm:p-3 text-center border border-slate-100 shadow-2xs"
                             >
                               <p className="text-[9px] font-bold text-slate-500 uppercase tracking-tight mb-1 truncate" title={m.label}>
                                 {m.label}
@@ -430,7 +430,7 @@ export default function CaseStudies({ onBookCall }) {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 px-6 py-3.5 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-200/50 shadow-soft-sm">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 px-6 py-3.5 rounded-2xl bg-white border border-slate-200/50 shadow-soft-sm">
             <p className="text-sm text-slate-500 font-medium">
               All case studies represent documented, real-world campaign results.
             </p>

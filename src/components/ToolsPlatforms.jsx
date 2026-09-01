@@ -113,7 +113,7 @@ export default function ToolsPlatforms() {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-emerald-200/60 shadow-sm mb-6">
             <Cpu className="w-3.5 h-3.5 text-blue-600" />
             <span className="text-[11px] font-bold text-emerald-700 tracking-widest uppercase">
               Tech Ecosystem
@@ -173,7 +173,7 @@ export default function ToolsPlatforms() {
                   transition={{ duration: 0.4 }}
                 />
 
-                <div className="relative h-full rounded-2xl bg-white/80 backdrop-blur-xl border border-slate-200/80 p-5 sm:p-6 overflow-hidden transition-all duration-500 group-hover:bg-white group-hover:border-slate-300/80 group-hover:shadow-xl flex flex-col items-center text-center">
+                <div className="relative h-full rounded-2xl bg-white border border-slate-200/80 p-5 sm:p-6 overflow-hidden transition-all duration-300 group-hover:border-slate-300/80 group-hover:shadow-xl flex flex-col items-center text-center">
 
                   {/* Animated icon */}
                   <motion.div
@@ -247,7 +247,7 @@ export default function ToolsPlatforms() {
             <motion.div
               key={i}
               whileHover={shouldReduceMotion ? {} : { scale: 1.05, y: -2 }}
-              className="flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/80 border border-slate-200/80 shadow-sm backdrop-blur-sm hover:shadow-md hover:border-emerald-200 transition-all duration-300"
+              className="flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-slate-200/80 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all duration-300"
             >
               {item.icon}
               <span className="text-xs font-bold text-slate-700 tracking-wide">

@@ -131,7 +131,7 @@ export default function FAQ() {
         {/* ── Section Header ── */}
         <motion.div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20" variants={headerVariants}>
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-emerald-200/60 shadow-sm mb-6">
             <MessageCircleQuestion className="w-3.5 h-3.5 text-emerald-600" />
             <span className="text-[11px] font-bold text-emerald-700 tracking-widest uppercase">
               Clear Answers
@@ -278,7 +278,7 @@ export default function FAQ() {
           className="mt-16 text-center"
         >
           <div
-            className="inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/80 backdrop-blur-sm
+            className="inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white
                         border border-emerald-200/50 shadow-soft-sm"
           >
             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-50">

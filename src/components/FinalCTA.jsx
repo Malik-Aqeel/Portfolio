@@ -8,20 +8,20 @@ export default function FinalCTA({ onBookCall }) {
     <section className="py-24 lg:py-32 bg-white relative overflow-hidden">
       {/* Background Radial Glow & Soft Mesh Gradients */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-emerald-50/40 to-slate-50 pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-35 blur-3xl pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, rgba(20, 184, 166, 0.1) 60%, transparent 80%)' }}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-35 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(20, 184, 166, 0.08) 50%, transparent 75%)' }}
       />
-      <div className="absolute top-10 right-10 w-[400px] h-[400px] rounded-full opacity-25 blur-3xl pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(14, 165, 233, 0.2) 0%, transparent 70%)' }}
+      <div className="absolute top-10 right-10 w-[400px] h-[400px] rounded-full opacity-25 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(14, 165, 233, 0.18) 0%, transparent 65%)' }}
       />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Glow behind card */}
         <div className="relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-sky-500/20 rounded-[2.5rem] blur-xl opacity-70 transition-all duration-500 pointer-events-none" />
+          <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-sky-500/20 rounded-[2.5rem] opacity-70 pointer-events-none" />
 
-          <div className="relative bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 sm:p-12 lg:p-16 border border-emerald-200/90 shadow-2xl shadow-emerald-950/10 text-center space-y-7 overflow-hidden">
+          <div className="relative bg-white rounded-[2rem] p-8 sm:p-12 lg:p-16 border border-emerald-200/90 shadow-2xl shadow-emerald-950/10 text-center space-y-7 overflow-hidden">
             
             {/* Top Accent Gradient Bar */}
             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-400 to-sky-500" />

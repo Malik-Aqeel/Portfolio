@@ -104,7 +104,7 @@ export default function Metrics() {
           className="text-center max-w-3xl mx-auto mb-16 lg:mb-20"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 mb-6">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
@@ -145,12 +145,12 @@ export default function Metrics() {
               >
                 {/* Hover glow */}
                 <div
-                  className="absolute -inset-1 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl"
+                  className="absolute -inset-1 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"
                   style={{ background: config.glowColor }}
                 />
 
                 {/* Card body */}
-                <div className="relative h-full rounded-3xl bg-white/[0.04] backdrop-blur-md border border-white/[0.08] hover:border-white/[0.15] transition-all duration-500 overflow-hidden p-7 sm:p-8 text-center">
+                <div className="relative h-full rounded-3xl bg-slate-900/90 border border-white/[0.08] hover:border-white/[0.15] transition-all duration-300 overflow-hidden p-7 sm:p-8 text-center">
 
                   {/* Background subtle gradient */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${config.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
@@ -206,7 +206,7 @@ export default function Metrics() {
         >
           <div className="relative rounded-2xl overflow-hidden">
             {/* Glass background */}
-            <div className="absolute inset-0 bg-white/[0.03] backdrop-blur-md border border-white/[0.08]" />
+            <div className="absolute inset-0 bg-slate-900/90 border border-white/[0.08]" />
             {/* Emerald accent line on left */}
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-400 to-teal-500 rounded-full" />
 

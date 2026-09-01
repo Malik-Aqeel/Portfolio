@@ -170,7 +170,7 @@ export default function WhyChooseMe() {
           className="text-center max-w-3xl mx-auto mb-20"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-emerald-200/60 shadow-sm mb-6">
             <Trophy className="w-3.5 h-3.5 text-amber-500" />
             <span className="text-[11px] font-bold text-emerald-700 tracking-widest uppercase">
               Competitive Advantage
@@ -230,7 +230,7 @@ export default function WhyChooseMe() {
                 />
 
                 {/* Card background */}
-                <div className="relative h-full rounded-3xl bg-white/80 backdrop-blur-xl border border-slate-200/80 p-7 sm:p-8 overflow-hidden transition-all duration-500 group-hover:bg-white group-hover:border-slate-300/80 group-hover:shadow-xl">
+                <div className="relative h-full rounded-3xl bg-white border border-slate-200/80 p-7 sm:p-8 overflow-hidden transition-all duration-300 group-hover:border-slate-300/80 group-hover:shadow-xl">
 
                   {/* Corner number watermark */}
                   <span className="absolute top-5 right-6 text-[80px] font-black text-slate-100 leading-none tracking-tighter pointer-events-none select-none group-hover:text-slate-200/80 transition-all duration-700">
@@ -314,7 +314,7 @@ export default function WhyChooseMe() {
             <motion.div
               key={i}
               whileHover={shouldReduceMotion ? {} : { scale: 1.05, y: -2 }}
-              className="flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/80 border border-slate-200/80 shadow-sm backdrop-blur-sm hover:shadow-md hover:border-emerald-200 transition-all duration-300"
+              className="flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-slate-200/80 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all duration-300"
             >
               {trust.icon}
               <span className="text-xs font-bold text-slate-700 tracking-wide">

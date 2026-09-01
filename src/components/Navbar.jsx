@@ -29,16 +29,6 @@ export default function Navbar({ onBookCall }) {
         window.requestAnimationFrame(() => {
           const scrolled = window.scrollY > 40;
           setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
-
-          const scrollPos = window.scrollY + 180;
-          for (let i = navLinks.length - 1; i >= 0; i--) {
-            const id = navLinks[i].href.substring(1);
-            const el = document.getElementById(id);
-            if (el && el.offsetTop <= scrollPos) {
-              setActiveSection((prev) => (prev !== id ? id : prev));
-              break;
-            }
-          }
           ticking = false;
         });
         ticking = true;
@@ -46,8 +36,39 @@ export default function Navbar({ onBookCall }) {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    // Asynchronous IntersectionObserver for active section tracking without layout thrashing
+    const sectionIds = navLinks.map((l) => l.href.substring(1));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -65% 0px', threshold: 0 }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
   }, []);
+
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <header
@@ -59,10 +80,10 @@ export default function Navbar({ onBookCall }) {
     >
       {/* ── Dynamic Navbar Container ── */}
       <div
-        className={`mx-auto pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`mx-auto pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu ${
           isScrolled
-            ? 'w-[96%] sm:w-[94%] max-w-[1240px] rounded-full bg-white/70 backdrop-blur-2xl border border-white/60 shadow-lg shadow-emerald-950/5 py-2 sm:py-2.5 px-3.5 sm:px-8'
-            : 'w-full max-w-full rounded-none bg-white/80 backdrop-blur-md border-b border-slate-200/50 shadow-none py-2.5 sm:py-3.5 px-4 sm:px-10 lg:px-14'
+            ? 'w-[96%] sm:w-[94%] max-w-[1240px] rounded-full bg-white/85 backdrop-blur-xl border border-white/60 shadow-lg shadow-emerald-950/5 py-2 sm:py-2.5 px-3.5 sm:px-8'
+            : 'w-full max-w-full rounded-none bg-white/90 backdrop-blur-md border-b border-slate-200/50 shadow-none py-2.5 sm:py-3.5 px-4 sm:px-10 lg:px-14'
         }`}
       >
         <div className="flex items-center justify-between gap-2 sm:gap-4">
@@ -70,6 +91,7 @@ export default function Navbar({ onBookCall }) {
           {/* ── Left: Clean Brand Logo ── */}
           <a
             href="#home"
+            onClick={(e) => handleNavClick(e, '#home')}
             className="flex items-center gap-2 sm:gap-2.5 group text-left cursor-pointer shrink-0 whitespace-nowrap"
           >
             {/* Google Ads Icon */}
@@ -78,6 +100,7 @@ export default function Navbar({ onBookCall }) {
                 src={googleAdsImg}
                 alt="Google Ads"
                 className="w-full h-full object-contain"
+                decoding="async"
               />
             </div>
 
@@ -105,6 +128,7 @@ export default function Navbar({ onBookCall }) {
                 <a
                   key={link.name}
                   href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className={`relative py-1 text-xs xl:text-[13px] font-semibold transition-colors duration-200 whitespace-nowrap ${
                     isActive
                       ? 'text-emerald-700 font-bold'
@@ -190,7 +214,7 @@ export default function Navbar({ onBookCall }) {
                     <a
                       key={link.name}
                       href={link.href}
-                      onClick={() => setMobileMenuOpen(false)}
+                      onClick={(e) => handleNavClick(e, link.href)}
                       className={`px-3 py-2 text-xs font-semibold rounded-xl transition-all flex items-center justify-between ${
                         isActive
                           ? 'bg-emerald-600 text-white font-bold shadow-xs'

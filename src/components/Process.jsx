@@ -94,7 +94,7 @@ export default function Process({ onBookCall }) {
           transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
           className="text-center max-w-3xl mx-auto mb-20"
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-emerald-200/60 shadow-sm mb-6">
             <Rocket className="w-3.5 h-3.5 text-emerald-600" />
             <span className="text-[11px] font-bold text-emerald-700 tracking-widest uppercase">
               Execution Plan
@@ -278,7 +278,7 @@ function AnimatedPanel({ step, idx, color, Icon, shouldReduceMotion, onBookCall 
       className="relative rounded-3xl overflow-hidden"
     >
       {/* Main panel */}
-      <div className="relative bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-900/[0.04]">
+      <div className="relative bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-900/[0.04]">
 
         {/* Large watermark number */}
         <span className="absolute top-6 right-8 text-[120px] font-black text-slate-100/70 leading-none tracking-tighter pointer-events-none select-none">

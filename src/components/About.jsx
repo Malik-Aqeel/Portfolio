@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useReducedMotion, useInView } from 'framer-motion';
 import {
-  CheckCircle2, ArrowRight, Award, TrendingUp, Sparkles,
+  ArrowRight, Award, TrendingUp, Sparkles,
   ShieldCheck, Zap, BarChart3, DollarSign, Target,
-  Globe, Users, LineChart, Layers, ArrowUpRight
+  Globe, Users, LineChart, Layers, ArrowUpRight, CheckCircle2
 } from 'lucide-react';
 import { personalInfo, aboutChecklist } from '../data/portfolioData';
 import profilePic from '../assets/profile_pic.jpeg';
@@ -38,7 +38,7 @@ function useAnimatedCounter(target, duration = 2000, startOnView = false) {
 function StatCard({ stat, index, shouldReduceMotion }) {
   const { count, ref } = useAnimatedCounter(stat.value, 1800, true);
   const Icon = stat.icon;
-  const suffix = stat.value.replace(/[0-9.]/g, '');
+  const suffix = stat.suffix !== undefined ? stat.suffix : stat.value.replace(/[0-9.]/g, '');
 
   return (
     <motion.div
@@ -53,7 +53,7 @@ function StatCard({ stat, index, shouldReduceMotion }) {
       {/* Hover glow */}
       <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-emerald-500/20 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
 
-      <div className="relative h-full p-5 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-200/80 shadow-sm hover:shadow-lg hover:border-emerald-300/60 transition-all duration-500">
+      <div className="relative h-full p-5 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-lg hover:border-emerald-300/60 transition-all duration-500">
         {/* Icon */}
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 shadow-sm ${stat.gradient}`}>
           <Icon className="w-5 h-5 text-white" />
@@ -84,7 +84,7 @@ export default function About({ onBookCall }) {
 
   const aboutStats = [
     { label: 'Brands Scaled', value: '50+', icon: Users, sub: 'International DTC & E-com', gradient: 'bg-gradient-to-br from-emerald-500 to-emerald-600', prefix: '' },
-    { label: 'Ad Spend Managed', value: '15', icon: DollarSign, sub: 'Profitable Execution', gradient: 'bg-gradient-to-br from-teal-500 to-teal-600', prefix: '$', suffix: 'M+' },
+    { label: 'Ad Spend Managed', value: '15M', icon: DollarSign, sub: 'Profitable Execution', gradient: 'bg-gradient-to-br from-teal-500 to-teal-600', prefix: '$', suffix: 'M' },
     { label: 'Avg ROAS Lift', value: '3.4', icon: TrendingUp, sub: 'Consistent & Documented', gradient: 'bg-gradient-to-br from-sky-500 to-sky-600', prefix: '' },
     { label: 'Global Markets', value: '12+', icon: Globe, sub: 'US, UK, EU, AU & Beyond', gradient: 'bg-gradient-to-br from-indigo-500 to-indigo-600', prefix: '' },
   ];
@@ -129,7 +129,7 @@ export default function About({ onBookCall }) {
           className="text-center max-w-3xl mx-auto mb-20"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/60 shadow-sm backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-emerald-200/60 shadow-sm mb-6">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -178,11 +178,11 @@ export default function About({ onBookCall }) {
               <div className="relative z-10 p-5 sm:p-9 flex flex-col h-full min-h-[460px] sm:min-h-[520px] justify-between">
                 {/* Top badges row */}
                 <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/90">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-white/90">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                     <span className="text-[10px] font-bold tracking-wider uppercase">Google Certified</span>
                   </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/20">
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/25 border border-emerald-500/30">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     <span className="text-[10px] font-bold text-emerald-300 tracking-wider uppercase">Available</span>
                   </div>
@@ -235,7 +235,7 @@ export default function About({ onBookCall }) {
 
                 {/* Bottom metric strip */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
-                  <div className="flex-1 p-3 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
+                  <div className="flex-1 p-3 rounded-2xl bg-white/10 border border-white/15">
                     <p className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Tracking Integrity</p>
                     <div className="flex items-center gap-2 mt-1.5">
                       <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -250,7 +250,7 @@ export default function About({ onBookCall }) {
                       <span className="text-xs font-black text-emerald-400">99.4%</span>
                     </div>
                   </div>
-                  <div className="flex-1 p-3 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
+                  <div className="flex-1 p-3 rounded-2xl bg-white/10 border border-white/15">
                     <p className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Avg ROAS</p>
                     <p className="text-xl font-black text-white mt-0.5">3.4×<span className="text-xs text-emerald-400 font-bold ml-1.5">↑ Lift</span></p>
                   </div>
@@ -274,7 +274,7 @@ export default function About({ onBookCall }) {
             transition={{ duration: 0.7, delay: 0.15, ease: [0.215, 0.61, 0.355, 1] }}
             className="lg:col-span-7"
           >
-            <div className="rounded-3xl bg-white/70 backdrop-blur-sm border border-slate-200/70 shadow-sm p-6 sm:p-7">
+            <div className="rounded-3xl bg-white border border-slate-200/70 shadow-sm p-6 sm:p-7">
               {/* Header */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2.5">
@@ -327,7 +327,7 @@ export default function About({ onBookCall }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 p-6 sm:p-7 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-200/60 shadow-sm"
+          className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/60 shadow-sm"
         >
           <div className="text-center sm:text-left">
             <p className="text-lg font-extrabold text-slate-900 tracking-tight">

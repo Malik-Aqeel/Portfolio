@@ -2,9 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight, TrendingUp, TrendingDown, Target, Rocket,
-  LineChart, Home, Grid, Users, Settings, Calendar,
-  Star, ChevronDown, Check, CheckCircle2, ShieldCheck, Zap,
-  Activity, ArrowUpRight
+  LineChart, Grid, Users, Star, ChevronDown,
+  ShieldCheck, Zap, Activity, Home, Settings, Calendar, Check, CheckCircle2
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 import googleAdsImg from '../assets/google_ads_img.jpeg';
@@ -549,15 +548,15 @@ export default function Hero({ onBookCall }) {
       {/* ─── Ambient Glow Meshes (Matching Website Theme) ─── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
-          className="absolute top-10 right-1/4 w-[650px] h-[650px] rounded-full opacity-30 blur-2xl pointer-events-none transform-gpu"
-          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(20, 184, 166, 0.05) 55%, transparent 75%)' }}
+          className="absolute top-10 right-1/4 w-[650px] h-[650px] rounded-full opacity-35 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, rgba(20, 184, 166, 0.06) 45%, transparent 70%)' }}
         />
         <div
-          className="absolute bottom-4 right-10 w-[450px] h-[450px] rounded-full opacity-25 blur-2xl pointer-events-none transform-gpu"
+          className="absolute bottom-4 right-10 w-[450px] h-[450px] rounded-full opacity-30 pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(14, 165, 233, 0.14) 0%, transparent 65%)' }}
         />
         <div
-          className="absolute -top-16 left-12 w-[450px] h-[450px] rounded-full opacity-20 blur-2xl pointer-events-none transform-gpu"
+          className="absolute -top-16 left-12 w-[450px] h-[450px] rounded-full opacity-25 pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 65%)' }}
         />
       </div>
@@ -584,7 +583,7 @@ export default function Hero({ onBookCall }) {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-emerald-200/80 shadow-soft-sm backdrop-blur-md"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/95 border border-emerald-200/80 shadow-soft-sm"
             >
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -852,7 +851,7 @@ export default function Hero({ onBookCall }) {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 6, scale: 0.95 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200 shadow-2xl p-1.5 z-50 text-left"
+                          className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-white border border-slate-200 shadow-2xl p-1.5 z-50 text-left"
                         >
                           <div className="px-3 py-1.5 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                             Select Timeframe
@@ -1040,7 +1039,7 @@ export default function Hero({ onBookCall }) {
               <motion.div
                 variants={floatSlow}
                 animate="animate"
-                className="absolute -bottom-6 left-1.5 sm:left-2 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-xl border border-slate-200/80 flex items-center gap-2.5 sm:gap-3 max-w-[calc(100%-12px)] sm:max-w-none"
+                className="absolute -bottom-6 left-1.5 sm:left-2 z-20 bg-white/95 rounded-2xl p-2.5 sm:p-3.5 shadow-xl border border-slate-200/80 flex items-center gap-2.5 sm:gap-3 max-w-[calc(100%-12px)] sm:max-w-none"
               >
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-md shadow-emerald-500/30 shrink-0">
                   <Star className="w-5 h-5 fill-white" />
@@ -1063,7 +1062,7 @@ export default function Hero({ onBookCall }) {
               <motion.div
                 variants={floatBadge}
                 animate="animate"
-                className="absolute -bottom-8 right-2 sm:right-6 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-3.5 shadow-xl border border-slate-200/80 hidden sm:flex items-center gap-4"
+                className="absolute -bottom-8 right-2 sm:right-6 z-20 bg-white/95 rounded-2xl p-3.5 shadow-xl border border-slate-200/80 hidden sm:flex items-center gap-4"
               >
                 <div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
