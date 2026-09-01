@@ -4,7 +4,7 @@ import { Menu, X, ArrowRight, Sparkles } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 import googleAdsImg from '../assets/google_ads_img.jpeg';
 
-export default function Navbar({ onBookCall }) {
+export default function Navbar({ onBookCall, onOpenFaq }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -13,9 +13,9 @@ export default function Navbar({ onBookCall }) {
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
     { name: 'Case Studies', href: '#case-studies' },
-    { name: 'Process', href: '#approach' },
+    { name: 'Process', href: '#process' },
+    { name: 'Services', href: '#services' },
     { name: 'Testimonials', href: '#testimonials' },
     { name: 'FAQ', href: '#faq' },
     { name: 'Contact', href: '#contact' },
@@ -64,6 +64,10 @@ export default function Navbar({ onBookCall }) {
   const handleNavClick = (e, href) => {
     e.preventDefault();
     setMobileMenuOpen(false);
+    if (href === '#faq') {
+      if (onOpenFaq) onOpenFaq();
+      return;
+    }
     const target = document.querySelector(href);
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });

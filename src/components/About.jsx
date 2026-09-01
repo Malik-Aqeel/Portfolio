@@ -6,7 +6,7 @@ import {
   Globe, Users, LineChart, Layers, ArrowUpRight, CheckCircle2
 } from 'lucide-react';
 import { personalInfo, aboutChecklist } from '../data/portfolioData';
-import profilePic from '../assets/profile_pic.jpeg';
+import profilePic from '../assets/profile_img2.jpeg';
 
 /* ─── Animated counter hook ─── */
 function useAnimatedCounter(target, duration = 2000, startOnView = false) {
