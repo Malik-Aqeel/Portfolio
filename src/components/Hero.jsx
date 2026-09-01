@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 import googleAdsImg from '../assets/google_ads_img.jpeg';
+import faviconImg from '../assets/febicon_img.jpeg';
 
 // Interactive Date Ranges Dataset
 const dateRanges = [
@@ -578,19 +579,26 @@ export default function Hero({ onBookCall }) {
           ═════════════════════════════════════════════════════ */}
           <div className="lg:col-span-5 space-y-5 text-left">
 
-            {/* Small Top Badge with Pulsing Emerald Radar */}
+            {/* Author / Identity Badge with Custom Brand Icon & Name */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/95 border border-emerald-200/80 shadow-soft-sm"
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/95 border border-emerald-200/80 shadow-soft-sm hover:border-emerald-300 transition-colors"
             >
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+              <div className="w-5 h-5 rounded-md overflow-hidden bg-white flex items-center justify-center shrink-0 border border-slate-200/70 shadow-xs">
+                <img
+                  src={faviconImg}
+                  alt={personalInfo.name}
+                  className="w-full h-full object-contain p-0.5"
+                />
+              </div>
+              <span className="text-[11px] sm:text-xs font-bold text-slate-800 tracking-wide">
+                <span className="text-emerald-700 font-extrabold">{personalInfo.name}</span> • Google Ads Specialist
               </span>
-              <span className="text-[11px] sm:text-xs font-bold text-emerald-800 tracking-wide uppercase">
-                Driving Results • Delivering Growth
+              <span className="relative flex h-2 w-2 ml-0.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
             </motion.div>
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Menu, X, ArrowRight, Sparkles } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
-import googleAdsImg from '../assets/google_ads_img.jpeg';
+import febiconImg from '../assets/febicon_img.jpeg';
 
 export default function Navbar({ onBookCall, onOpenFaq }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -20,6 +20,18 @@ export default function Navbar({ onBookCall, onOpenFaq }) {
     { name: 'FAQ', href: '#faq' },
     { name: 'Contact', href: '#contact' },
   ];
+
+  // Lock body scroll when mobile menu is open to prevent background scrolling artifacts
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     let ticking = false;
@@ -76,18 +88,35 @@ export default function Navbar({ onBookCall, onOpenFaq }) {
 
   return (
     <header
-      className={`fixed inset-x-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none ${
-        isScrolled
+      className={`fixed inset-x-0 z-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none ${
+        isScrolled || mobileMenuOpen
           ? 'top-3 sm:top-4 px-3 sm:px-6'
           : 'top-0 px-0'
       }`}
     >
+      {/* Mobile Menu Backdrop Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setMobileMenuOpen(false)}
+            className="lg:hidden fixed inset-0 bg-slate-950/45 backdrop-blur-xs pointer-events-auto -z-10"
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
+
       {/* ── Dynamic Navbar Container ── */}
       <div
-        className={`mx-auto pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu ${
-          isScrolled
-            ? 'w-[96%] sm:w-[94%] max-w-[1240px] rounded-full bg-white/85 backdrop-blur-xl border border-white/60 shadow-lg shadow-emerald-950/5 py-2 sm:py-2.5 px-3.5 sm:px-8'
-            : 'w-full max-w-full rounded-none bg-white/90 backdrop-blur-md border-b border-slate-200/50 shadow-none py-2.5 sm:py-3.5 px-4 sm:px-10 lg:px-14'
+        className={`mx-auto pointer-events-auto transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu ${
+          mobileMenuOpen
+            ? 'w-[96%] max-w-[1240px] rounded-3xl bg-white border border-slate-200/90 shadow-2xl py-3 px-4 sm:px-6'
+            : isScrolled
+              ? 'w-[96%] sm:w-[94%] max-w-[1240px] rounded-full bg-white/85 backdrop-blur-xl border border-white/60 shadow-lg shadow-emerald-950/5 py-2 sm:py-2.5 px-3.5 sm:px-8'
+              : 'w-full max-w-full rounded-none bg-white/90 backdrop-blur-md border-b border-slate-200/50 shadow-none py-2.5 sm:py-3.5 px-4 sm:px-10 lg:px-14'
         }`}
       >
         <div className="flex items-center justify-between gap-2 sm:gap-4">
@@ -98,11 +127,11 @@ export default function Navbar({ onBookCall, onOpenFaq }) {
             onClick={(e) => handleNavClick(e, '#home')}
             className="flex items-center gap-2 sm:gap-2.5 group text-left cursor-pointer shrink-0 whitespace-nowrap"
           >
-            {/* Google Ads Icon */}
+            {/* Custom Brand Logo */}
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white shadow-xs border border-slate-200/70 flex items-center justify-center p-1 sm:p-1.5 shrink-0 group-hover:scale-105 transition-transform overflow-hidden">
               <img
-                src={googleAdsImg}
-                alt="Google Ads"
+                src={febiconImg}
+                alt={personalInfo.name}
                 className="w-full h-full object-contain"
                 decoding="async"
               />
@@ -194,17 +223,17 @@ export default function Navbar({ onBookCall, onOpenFaq }) {
 
         </div>
 
-        {/* ── Mobile Dropdown Menu (Transparent Glassmorphic) ── */}
+        {/* ── Mobile Dropdown Menu (Seamless inside unified card) ── */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -8, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -6, scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-              className="lg:hidden mt-3 bg-white/80 backdrop-blur-2xl border border-white/60 rounded-3xl shadow-xl p-5 space-y-4 text-left"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+              className="lg:hidden pt-3.5 mt-2 border-t border-slate-100 space-y-4 text-left overflow-hidden"
             >
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100/80">
+              <div className="flex items-center justify-between pb-1 border-b border-slate-100/80">
                 <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Navigation Menu</span>
                 <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
                   ● Ready to Scale
