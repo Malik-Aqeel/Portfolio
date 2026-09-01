@@ -12,7 +12,7 @@ export default function WhatsAppButton() {
   const whatsappUrl = `https://wa.me/${cleanPhone}?text=${message}`;
 
   return (
-    <div className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-40 flex items-center justify-end">
+    <div className="fixed bottom-24 md:bottom-10 right-5 md:right-8 z-40 flex items-center justify-end">
       {/* Floating Tooltip */}
       <AnimatePresence>
         {isHovered && (
