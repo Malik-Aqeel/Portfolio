@@ -3,17 +3,26 @@ import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight, TrendingUp, TrendingDown, Target, Rocket,
   LineChart, Grid, Users, Star, ChevronDown,
-  ShieldCheck, Zap, Activity, Home, Settings, Calendar, Check, CheckCircle2
+  ShieldCheck, Zap, Activity, Home, Settings, Calendar, Check, CheckCircle2,
+  Award, Sparkles, Clock, CheckCircle
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 import googleAdsImg from '../assets/google_ads_img.jpeg';
 import faviconImg from '../assets/febicon_img.jpeg';
+
+// Client brand logos for genuine social proof avatars
+import logoAG from '../assets/ag.jpeg';
+import logoAO from '../assets/ao.jpeg';
+import logoAT from '../assets/at.jpeg';
+import logoHI from '../assets/hi.jpeg';
+import logoTH from '../assets/th.jpeg';
 
 // Interactive Date Ranges Dataset
 const dateRanges = [
   {
     id: '7D',
     label: 'Last 7 Days',
+    shortLabel: '7D',
     badge: '+18.4% ROAS',
     clicks: '12.6K',
     clicksGrowth: '↑ 28.5%',
@@ -39,6 +48,7 @@ const dateRanges = [
   {
     id: '30D',
     label: 'Last 30 Days',
+    shortLabel: '30D',
     badge: '+21.5% ROAS',
     clicks: '48.2K',
     clicksGrowth: '↑ 34.2%',
@@ -64,6 +74,7 @@ const dateRanges = [
   {
     id: '90D',
     label: 'Last 90 Days',
+    shortLabel: '90D',
     badge: '+28.7% ROAS',
     clicks: '154K',
     clicksGrowth: '↑ 48.6%',
@@ -88,7 +99,8 @@ const dateRanges = [
   },
   {
     id: 'Year',
-    label: 'Year',
+    label: 'All-Time Year',
+    shortLabel: '1Y',
     badge: '+34.2% ROAS',
     clicks: '272K',
     clicksGrowth: '↑ 61.2%',
@@ -130,12 +142,12 @@ const tabConfigs = {
     legend1: 'Clicks Trend',
     legend2: 'Conversions',
     yAxis: ['1.5K', '1K', '500', '0'],
-    telemetrySuffix: 'Telemetry',
+    telemetrySuffix: 'Live Telemetry',
     getMetrics: (data) => [
       {
         icon: LineChart,
         iconColor: 'text-emerald-600',
-        bgGradient: 'from-emerald-50/50 to-white',
+        bgGradient: 'from-emerald-50/70 to-white',
         border: 'border-emerald-100',
         label: 'Clicks',
         value: data.clicks,
@@ -147,7 +159,7 @@ const tabConfigs = {
       {
         icon: TrendingUp,
         iconColor: 'text-teal-600',
-        bgGradient: 'from-teal-50/50 to-white',
+        bgGradient: 'from-teal-50/70 to-white',
         border: 'border-teal-100',
         label: 'Conversions',
         value: data.conversions,
@@ -157,10 +169,10 @@ const tabConfigs = {
         sparkStroke: '#0D9488',
       },
       {
-        icon: LineChart,
+        icon: Target,
         iconColor: 'text-amber-500',
-        bgGradient: 'from-amber-50/30 to-white',
-        border: 'border-slate-100',
+        bgGradient: 'from-amber-50/40 to-white',
+        border: 'border-amber-100/70',
         label: 'Cost / Conv.',
         value: data.cpa,
         growth: data.cpaGrowth,
@@ -171,8 +183,8 @@ const tabConfigs = {
       {
         icon: Zap,
         iconColor: 'text-emerald-600',
-        bgGradient: 'from-emerald-50/60 to-teal-50/40',
-        border: 'border-emerald-200/60',
+        bgGradient: 'from-emerald-50/80 to-teal-50/50',
+        border: 'border-emerald-200',
         label: 'Conv. Value',
         value: data.convValue,
         growth: data.convValueGrowth,
@@ -186,7 +198,7 @@ const tabConfigs = {
       area1: data.clicksArea,
       color1: '#059669',
       fill1: 'url(#emeraldHeroFill)',
-      strokeWidth1: '2.5',
+      strokeWidth1: '2.8',
       line2: data.convLine,
       area2: data.convArea,
       color2: '#0D9488',
@@ -212,8 +224,8 @@ const tabConfigs = {
         {
           icon: Zap,
           iconColor: 'text-emerald-600',
-          bgGradient: 'from-emerald-50/50 to-white',
-          border: 'border-emerald-200/70',
+          bgGradient: 'from-emerald-50/70 to-white',
+          border: 'border-emerald-200',
           label: 'Target ROAS',
           value: roasMap[data.id] || '4.85x',
           growth: data.badge,
@@ -224,7 +236,7 @@ const tabConfigs = {
         {
           icon: TrendingUp,
           iconColor: 'text-teal-600',
-          bgGradient: 'from-teal-50/50 to-white',
+          bgGradient: 'from-teal-50/70 to-white',
           border: 'border-teal-100',
           label: 'Net Revenue',
           value: data.convValue,
@@ -236,7 +248,7 @@ const tabConfigs = {
         {
           icon: ShieldCheck,
           iconColor: 'text-blue-500',
-          bgGradient: 'from-blue-50/30 to-white',
+          bgGradient: 'from-blue-50/40 to-white',
           border: 'border-blue-100',
           label: 'Profit Margin',
           value: profitMap[data.id] || '68.5%',
@@ -248,7 +260,7 @@ const tabConfigs = {
         {
           icon: LineChart,
           iconColor: 'text-indigo-600',
-          bgGradient: 'from-indigo-50/40 to-white',
+          bgGradient: 'from-indigo-50/50 to-white',
           border: 'border-indigo-100',
           label: 'Ad Spend',
           value: spendMap[data.id] || '$38.2K',
@@ -286,7 +298,7 @@ const tabConfigs = {
       {
         icon: Grid,
         iconColor: 'text-emerald-600',
-        bgGradient: 'from-emerald-50/50 to-white',
+        bgGradient: 'from-emerald-50/70 to-white',
         border: 'border-emerald-100',
         label: 'PMax Share',
         value: `${data.donut.pmax + 35}%`,
@@ -298,7 +310,7 @@ const tabConfigs = {
       {
         icon: Rocket,
         iconColor: 'text-teal-600',
-        bgGradient: 'from-teal-50/50 to-white',
+        bgGradient: 'from-teal-50/70 to-white',
         border: 'border-teal-100',
         label: 'Search ROAS',
         value: '5.42x',
@@ -310,7 +322,7 @@ const tabConfigs = {
       {
         icon: Target,
         iconColor: 'text-amber-500',
-        bgGradient: 'from-amber-50/30 to-white',
+        bgGradient: 'from-amber-50/40 to-white',
         border: 'border-amber-100',
         label: 'Shopping CPA',
         value: '$4.20',
@@ -322,11 +334,11 @@ const tabConfigs = {
       {
         icon: Activity,
         iconColor: 'text-emerald-600',
-        bgGradient: 'from-emerald-50/60 to-teal-50/40',
-        border: 'border-emerald-200/60',
+        bgGradient: 'from-emerald-50/80 to-teal-50/50',
+        border: 'border-emerald-200',
         label: 'Active SKUs',
         value: '1,420+',
-        growth: 'Top Tier Tiered',
+        growth: 'Top Tier Priority',
         growthColor: 'text-emerald-600',
         spark: 'M0,18 Q15,9 30,6 T48,2 T60,1',
         sparkStroke: '#10B981',
@@ -337,7 +349,7 @@ const tabConfigs = {
       area1: '0,80 30,68 65,50 95,56 130,36 160,32 195,24 230,22 260,14 290,10 320,5 320,100 0,100',
       color1: '#059669',
       fill1: 'url(#emeraldHeroFill)',
-      strokeWidth1: '2.5',
+      strokeWidth1: '2.8',
       line2: 'M0,88 Q30,80 65,72 T130,60 T195,50 T260,42 T320,34',
       area2: '0,88 30,80 65,72 95,78 130,60 160,58 195,50 230,48 260,42 290,38 320,34 320,100 0,100',
       color2: '#0D9488',
@@ -359,7 +371,7 @@ const tabConfigs = {
       {
         icon: Target,
         iconColor: 'text-emerald-600',
-        bgGradient: 'from-emerald-50/50 to-white',
+        bgGradient: 'from-emerald-50/70 to-white',
         border: 'border-emerald-100',
         label: 'Conv. Rate',
         value: '4.85%',
@@ -371,7 +383,7 @@ const tabConfigs = {
       {
         icon: TrendingDown,
         iconColor: 'text-teal-600',
-        bgGradient: 'from-teal-50/50 to-white',
+        bgGradient: 'from-teal-50/70 to-white',
         border: 'border-teal-100',
         label: 'Blended CPA',
         value: data.cpa,
@@ -383,7 +395,7 @@ const tabConfigs = {
       {
         icon: CheckCircle2,
         iconColor: 'text-blue-500',
-        bgGradient: 'from-blue-50/30 to-white',
+        bgGradient: 'from-blue-50/40 to-white',
         border: 'border-blue-100',
         label: 'Cart-to-Order',
         value: '21.4%',
@@ -395,8 +407,8 @@ const tabConfigs = {
       {
         icon: ShieldCheck,
         iconColor: 'text-emerald-600',
-        bgGradient: 'from-emerald-50/60 to-teal-50/40',
-        border: 'border-emerald-200/60',
+        bgGradient: 'from-emerald-50/80 to-teal-50/50',
+        border: 'border-emerald-200',
         label: 'Quality Score',
         value: '9.4 / 10',
         growth: 'Lowest CPC tier',
@@ -410,7 +422,7 @@ const tabConfigs = {
       area1: '0,82 25,66 60,48 90,52 120,38 150,34 180,26 210,22 240,16 280,12 320,6 320,100 0,100',
       color1: '#059669',
       fill1: 'url(#emeraldHeroFill)',
-      strokeWidth1: '2.6',
+      strokeWidth1: '2.8',
       line2: 'M0,25 Q25,36 60,48 T120,58 T180,68 T240,78 T320,86',
       area2: '0,25 25,36 60,48 90,44 120,58 150,60 180,68 210,72 240,78 280,82 320,86 320,100 0,100',
       color2: '#F59E0B',
@@ -432,7 +444,7 @@ const tabConfigs = {
       {
         icon: Users,
         iconColor: 'text-emerald-600',
-        bgGradient: 'from-emerald-50/50 to-white',
+        bgGradient: 'from-emerald-50/70 to-white',
         border: 'border-emerald-100',
         label: 'New Cust. Share',
         value: '74.5%',
@@ -444,7 +456,7 @@ const tabConfigs = {
       {
         icon: TrendingUp,
         iconColor: 'text-teal-600',
-        bgGradient: 'from-teal-50/50 to-white',
+        bgGradient: 'from-teal-50/70 to-white',
         border: 'border-teal-100',
         label: 'Repeat Buyers',
         value: '25.5%',
@@ -456,7 +468,7 @@ const tabConfigs = {
       {
         icon: Zap,
         iconColor: 'text-blue-500',
-        bgGradient: 'from-blue-50/30 to-white',
+        bgGradient: 'from-blue-50/40 to-white',
         border: 'border-blue-100',
         label: 'Avg Order Value',
         value: '$148.50',
@@ -468,7 +480,7 @@ const tabConfigs = {
       {
         icon: Star,
         iconColor: 'text-amber-500',
-        bgGradient: 'from-amber-50/30 to-white',
+        bgGradient: 'from-amber-50/40 to-white',
         border: 'border-amber-100',
         label: '90-Day LTV',
         value: '$386.00',
@@ -483,7 +495,7 @@ const tabConfigs = {
       area1: '0,78 25,62 60,46 90,50 120,34 150,30 180,24 210,20 240,14 280,8 320,4 320,100 0,100',
       color1: '#059669',
       fill1: 'url(#emeraldHeroFill)',
-      strokeWidth1: '2.6',
+      strokeWidth1: '2.8',
       line2: 'M0,90 Q25,82 60,72 T120,60 T180,48 T240,36 T320,24',
       area2: '0,90 25,82 60,72 90,76 120,60 150,56 180,48 210,44 240,36 280,30 320,24 320,100 0,100',
       color2: '#0D9488',
@@ -536,7 +548,7 @@ export default function Hero({ onBookCall }) {
   const floatBadge = {
     animate: {
       y: [0, -8, 0],
-      rotate: [-1.5, 1.5, -1.5],
+      rotate: [-1.2, 1.2, -1.2],
       transition: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' }
     }
   };
@@ -544,80 +556,95 @@ export default function Hero({ onBookCall }) {
   return (
     <section
       id="home"
-      className="relative pt-24 pb-8 lg:pt-28 lg:pb-12 overflow-hidden bg-gradient-to-b from-white via-[#F8FAFB] to-[#F0F7F4] min-h-[calc(100vh-20px)] flex flex-col justify-center"
+      className="relative pt-24 pb-12 lg:pt-28 lg:pb-16 overflow-hidden bg-gradient-to-b from-white via-[#F6FAF8] to-[#EEF7F3] min-h-[calc(100vh-20px)] flex flex-col justify-center select-none"
     >
-      {/* ─── Ambient Glow Meshes (Matching Website Theme) ─── */}
+      {/* ─── Multi-Layered Luminous Ambient Meshes & Auroras ─── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Main top right emerald aurora */}
         <div
-          className="absolute top-10 right-1/4 w-[650px] h-[650px] rounded-full opacity-35 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, rgba(20, 184, 166, 0.06) 45%, transparent 70%)' }}
+          className="absolute -top-24 right-10 w-[700px] h-[700px] rounded-full opacity-40 pointer-events-none filter blur-[90px]"
+          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.28) 0%, rgba(20, 184, 166, 0.12) 40%, transparent 70%)' }}
         />
+        {/* Soft cyan & indigo center glow behind dashboard */}
         <div
-          className="absolute bottom-4 right-10 w-[450px] h-[450px] rounded-full opacity-30 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(14, 165, 233, 0.14) 0%, transparent 65%)' }}
+          className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full opacity-30 pointer-events-none filter blur-[80px]"
+          style={{ background: 'radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 75%)' }}
         />
+        {/* Left emerald ambient light */}
         <div
-          className="absolute -top-16 left-12 w-[450px] h-[450px] rounded-full opacity-25 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 65%)' }}
+          className="absolute -top-10 -left-20 w-[550px] h-[550px] rounded-full opacity-30 pointer-events-none filter blur-[85px]"
+          style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, rgba(5, 150, 105, 0.06) 50%, transparent 70%)' }}
+        />
+        {/* Bottom teal-sky soft spotlight */}
+        <div
+          className="absolute bottom-0 right-1/3 w-[600px] h-[300px] rounded-full opacity-25 pointer-events-none filter blur-[70px]"
+          style={{ background: 'radial-gradient(ellipse, rgba(14, 165, 233, 0.18) 0%, transparent 70%)' }}
         />
       </div>
 
-      {/* Subtle Dot Grid */}
+      {/* Subtle Matrix Dot Grid with Radial Fade */}
       <div
-        className="absolute inset-0 opacity-[0.035] pointer-events-none"
+        className="absolute inset-0 opacity-[0.038] pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle, #059669 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle, #059669 1.2px, transparent 1.2px)',
           backgroundSize: '24px 24px',
+          maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 50%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 50%, transparent 100%)'
         }}
       />
 
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
+      <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
 
           {/* ═════════════════════════════════════════════════════
-              LEFT COLUMN: High-Converting Headline & Trust Elements
+              LEFT COLUMN: High-Converting Headline, Social Proof, CTAs
           ═════════════════════════════════════════════════════ */}
           <div className="lg:col-span-5 space-y-5 text-left">
 
-            {/* Author / Identity Badge with Custom Brand Icon & Name */}
+            {/* Author / Identity Luxury Glass Badge */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/95 border border-emerald-200/80 shadow-soft-sm hover:border-emerald-300 transition-colors"
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full glass-pill-luxury border border-emerald-300/60 shadow-soft-sm hover:border-emerald-400 transition-all cursor-default"
             >
-              <div className="w-5 h-5 rounded-md overflow-hidden bg-white flex items-center justify-center shrink-0 border border-slate-200/70 shadow-xs">
+              <div className="w-5 h-5 rounded-md overflow-hidden bg-white flex items-center justify-center shrink-0 border border-slate-200/80 shadow-xs">
                 <img
                   src={faviconImg}
                   alt={personalInfo.name}
                   className="w-full h-full object-contain p-0.5"
                 />
               </div>
-              <span className="text-[11px] sm:text-xs font-bold text-slate-800 tracking-wide">
-                <span className="text-emerald-700 font-extrabold">{personalInfo.name}</span> • Google Ads Specialist
+              <span className="text-[11px] sm:text-xs font-bold text-slate-800 tracking-wide flex items-center gap-1.5">
+                <span className="text-emerald-700 font-extrabold">{personalInfo.name}</span>
+                <span className="text-slate-300">•</span>
+                <span className="text-slate-600 font-semibold">Google Ads Specialist</span>
               </span>
-              <span className="relative flex h-2 w-2 ml-0.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative flex h-2 w-2 ml-0.5" title="Available for projects">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span className="hidden sm:inline-flex text-[9.5px] font-extrabold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-full border border-emerald-200/70">
+                Q3 Open
               </span>
             </motion.div>
 
             {/* Main Bold Headline with Website Emerald Theme & Hand-drawn Curve */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl lg:text-[3.35rem] font-black text-slate-900 tracking-tight leading-[1.22] pb-1"
+              className="text-4xl sm:text-5xl lg:text-[3.4rem] font-black text-slate-900 tracking-tight leading-[1.18] pb-1"
             >
               More Clicks.
               <br />
               Better Conversions.
               <br />
-              <span className="relative inline-block">
+              <span className="relative inline-block mt-0.5">
                 <span className="animated-growth-gradient font-black">
                   Maximum Growth.
                 </span>
-                {/* Hand-drawn Accent curve with vibrant gradient */}
+                {/* Hand-drawn Accent curve with vibrant glowing gradient */}
                 <svg
                   className="absolute -bottom-2.5 left-0 w-full h-3.5 pointer-events-none overflow-visible"
                   viewBox="0 0 260 12"
@@ -639,80 +666,141 @@ export default function Hero({ onBookCall }) {
                     strokeLinecap="round"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
-                    transition={{ duration: 1, ease: 'easeOut' }}
+                    transition={{ duration: 1.1, ease: 'easeOut' }}
                   />
                 </svg>
               </span>
             </motion.h1>
 
-            {/* Subtitle */}
+            {/* Subtitle with High-Impact Value Proposition */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-sm sm:text-base text-slate-600 font-normal leading-relaxed max-w-md"
+              className="text-sm sm:text-base text-slate-600 font-normal leading-relaxed max-w-lg"
             >
-              I help e-commerce and DTC businesses scale profitably with data-driven Google Ads strategies that lower CPA and maximize ROAS.
+              I help e-commerce & DTC brands scale predictably with data-driven Google Ads architectures, Performance Max scaling, and negative keyword precision that lower CPA and maximize ROAS.
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* ─── NEW: Social Proof Trust Strip with Real Brand Badges ─── */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-3.5 pt-1"
+              transition={{ duration: 0.55, delay: 0.28 }}
+              className="flex items-center gap-3 pt-0.5"
             >
-              <button
-                onClick={onBookCall}
-                className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 button-shine relative overflow-hidden"
-              >
-                <span>Get Free Audit</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              {/* Overlapping Client Brand Avatars with crisp badge styling */}
+              <div className="flex items-center -space-x-2 shrink-0">
+                <div className="w-8 h-8 rounded-full border-2 border-white shadow-soft-sm overflow-hidden bg-white flex items-center justify-center p-1 hover:scale-110 hover:z-10 transition-transform">
+                  <img src={logoAG} alt="Client Brand" className="w-full h-full object-contain" />
+                </div>
+                <div className="w-8 h-8 rounded-full border-2 border-white shadow-soft-sm overflow-hidden bg-white flex items-center justify-center p-1 hover:scale-110 hover:z-10 transition-transform">
+                  <img src={logoAO} alt="Client Brand" className="w-full h-full object-contain" />
+                </div>
+                <div className="w-8 h-8 rounded-full border-2 border-white shadow-soft-sm overflow-hidden bg-white flex items-center justify-center p-1 hover:scale-110 hover:z-10 transition-transform">
+                  <img src={logoAT} alt="Client Brand" className="w-full h-full object-contain" />
+                </div>
+                <div className="w-8 h-8 rounded-full border-2 border-white shadow-soft-sm overflow-hidden bg-white flex items-center justify-center p-1 hover:scale-110 hover:z-10 transition-transform">
+                  <img src={logoHI} alt="Client Brand" className="w-full h-full object-contain" />
+                </div>
+                <div className="w-8 h-8 rounded-full border-2 border-white shadow-soft-sm overflow-hidden bg-white flex items-center justify-center p-1 hover:scale-110 hover:z-10 transition-transform">
+                  <img src={logoTH} alt="Client Brand" className="w-full h-full object-contain" />
+                </div>
+              </div>
 
-              <a
-                href="#case-studies"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm sm:text-base border border-slate-200/90 shadow-soft-sm hover:border-emerald-300 transition-all flex items-center justify-center gap-2"
-              >
-                <LineChart className="w-4 h-4 text-emerald-600" />
-                <span>View Case Studies</span>
-              </a>
+              {/* Rating & Credibility Text */}
+              <div className="text-left leading-tight">
+                <div className="flex items-center gap-1">
+                  <div className="flex text-amber-400">
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                  </div>
+                  <span className="text-xs font-black text-slate-800 ml-1">4.9/5</span>
+                  <span className="text-[11px] font-semibold text-slate-500">• 50+ Brands</span>
+                </div>
+                <p className="text-[11px] font-bold text-emerald-700 mt-0.5">
+                  $15M+ Profitable Spend Managed
+                </p>
+              </div>
             </motion.div>
 
-            {/* 3 Pillars / Feature Row at Bottom (Responsive on mobile) */}
+            {/* CTA Buttons with Glowing Aura and Shimmer Effect */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 pt-3 border-t border-slate-200/70"
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="space-y-2 pt-1"
             >
-              <div className="flex items-center sm:items-start gap-2.5 group">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-3.5">
+                <button
+                  onClick={onBookCall}
+                  className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold text-sm sm:text-base button-glow-emerald transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 button-shine relative overflow-hidden group"
+                >
+                  <Rocket className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+                  <span>Get Free Audit</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+
+                <a
+                  href="#case-studies"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white/90 hover:bg-slate-50 text-slate-800 font-bold text-sm sm:text-base border border-slate-200/90 shadow-soft-sm hover:border-emerald-300 hover:text-emerald-700 transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
+                >
+                  <LineChart className="w-4 h-4 text-emerald-600" />
+                  <span>View Case Studies</span>
+                </a>
+              </div>
+
+              {/* Confidence Micro-Copy */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-semibold text-slate-500 pt-1">
+                <span className="flex items-center gap-1">
+                  <CheckCircle className="w-3.5 h-3.5 text-emerald-600" /> Free 30-Min Growth Audit
+                </span>
+                <span className="flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5 text-emerald-600" /> 48h Turnaround
+                </span>
+                <span className="flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Zero Lock-In
+                </span>
+              </div>
+            </motion.div>
+
+            {/* 3 Pillars / Frosted Feature Micro-Cards */}
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3.5 pt-3 border-t border-slate-200/80"
+            >
+              <div className="flex items-center sm:items-start gap-2.5 p-2 rounded-xl bg-white/60 hover:bg-white/95 border border-slate-200/60 hover:border-emerald-200/80 shadow-xs hover:shadow-soft-sm transition-all group backdrop-blur-xs">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-emerald-100 transition-all shadow-xs">
                   <Target className="w-4 h-4" />
                 </div>
                 <div>
                   <h4 className="text-xs font-extrabold text-slate-900 leading-tight">Target Right</h4>
-                  <p className="text-[10.5px] text-slate-500 leading-tight mt-0.5">High-intent buyers</p>
+                  <p className="text-[10.5px] text-slate-500 leading-tight mt-0.5">High-intent search & PMax</p>
                 </div>
               </div>
 
-              <div className="flex items-center sm:items-start gap-2.5 group">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-teal-50 text-teal-600 border border-teal-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
-                  <LineChart className="w-4 h-4" />
+              <div className="flex items-center sm:items-start gap-2.5 p-2 rounded-xl bg-white/60 hover:bg-white/95 border border-slate-200/60 hover:border-teal-200/80 shadow-xs hover:shadow-soft-sm transition-all group backdrop-blur-xs">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-teal-50 text-teal-600 border border-teal-100 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-teal-100 transition-all shadow-xs">
+                  <TrendingDown className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-extrabold text-slate-900 leading-tight">Lower Cost</h4>
-                  <p className="text-[10.5px] text-slate-500 leading-tight mt-0.5">Reduce CPA & waste</p>
+                  <h4 className="text-xs font-extrabold text-slate-900 leading-tight">Cut CPA Waste</h4>
+                  <p className="text-[10.5px] text-slate-500 leading-tight mt-0.5">-34% lower acquisition cost</p>
                 </div>
               </div>
 
-              <div className="flex items-center sm:items-start gap-2.5 group">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-sky-50 text-sky-600 border border-sky-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
+              <div className="flex items-center sm:items-start gap-2.5 p-2 rounded-xl bg-white/60 hover:bg-white/95 border border-slate-200/60 hover:border-sky-200/80 shadow-xs hover:shadow-soft-sm transition-all group backdrop-blur-xs">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-sky-50 text-sky-600 border border-sky-100 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-sky-100 transition-all shadow-xs">
                   <Rocket className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-extrabold text-slate-900 leading-tight">Higher ROI</h4>
-                  <p className="text-[10.5px] text-slate-500 leading-tight mt-0.5">Scale revenue profitably</p>
+                  <h4 className="text-xs font-extrabold text-slate-900 leading-tight">Scale Profit</h4>
+                  <p className="text-[10.5px] text-slate-500 leading-tight mt-0.5">3.4x - 6.8x avg ROAS</p>
                 </div>
               </div>
             </motion.div>
@@ -720,40 +808,34 @@ export default function Hero({ onBookCall }) {
           </div>
 
           {/* ═════════════════════════════════════════════════════
-              RIGHT COLUMN: Perspective 3D Google Ads Dashboard
+              RIGHT COLUMN: Next-Gen Ad-Tech Perspective Dashboard
           ═════════════════════════════════════════════════════ */}
           <div className="lg:col-span-7 relative flex items-center justify-center pb-8 sm:pb-4 lg:pb-0">
 
-            {/* Floating 3D Target Dartboard at Bottom-Right */}
+            {/* Ambient Optical Halo Behind Dashboard */}
+            <div className="dashboard-halo" />
+
+            {/* ─── Floating Badge: Google Partner Certified (Top-Right) ─── */}
             {!shouldReduceMotion && (
               <motion.div
-                variants={floatReverse}
+                variants={floatBadge}
                 animate="animate"
-                className="absolute -bottom-8 -right-4 sm:-right-8 z-30 pointer-events-none hidden sm:block"
+                className="absolute -top-5 -right-1 sm:-right-3 z-30 pointer-events-none hidden sm:flex items-center gap-2.5 px-3.5 py-2 rounded-2xl glass-card-luxury border border-emerald-200/80 shadow-xl"
               >
-                <div className="w-24 h-24 sm:w-28 sm:h-28 relative filter drop-shadow-2xl">
-                  <svg viewBox="0 0 120 120" className="w-full h-full">
-                    <defs>
-                      <radialGradient id="targetGradEmerald1" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stopColor="#10B981" />
-                        <stop offset="100%" stopColor="#047857" />
-                      </radialGradient>
-                      <radialGradient id="targetGradWhite" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stopColor="#FFFFFF" />
-                        <stop offset="100%" stopColor="#ECFDF5" />
-                      </radialGradient>
-                    </defs>
-                    <ellipse cx="60" cy="60" rx="52" ry="46" fill="url(#targetGradEmerald1)" opacity="0.95" />
-                    <ellipse cx="60" cy="58" rx="46" ry="40" fill="url(#targetGradWhite)" />
-                    <ellipse cx="60" cy="58" rx="34" ry="30" fill="url(#targetGradEmerald1)" />
-                    <ellipse cx="60" cy="58" rx="22" ry="19" fill="url(#targetGradWhite)" />
-                    <ellipse cx="60" cy="58" rx="12" ry="10" fill="#065F46" />
-                    <g transform="translate(68, 30) rotate(-35)">
-                      <rect x="0" y="0" width="6" height="34" rx="2" fill="#059669" />
-                      <polygon points="-4,34 10,34 3,46" fill="#047857" />
-                      <polygon points="-6,0 12,0 3,-10" fill="#34D399" />
-                    </g>
-                  </svg>
+                <div className="w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-600 shadow-xs shrink-0">
+                  <Award className="w-4 h-4 text-emerald-600" />
+                </div>
+                <div className="text-left">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-black text-slate-900 leading-none">Google Partner</span>
+                    <span className="flex gap-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    </span>
+                  </div>
+                  <p className="text-[10px] font-bold text-emerald-700 leading-tight mt-0.5">Top 3% Specialist</p>
                 </div>
               </motion.div>
             )}
@@ -763,282 +845,321 @@ export default function Hero({ onBookCall }) {
               initial={{ opacity: 0, scale: 0.92, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="relative w-full max-w-[660px] rounded-3xl bg-white shadow-2xl shadow-emerald-950/10 border border-slate-200/90 overflow-visible flex transform lg:rotate-[-2deg] lg:hover:rotate-0 transition-transform duration-500"
+              className="relative w-full max-w-[670px] rounded-3xl bg-white shadow-2xl shadow-emerald-950/15 border border-slate-200/90 overflow-hidden flex flex-col transform lg:rotate-[-1.5deg] lg:hover:rotate-0 transition-transform duration-500"
             >
 
-              {/* ── Dark Left Sidebar (Deep Navy Slate with Emerald Active Highlights) ── */}
-              <div className="w-14 sm:w-16 bg-[#0B132B] text-slate-400 flex flex-col items-center py-5 justify-between shrink-0 rounded-l-3xl">
-                <div className="space-y-6 flex flex-col items-center">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white shadow-xs border border-slate-200/60 flex items-center justify-center p-1.5 overflow-hidden">
-                    <img
-                      src={googleAdsImg}
-                      alt="Google Ads"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-
-                  <div className="space-y-3 flex flex-col items-center">
-                    {sidebarTabs.map((tab) => {
-                      const Icon = tab.icon;
-                      const isActive = activeTab === tab.id;
-                      return (
-                        <button
-                          key={tab.id}
-                          onClick={() => setActiveTab(tab.id)}
-                          className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer relative group ${
-                            isActive
-                              ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/40 ring-2 ring-emerald-400/40 scale-105'
-                              : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
-                          }`}
-                          aria-label={tab.name}
-                        >
-                          <Icon className="w-4 h-4" />
-                          {/* Tooltip on hover */}
-                          <span className="absolute left-full ml-3 px-2.5 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-slate-700 hidden sm:block">
-                            {tab.name}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
+              {/* ── macOS Style Luxury Window Header Bar ── */}
+              <div className="bg-[#0B132B] px-4 py-2.5 flex items-center justify-between border-b border-slate-800 shrink-0">
+                {/* Traffic light control dots */}
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] shadow-xs" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] shadow-xs" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] shadow-xs" />
                 </div>
 
-                <button
-                  onClick={() => {
-                    setActiveTab('home');
-                    setSelectedRangeIndex(1);
-                  }}
-                  title="Reset to Default Overview"
-                  className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all cursor-pointer relative group"
-                  aria-label="Reset to Default"
-                >
-                  <Settings className="w-4 h-4" />
-                  <span className="absolute left-full ml-3 px-2 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-slate-700 hidden sm:block">
-                    Reset View
-                  </span>
-                </button>
+                {/* Simulated Live API Address Bar */}
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-[11px] font-mono text-slate-400">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-slate-300 font-semibold">ads.google.com</span>
+                  <span className="text-slate-500">//</span>
+                  <span className="text-emerald-400 font-bold">real-time-telemetry</span>
+                </div>
+
+                {/* Live Stream Indicator */}
+                <div className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 px-2 py-0.5 rounded-full">
+                  <Activity className="w-3 h-3 text-emerald-400 animate-pulse" />
+                  <span>SYNCED</span>
+                </div>
               </div>
 
-              {/* ── Main Dashboard Body ── */}
-              <div className="flex-1 p-3 sm:p-5 lg:p-6 bg-white space-y-3.5 sm:space-y-4 min-w-0 rounded-r-3xl relative">
+              {/* ── Inner Body Split: Left Sidebar + Main Content ── */}
+              <div className="flex flex-1 min-w-0">
 
-                {/* Top Header Row with Interactive Date Dropdown Picker */}
-                <div className="flex items-center justify-between gap-1.5 sm:gap-2 border-b border-slate-100 pb-3 relative z-30">
-                  <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                    <motion.h3
-                      key={currentTabConfig.title}
-                      initial={{ opacity: 0, x: -4 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="font-extrabold text-slate-900 text-xs sm:text-base tracking-tight truncate"
-                    >
-                      {currentTabConfig.title}
-                    </motion.h3>
-                    <span className="hidden md:inline-flex text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full shrink-0">
-                      {currentTabConfig.badge}
-                    </span>
+                {/* ── Dark Left Sidebar (Deep Navy Slate with Emerald Active Highlights) ── */}
+                <div className="w-14 sm:w-16 bg-[#0E1726] text-slate-400 flex flex-col items-center py-4 justify-between shrink-0 border-r border-slate-800">
+                  <div className="space-y-5 flex flex-col items-center">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white shadow-xs border border-slate-200/60 flex items-center justify-center p-1.5 overflow-hidden group hover:scale-105 transition-transform">
+                      <img
+                        src={googleAdsImg}
+                        alt="Google Ads"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+
+                    <div className="space-y-2.5 flex flex-col items-center">
+                      {sidebarTabs.map((tab) => {
+                        const Icon = tab.icon;
+                        const isActive = activeTab === tab.id;
+                        return (
+                          <button
+                            key={tab.id}
+                            onClick={() => setActiveTab(tab.id)}
+                            className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer relative group ${
+                              isActive
+                                ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/40 ring-2 ring-emerald-400/40 scale-105'
+                                : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
+                            }`}
+                            aria-label={tab.name}
+                          >
+                            <Icon className="w-4 h-4" />
+                            {/* Tooltip on hover */}
+                            <span className="absolute left-full ml-3 px-2.5 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-slate-700 hidden sm:block">
+                              {tab.name}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
-                  {/* ── Interactive Date Picker Pill & Dropdown ── */}
-                  <div className="relative shrink-0" ref={dropdownRef}>
-                    <button
-                      onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
-                      className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 hover:border-emerald-300 text-[10px] sm:text-[11px] font-bold text-slate-700 hover:text-emerald-700 transition-all shadow-xs cursor-pointer select-none"
-                    >
-                      <Calendar className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>{activeData.label}</span>
-                      <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isDateDropdownOpen ? 'rotate-180 text-emerald-600' : ''}`} />
-                    </button>
+                  <button
+                    onClick={() => {
+                      setActiveTab('home');
+                      setSelectedRangeIndex(1);
+                    }}
+                    title="Reset to Default Overview"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all cursor-pointer relative group"
+                    aria-label="Reset to Default"
+                  >
+                    <Settings className="w-4 h-4" />
+                    <span className="absolute left-full ml-3 px-2 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-slate-700 hidden sm:block">
+                      Reset View
+                    </span>
+                  </button>
+                </div>
 
-                    {/* Animated Dropdown Menu */}
-                    <AnimatePresence>
-                      {isDateDropdownOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 6, scale: 0.95 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-white border border-slate-200 shadow-2xl p-1.5 z-50 text-left"
+                {/* ── Main Dashboard Body ── */}
+                <div className="flex-1 p-3.5 sm:p-5 lg:p-6 bg-white space-y-3.5 sm:space-y-4 min-w-0 relative">
+
+                  {/* Top Header Row with Direct Timeframe Quick-Pills & Title */}
+                  <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 relative z-30">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                      <motion.h3
+                        key={currentTabConfig.title}
+                        initial={{ opacity: 0, x: -4 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="font-extrabold text-slate-900 text-xs sm:text-base tracking-tight truncate"
+                      >
+                        {currentTabConfig.title}
+                      </motion.h3>
+                      <span className="hidden md:inline-flex text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full shrink-0">
+                        {currentTabConfig.badge}
+                      </span>
+                    </div>
+
+                    {/* ── Direct Timeframe Quick-Pills (Desktop) + Dropdown (Mobile) ── */}
+                    <div className="flex items-center gap-1 shrink-0">
+                      {/* Desktop Quick-Select Pills */}
+                      <div className="hidden sm:flex items-center p-0.5 rounded-xl bg-slate-100/90 border border-slate-200/70">
+                        {dateRanges.map((range, idx) => {
+                          const isSelected = selectedRangeIndex === idx;
+                          return (
+                            <button
+                              key={range.id}
+                              onClick={() => setSelectedRangeIndex(idx)}
+                              className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'bg-white text-emerald-700 shadow-xs border border-slate-200/70'
+                                  : 'text-slate-500 hover:text-slate-800'
+                              }`}
+                            >
+                              {range.shortLabel}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Mobile Dropdown Button */}
+                      <div className="relative sm:hidden" ref={dropdownRef}>
+                        <button
+                          onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 text-[11px] font-bold text-slate-700"
                         >
-                          <div className="px-3 py-1.5 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            Select Timeframe
-                          </div>
-                          <div className="py-1 space-y-0.5">
-                            {dateRanges.map((range, idx) => {
-                              const isSelected = selectedRangeIndex === idx;
-                              return (
+                          <Calendar className="w-3 h-3 text-emerald-600" />
+                          <span>{activeData.shortLabel}</span>
+                          <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform ${isDateDropdownOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        <AnimatePresence>
+                          {isDateDropdownOpen && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: 4, scale: 0.95 }}
+                              transition={{ duration: 0.15 }}
+                              className="absolute right-0 top-full mt-1 w-48 rounded-2xl bg-white border border-slate-200 shadow-2xl p-1 z-50 text-left"
+                            >
+                              {dateRanges.map((range, idx) => (
                                 <button
                                   key={range.id}
                                   onClick={() => {
                                     setSelectedRangeIndex(idx);
                                     setIsDateDropdownOpen(false);
                                   }}
-                                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
-                                    isSelected
-                                      ? 'bg-emerald-50 text-emerald-900 font-bold'
-                                      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                                  className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-semibold ${
+                                    selectedRangeIndex === idx
+                                      ? 'bg-emerald-50 text-emerald-800 font-bold'
+                                      : 'text-slate-700 hover:bg-slate-50'
                                   }`}
                                 >
-                                  <span className="leading-tight">{range.label}</span>
-                                  <div className="flex items-center gap-1.5">
-                                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 px-1.5 py-0.5 rounded-md">
-                                      {range.badge}
-                                    </span>
-                                    {isSelected && <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />}
-                                  </div>
+                                  <span>{range.label}</span>
+                                  {selectedRangeIndex === idx && <Check className="w-3.5 h-3.5 text-emerald-600" />}
                                 </button>
-                              );
-                            })}
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 4 Metric Cards Grid (Dynamic values based on Selected Tab & Date) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+                    {currentMetrics.map((metric, idx) => {
+                      const MetricIcon = metric.icon;
+                      return (
+                        <motion.div
+                          key={`${activeTab}-${metric.label}-${activeData.id}`}
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.25, delay: idx * 0.04 }}
+                          className={`p-2.5 sm:p-3 rounded-2xl bg-gradient-to-br ${metric.bgGradient} border ${metric.border} shadow-soft-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-default group`}
+                        >
+                          <div className="flex items-center gap-1 text-[9.5px] sm:text-[10px] font-bold text-slate-500">
+                            <MetricIcon className={`w-3 h-3 ${metric.iconColor} group-hover:scale-110 transition-transform`} />
+                            <span className="truncate">{metric.label}</span>
                           </div>
+                          <p className="text-base sm:text-lg lg:text-xl font-black text-slate-900 mt-0.5 tracking-tight truncate">
+                            {metric.value}
+                          </p>
+                          <p className={`text-[9.5px] sm:text-[10px] font-bold ${metric.growthColor} mt-0.5 truncate`}>
+                            {metric.growth}
+                          </p>
+                          {/* Dynamic Sparkline */}
+                          <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
+                            <path d={metric.spark} fill="none" stroke={metric.sparkStroke} strokeWidth="2" strokeLinecap="round" />
+                          </svg>
                         </motion.div>
-                      )}
-                    </AnimatePresence>
+                      );
+                    })}
                   </div>
-                </div>
 
-                {/* 4 Metric Cards Grid (Dynamic values based on Selected Tab & Date) */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
-                  {currentMetrics.map((metric, idx) => {
-                    const MetricIcon = metric.icon;
-                    return (
-                      <motion.div
-                        key={`${activeTab}-${metric.label}-${activeData.id}`}
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.25, delay: idx * 0.04 }}
-                        className={`p-2.5 sm:p-3 rounded-2xl bg-gradient-to-br ${metric.bgGradient} border ${metric.border} shadow-soft-sm hover:shadow-md transition-all`}
-                      >
-                        <div className="flex items-center gap-1 text-[9.5px] sm:text-[10px] font-bold text-slate-400">
-                          <MetricIcon className={`w-3 h-3 ${metric.iconColor}`} />
-                          <span className="truncate">{metric.label}</span>
+                  {/* ── Main Dual-Line Graph Area (Changes dynamically on tab & date selection) ── */}
+                  <div className="p-4 rounded-2xl bg-slate-50/80 border border-slate-100 space-y-2">
+                    <div className="flex items-center justify-between text-[11px] text-slate-500">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: currentGraph.color1 }} />
+                          <span className="font-bold text-slate-800">{currentTabConfig.legend1}</span>
                         </div>
-                        <p className="text-base sm:text-lg lg:text-xl font-black text-slate-900 mt-0.5 tracking-tight truncate">
-                          {metric.value}
-                        </p>
-                        <p className={`text-[9.5px] sm:text-[10px] font-bold ${metric.growthColor} mt-0.5 truncate`}>
-                          {metric.growth}
-                        </p>
-                        {/* Dynamic Sparkline */}
-                        <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
-                          <path d={metric.spark} fill="none" stroke={metric.sparkStroke} strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                {/* ── Main Dual-Line Graph Area (Changes dynamically on tab & date selection) ── */}
-                <div className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 space-y-2">
-                  <div className="flex items-center justify-between text-[11px] text-slate-500">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: currentGraph.color1 }} />
-                        <span className="font-bold text-slate-800">{currentTabConfig.legend1}</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: currentGraph.color2 }} />
+                          <span className="font-bold text-slate-800">{currentTabConfig.legend2}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: currentGraph.color2 }} />
-                        <span className="font-bold text-slate-800">{currentTabConfig.legend2}</span>
+                      <span className="font-bold text-emerald-700 text-[10.5px] bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/50">
+                        {activeData.label} • {currentTabConfig.telemetrySuffix}
+                      </span>
+                    </div>
+
+                    {/* Dynamic SVG Chart with Neon Glow */}
+                    <div className="h-32 sm:h-36 w-full relative">
+                      {/* Y-axis markers */}
+                      <div className="absolute left-0 inset-y-0 flex flex-col justify-between text-[9px] font-semibold text-slate-400 pointer-events-none pr-2">
+                        {currentTabConfig.yAxis.map((val, idx) => (
+                          <span key={idx}>{val}</span>
+                        ))}
+                      </div>
+
+                      <svg className="w-full h-full pl-6 overflow-visible" viewBox="0 0 320 100" preserveAspectRatio="none">
+                        {/* Horizontal Grid lines */}
+                        <line x1="0" y1="10" x2="320" y2="10" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
+                        <line x1="0" y1="40" x2="320" y2="40" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
+                        <line x1="0" y1="70" x2="320" y2="70" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
+                        <line x1="0" y1="98" x2="320" y2="98" stroke="#CBD5E1" strokeWidth="1" />
+
+                        <defs>
+                          <linearGradient id="emeraldHeroFill" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#059669" stopOpacity="0.25" />
+                            <stop offset="100%" stopColor="#059669" stopOpacity="0.0" />
+                          </linearGradient>
+                          <linearGradient id="tealHeroFill" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#0D9488" stopOpacity="0.2" />
+                            <stop offset="100%" stopColor="#0D9488" stopOpacity="0.0" />
+                          </linearGradient>
+                          <linearGradient id="amberHeroFill" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.2" />
+                            <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.0" />
+                          </linearGradient>
+                          <linearGradient id="blueHeroFill" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#0284C7" stopOpacity="0.2" />
+                            <stop offset="100%" stopColor="#0284C7" stopOpacity="0.0" />
+                          </linearGradient>
+                        </defs>
+
+                        {/* Area 2 Fill */}
+                        <motion.polygon
+                          key={`area2-${activeTab}-${activeData.id}`}
+                          points={currentGraph.area2}
+                          fill={currentGraph.fill2}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.35 }}
+                        />
+                        {/* Line 2 */}
+                        <motion.path
+                          key={`line2-${activeTab}-${activeData.id}`}
+                          d={currentGraph.line2}
+                          fill="none"
+                          stroke={currentGraph.color2}
+                          strokeWidth={currentGraph.strokeWidth2}
+                          strokeLinecap="round"
+                          className="neon-graph-glow-secondary"
+                          initial={{ pathLength: 0 }}
+                          animate={{ pathLength: 1 }}
+                          transition={{ duration: 0.65, ease: 'easeOut' }}
+                        />
+
+                        {/* Area 1 Fill */}
+                        <motion.polygon
+                          key={`area1-${activeTab}-${activeData.id}`}
+                          points={currentGraph.area1}
+                          fill={currentGraph.fill1}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.35 }}
+                        />
+                        {/* Line 1 with Neon Laser Glow */}
+                        <motion.path
+                          key={`line1-${activeTab}-${activeData.id}`}
+                          d={currentGraph.line1}
+                          fill="none"
+                          stroke={currentGraph.color1}
+                          strokeWidth={currentGraph.strokeWidth1}
+                          strokeLinecap="round"
+                          className="neon-graph-glow"
+                          initial={{ pathLength: 0 }}
+                          animate={{ pathLength: 1 }}
+                          transition={{ duration: 0.65, ease: 'easeOut' }}
+                        />
+
+                        {/* Peak Interactive Radar Ping */}
+                        <circle cx={currentGraph.peakX} cy={currentGraph.peakY} r="3.5" fill={currentGraph.color1} />
+                        <circle cx={currentGraph.peakX} cy={currentGraph.peakY} r="8" fill={currentGraph.color1} opacity="0.45" className="animate-ping" />
+                      </svg>
+
+                      {/* Dynamic Date labels along bottom */}
+                      <div className="pl-6 pt-1 flex items-center justify-between text-[9px] font-semibold text-slate-400">
+                        {activeData.dates.map((d, i) => (
+                          <span key={i}>{d}</span>
+                        ))}
                       </div>
                     </div>
-                    <span className="font-semibold text-emerald-700 text-[10.5px]">
-                      {activeData.label} • {currentTabConfig.telemetrySuffix}
-                    </span>
                   </div>
 
-                  {/* Dynamic SVG Chart */}
-                  <div className="h-32 sm:h-36 w-full relative">
-                    {/* Y-axis markers */}
-                    <div className="absolute left-0 inset-y-0 flex flex-col justify-between text-[9px] font-semibold text-slate-400 pointer-events-none pr-2">
-                      {currentTabConfig.yAxis.map((val, idx) => (
-                        <span key={idx}>{val}</span>
-                      ))}
-                    </div>
-
-                    <svg className="w-full h-full pl-6 overflow-visible" viewBox="0 0 320 100" preserveAspectRatio="none">
-                      {/* Horizontal Grid lines */}
-                      <line x1="0" y1="10" x2="320" y2="10" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
-                      <line x1="0" y1="40" x2="320" y2="40" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
-                      <line x1="0" y1="70" x2="320" y2="70" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
-                      <line x1="0" y1="98" x2="320" y2="98" stroke="#CBD5E1" strokeWidth="1" />
-
-                      <defs>
-                        <linearGradient id="emeraldHeroFill" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#059669" stopOpacity="0.22" />
-                          <stop offset="100%" stopColor="#059669" stopOpacity="0.0" />
-                        </linearGradient>
-                        <linearGradient id="tealHeroFill" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#0D9488" stopOpacity="0.18" />
-                          <stop offset="100%" stopColor="#0D9488" stopOpacity="0.0" />
-                        </linearGradient>
-                        <linearGradient id="amberHeroFill" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.18" />
-                          <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.0" />
-                        </linearGradient>
-                        <linearGradient id="blueHeroFill" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#0284C7" stopOpacity="0.18" />
-                          <stop offset="100%" stopColor="#0284C7" stopOpacity="0.0" />
-                        </linearGradient>
-                      </defs>
-
-                      {/* Area 2 Fill */}
-                      <motion.polygon
-                        key={`area2-${activeTab}-${activeData.id}`}
-                        points={currentGraph.area2}
-                        fill={currentGraph.fill2}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.35 }}
-                      />
-                      {/* Line 2 */}
-                      <motion.path
-                        key={`line2-${activeTab}-${activeData.id}`}
-                        d={currentGraph.line2}
-                        fill="none"
-                        stroke={currentGraph.color2}
-                        strokeWidth={currentGraph.strokeWidth2}
-                        strokeLinecap="round"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 0.65, ease: 'easeOut' }}
-                      />
-
-                      {/* Area 1 Fill */}
-                      <motion.polygon
-                        key={`area1-${activeTab}-${activeData.id}`}
-                        points={currentGraph.area1}
-                        fill={currentGraph.fill1}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.35 }}
-                      />
-                      {/* Line 1 */}
-                      <motion.path
-                        key={`line1-${activeTab}-${activeData.id}`}
-                        d={currentGraph.line1}
-                        fill="none"
-                        stroke={currentGraph.color1}
-                        strokeWidth={currentGraph.strokeWidth1}
-                        strokeLinecap="round"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 0.65, ease: 'easeOut' }}
-                      />
-
-                      {/* Peak Interactive Radar Ping */}
-                      <circle cx={currentGraph.peakX} cy={currentGraph.peakY} r="3.5" fill={currentGraph.color1} />
-                      <circle cx={currentGraph.peakX} cy={currentGraph.peakY} r="7" fill={currentGraph.color1} opacity="0.4" className="animate-ping" />
-                    </svg>
-
-                    {/* Dynamic Date labels along bottom */}
-                    <div className="pl-6 pt-1 flex items-center justify-between text-[9px] font-semibold text-slate-400">
-                      {activeData.dates.map((d, i) => (
-                        <span key={i}>{d}</span>
-                      ))}
-                    </div>
-                  </div>
                 </div>
-
               </div>
             </motion.div>
 
@@ -1047,20 +1168,21 @@ export default function Hero({ onBookCall }) {
               <motion.div
                 variants={floatSlow}
                 animate="animate"
-                className="absolute -bottom-6 left-1.5 sm:left-2 z-20 bg-white/95 rounded-2xl p-2.5 sm:p-3.5 shadow-xl border border-slate-200/80 flex items-center gap-2.5 sm:gap-3 max-w-[calc(100%-12px)] sm:max-w-none"
+                className="absolute -bottom-6 left-1 sm:left-3 z-30 glass-card-luxury rounded-2xl p-2.5 sm:p-3.5 shadow-2xl border border-emerald-100/90 flex items-center gap-2.5 sm:gap-3 max-w-[calc(100%-12px)] sm:max-w-none"
               >
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-md shadow-emerald-500/30 shrink-0">
                   <Star className="w-5 h-5 fill-white" />
                 </div>
                 <div>
                   <div className="flex items-center -space-x-1.5 mb-1">
-                    <div className="w-5 h-5 rounded-full bg-emerald-500 border border-white flex items-center justify-center text-[8px] font-black text-white">S</div>
-                    <div className="w-5 h-5 rounded-full bg-teal-500 border border-white flex items-center justify-center text-[8px] font-black text-white">A</div>
-                    <div className="w-5 h-5 rounded-full bg-blue-500 border border-white flex items-center justify-center text-[8px] font-black text-white">M</div>
-                    <div className="w-5 h-5 rounded-full bg-amber-500 border border-white flex items-center justify-center text-[8px] font-black text-white">Z</div>
+                    <div className="w-5 h-5 rounded-full bg-emerald-600 border border-white flex items-center justify-center text-[8px] font-black text-white shadow-xs">S</div>
+                    <div className="w-5 h-5 rounded-full bg-teal-500 border border-white flex items-center justify-center text-[8px] font-black text-white shadow-xs">A</div>
+                    <div className="w-5 h-5 rounded-full bg-blue-500 border border-white flex items-center justify-center text-[8px] font-black text-white shadow-xs">M</div>
+                    <div className="w-5 h-5 rounded-full bg-amber-500 border border-white flex items-center justify-center text-[8px] font-black text-white shadow-xs">D</div>
+                    <div className="w-5 h-5 rounded-full bg-slate-800 border border-white flex items-center justify-center text-[7px] font-bold text-white shadow-xs">+96</div>
                   </div>
                   <p className="text-xs font-black text-slate-900 leading-tight">100+ Happy Clients</p>
-                  <p className="text-[10px] font-semibold text-slate-400">Across the Globe</p>
+                  <p className="text-[10px] font-bold text-emerald-700">Across Global Markets</p>
                 </div>
               </motion.div>
             )}
@@ -1068,19 +1190,19 @@ export default function Hero({ onBookCall }) {
             {/* ─── Floating Card 2: Campaigns Performance Donut (Dynamic based on selected date) ─── */}
             {!shouldReduceMotion && (
               <motion.div
-                variants={floatBadge}
+                variants={floatReverse}
                 animate="animate"
-                className="absolute -bottom-8 right-2 sm:right-6 z-20 bg-white/95 rounded-2xl p-3.5 shadow-xl border border-slate-200/80 hidden sm:flex items-center gap-4"
+                className="absolute -bottom-8 right-2 sm:right-6 z-30 glass-card-luxury rounded-2xl p-3 sm:p-3.5 shadow-2xl border border-slate-200/90 hidden sm:flex items-center gap-3.5"
               >
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                    Campaigns Performance
+                  <p className="text-[9.5px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">
+                    Campaign Performance
                   </p>
                   <div className="flex items-center gap-3">
                     {/* Dynamic SVG Donut Chart */}
-                    <div className="w-12 h-12 relative flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 relative flex items-center justify-center shrink-0">
                       <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
-                        <circle cx="18" cy="18" r="14" fill="transparent" stroke="#E2E8F0" strokeWidth="4" />
+                        <circle cx="18" cy="18" r="14" fill="transparent" stroke="#F1F5F9" strokeWidth="4" />
                         {/* Search % */}
                         <circle
                           cx="18" cy="18" r="14" fill="transparent"
@@ -1106,7 +1228,7 @@ export default function Hero({ onBookCall }) {
                     </div>
 
                     {/* Dynamic Donut Legend */}
-                    <div className="space-y-1 text-[10px] font-bold text-slate-700">
+                    <div className="space-y-1 text-[9.5px] font-bold text-slate-700">
                       <div className="flex items-center justify-between gap-3">
                         <span className="flex items-center gap-1 text-slate-600">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" /> Search
