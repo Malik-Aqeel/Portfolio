@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   Mail, Linkedin, MessageCircle, Send, CheckCircle2,
   DollarSign, Globe, Building2, User, Sparkles, ArrowRight,
-  Zap, Phone
+  Zap, Phone, Copy, Check, ExternalLink, RotateCcw, Laptop
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
+import {
+  isMacDevice,
+  dispatchMailto,
+  dispatchGmail,
+  dispatchWhatsApp,
+  copyToClipboard,
+  buildMailtoUrl,
+  buildGmailUrl,
+  buildWhatsAppUrl
+} from '../utils/mailDispatcher';
 
 /* ── Animation Variants ── */
 const containerVariants = {
@@ -103,6 +113,8 @@ export default function Contact({ onBookCall }) {
   const [submitError, setSubmitError] = useState('');
   const [focusedField, setFocusedField] = useState(null);
   const shouldReduceMotion = useReducedMotion();
+  const [isMac, setIsMac] = useState(false);
+  const [selectedChannel, setSelectedChannel] = useState('gmail');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -111,13 +123,25 @@ export default function Contact({ onBookCall }) {
     adSpend: '$15k - $50k / mo',
     message: '',
   });
+  const [copied, setCopied] = useState(false);
 
-  const buildContactMailtoUrl = () => {
-    const subject = encodeURIComponent(`Growth Audit Request - ${formData.name.trim()} (${formData.company.trim() || formData.website.trim() || 'Store'})`);
-    const body = encodeURIComponent(
+  useEffect(() => {
+    const mac = isMacDevice();
+    setIsMac(mac);
+    if (mac) {
+      setSelectedChannel('gmail');
+    }
+  }, []);
+
+  const getContactSubject = () => {
+    return `Growth Audit Request - ${formData.name.trim()} (${formData.company.trim() || formData.website.trim() || 'Store'})`;
+  };
+
+  const getContactBodyText = () => {
+    return (
       `Hi Shehzad,\n\n` +
       `I would like to request a Google Ads Growth Audit for my e-commerce business.\n\n` +
-      `Here are my details:\n` +
+      `📋 Client Details:\n` +
       `• Full Name: ${formData.name.trim()}\n` +
       `• Email Address: ${formData.email.trim()}\n` +
       (formData.company.trim() ? `• Brand / Company: ${formData.company.trim()}\n` : '') +
@@ -128,7 +152,41 @@ export default function Contact({ onBookCall }) {
       `Best regards,\n` +
       `${formData.name.trim()}`
     );
-    return `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+  };
+
+  const handleCopyContactDetails = async () => {
+    const success = await copyToClipboard(getContactBodyText());
+    if (success) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
+  };
+
+  const handleResetContactForm = () => {
+    setFormData({
+      name: '',
+      email: '',
+      company: '',
+      website: '',
+      adSpend: '$15k - $50k / mo',
+      message: '',
+    });
+    setSubmitError('');
+    setSubmitted(false);
+    setCopied(false);
+  };
+
+  const handleChannelSelectAndDispatch = (channel) => {
+    const subject = getContactSubject();
+    const body = getContactBodyText();
+
+    if (channel === 'gmail') {
+      dispatchGmail(buildGmailUrl(personalInfo.email, subject, body));
+    } else if (channel === 'whatsapp') {
+      dispatchWhatsApp(buildWhatsAppUrl(personalInfo.whatsapp, body));
+    } else {
+      dispatchMailto(buildMailtoUrl(personalInfo.email, subject, body));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -136,16 +194,27 @@ export default function Contact({ onBookCall }) {
     setIsSubmitting(true);
     setSubmitError('');
 
+    const subject = getContactSubject();
+    const body = getContactBodyText();
+
+    // Auto copy request notes to clipboard as an immediate safety net
+    copyToClipboard(body).catch(() => {});
+
+    // Safe multi-channel dispatch (Mac & cross-browser safe, no about:blank tabs)
     try {
-      const mailtoUrl = buildContactMailtoUrl();
-      window.location.href = mailtoUrl;
-      setSubmitted(true);
+      if (selectedChannel === 'gmail') {
+        dispatchGmail(buildGmailUrl(personalInfo.email, subject, body));
+      } else if (selectedChannel === 'whatsapp') {
+        dispatchWhatsApp(buildWhatsAppUrl(personalInfo.whatsapp, body));
+      } else {
+        dispatchMailto(buildMailtoUrl(personalInfo.email, subject, body));
+      }
     } catch (err) {
-      console.error('Contact submit error:', err);
-      setSubmitError('Unable to open email client. You can reach out directly via ' + personalInfo.email);
-    } finally {
-      setIsSubmitting(false);
+      console.warn('Contact submit dispatch notice:', err);
     }
+
+    setSubmitted(true);
+    setIsSubmitting(false);
   };
 
   return (
@@ -322,41 +391,109 @@ export default function Contact({ onBookCall }) {
 
               <AnimatePresence mode="wait">
                 {submitted ? (
-                  /* ── Success State ── */
+                  /* ── Success State with Multi-Channel Options (Mac & Cross-Browser) ── */
                   <motion.div
                     key="success"
                     variants={successVariants}
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
-                    className="py-16 text-center space-y-5"
+                    className="py-8 text-center space-y-4"
                   >
                     <motion.div
-                      className="w-20 h-20 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto border border-emerald-200/60"
+                      className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-xs"
                       animate={!shouldReduceMotion ? { scale: [1, 1.05, 1] } : {}}
                       transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                     >
-                      <CheckCircle2 className="w-10 h-10 text-emerald-600" />
+                      <CheckCircle2 className="w-9 h-9 text-emerald-600" />
                     </motion.div>
-                    <h4 className="text-2xl font-extrabold text-slate-900">Email Client Opened!</h4>
-                    <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
+                    <h4 className="text-2xl font-black text-slate-900">Request Ready to Send!</h4>
+                    <p className="text-slate-600 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
                       Thank you{formData.name ? ', ' : ''}
                       {formData.name && <span className="font-bold text-slate-900">{formData.name}</span>}
-                      ! Your email client has been opened with your audit details addressed to <strong className="text-emerald-700">{personalInfo.email}</strong>.
+                      ! We've prepared your details. Choose an option below to dispatch your audit request to <strong className="text-emerald-700">{personalInfo.email}</strong>:
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                      <a
-                        href={buildContactMailtoUrl()}
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
-                      >
-                        <Mail className="w-4 h-4" />
-                        <span>Send Email Now</span>
-                      </a>
+
+                    {/* Delivery Options */}
+                    <div className="space-y-2.5 max-w-md mx-auto text-left pt-2">
+                      {/* 1. Gmail Web */}
                       <button
-                        onClick={() => setSubmitted(false)}
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-all cursor-pointer"
+                        type="button"
+                        onClick={() => handleChannelSelectAndDispatch('gmail')}
+                        className="w-full p-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/20 flex items-center justify-between transition-all cursor-pointer group"
                       >
-                        Send Another Message
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center text-white shrink-0">
+                            <Mail className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <p className="leading-tight">Send via Gmail Web</p>
+                            <p className="text-[10.5px] text-emerald-100/90 font-normal">Opens directly in browser &bull; Recommended for Mac & PC</p>
+                          </div>
+                        </div>
+                        <ExternalLink className="w-4 h-4 opacity-75 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                      </button>
+
+                      {/* 2. WhatsApp */}
+                      <button
+                        type="button"
+                        onClick={() => handleChannelSelectAndDispatch('whatsapp')}
+                        className="w-full p-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 text-emerald-900 font-bold text-xs sm:text-sm flex items-center justify-between transition-all cursor-pointer group"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                            <MessageCircle className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <p className="leading-tight text-emerald-950 font-black">Send via WhatsApp</p>
+                            <p className="text-[10.5px] text-emerald-700 font-medium">{personalInfo.whatsapp} &bull; Instant Response</p>
+                          </div>
+                        </div>
+                        <ExternalLink className="w-4 h-4 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
+                      </button>
+
+                      {/* 3. Default Mail Client */}
+                      <button
+                        type="button"
+                        onClick={() => handleChannelSelectAndDispatch('native')}
+                        className="w-full p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold flex items-center justify-between transition-all cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Mail className="w-3.5 h-3.5 text-slate-500" />
+                          <span>Open in {isMac ? 'Apple Mail' : 'Default Mail App'}</span>
+                        </div>
+                        <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                      </button>
+
+                      {/* 4. Copy Details */}
+                      <button
+                        type="button"
+                        onClick={handleCopyContactDetails}
+                        className="w-full p-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer"
+                      >
+                        {copied ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                            <span className="text-emerald-700 font-bold">Details Copied to Clipboard!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5 text-slate-400" />
+                            <span>Copy Full Request Notes</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Reset Button */}
+                    <div className="pt-4 border-t border-slate-100 flex justify-center">
+                      <button
+                        type="button"
+                        onClick={handleResetContactForm}
+                        className="inline-flex items-center gap-1.5 text-slate-500 hover:text-emerald-700 font-bold text-xs transition-colors cursor-pointer"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                        <span>Fill New Request / Edit Details</span>
                       </button>
                     </div>
                   </motion.div>
@@ -478,10 +615,10 @@ export default function Contact({ onBookCall }) {
                     </motion.div>
 
                     {/* Message Textarea */}
-                    <motion.div variants={fieldVariants} className="mb-6">
+                    <motion.div variants={fieldVariants} className="mb-5">
                       <label className="block text-xs font-bold text-slate-700 mb-1.5">Tell Me About Your Growth Goals</label>
                       <textarea
-                        rows={4}
+                        rows={3}
                         placeholder="Share your current ad spend, main product margin, or ROAS challenge..."
                         value={formData.message}
                         onFocus={() => setFocusedField('message')}
@@ -491,16 +628,89 @@ export default function Contact({ onBookCall }) {
                       />
                     </motion.div>
 
+                    {/* Send Channel Selector */}
+                    <motion.div variants={fieldVariants} className="mb-5">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-[11px] font-bold text-slate-700">
+                          Send Request Via:
+                        </label>
+                        {isMac && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+                            <Laptop className="w-3 h-3" /> Mac Optimized
+                          </span>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-3 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedChannel('gmail')}
+                          className={`p-2 rounded-xl border text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+                            selectedChannel === 'gmail'
+                              ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-400 shadow-xs'
+                              : 'bg-slate-50/80 border-slate-200 text-slate-600 hover:bg-slate-100'
+                          }`}
+                        >
+                          <Mail className={`w-4 h-4 ${selectedChannel === 'gmail' ? 'text-emerald-600' : 'text-slate-400'}`} />
+                          <span className="text-[11px] leading-tight">Gmail Web</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setSelectedChannel('native')}
+                          className={`p-2 rounded-xl border text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+                            selectedChannel === 'native'
+                              ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-400 shadow-xs'
+                              : 'bg-slate-50/80 border-slate-200 text-slate-600 hover:bg-slate-100'
+                          }`}
+                        >
+                          <Mail className={`w-4 h-4 ${selectedChannel === 'native' ? 'text-emerald-600' : 'text-slate-400'}`} />
+                          <span className="text-[11px] leading-tight">{isMac ? 'Apple Mail' : 'Mail App'}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setSelectedChannel('whatsapp')}
+                          className={`p-2 rounded-xl border text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+                            selectedChannel === 'whatsapp'
+                              ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-400 shadow-xs'
+                              : 'bg-slate-50/80 border-slate-200 text-slate-600 hover:bg-slate-100'
+                          }`}
+                        >
+                          <MessageCircle className={`w-4 h-4 ${selectedChannel === 'whatsapp' ? 'text-emerald-600' : 'text-slate-400'}`} />
+                          <span className="text-[11px] leading-tight">WhatsApp</span>
+                        </button>
+                      </div>
+                    </motion.div>
+
                     {/* Submit Button */}
                     <motion.div variants={fieldVariants}>
                       <motion.button
                         type="submit"
-                        className="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all duration-300 flex items-center justify-center gap-2.5 relative overflow-hidden button-shine"
+                        disabled={isSubmitting}
+                        className="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all duration-300 flex items-center justify-center gap-2.5 relative overflow-hidden button-shine cursor-pointer disabled:opacity-50"
                         whileHover={!shouldReduceMotion ? { scale: 1.01, boxShadow: '0 10px 25px -5px rgba(16, 185, 129, 0.25)' } : {}}
                         whileTap={!shouldReduceMotion ? { scale: 0.98 } : {}}
                       >
-                        <span>Send Strategy Request via Email</span>
-                        <Send className="w-4 h-4" />
+                        {selectedChannel === 'gmail' && (
+                          <>
+                            <Mail className="w-4 h-4" />
+                            <span>Open & Send via Gmail Web</span>
+                            <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                          </>
+                        )}
+                        {selectedChannel === 'native' && (
+                          <>
+                            <Send className="w-4 h-4" />
+                            <span>Open in {isMac ? 'Apple Mail' : 'Default Mail App'}</span>
+                          </>
+                        )}
+                        {selectedChannel === 'whatsapp' && (
+                          <>
+                            <MessageCircle className="w-4 h-4" />
+                            <span>Send via WhatsApp Chat</span>
+                            <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                          </>
+                        )}
                       </motion.button>
                     </motion.div>
 

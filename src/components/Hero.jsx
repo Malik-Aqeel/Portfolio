@@ -43,7 +43,7 @@ const dateRanges = [
     sparkConv: 'M0,15 Q15,6 28,12 T45,7 T60,3',
     sparkCpa: 'M0,5 Q15,14 30,8 T45,13 T60,16',
     sparkVal: 'M0,16 Q12,8 25,12 T48,6 T60,1',
-    donut: { search: 55, pmax: 25, shopping: 20 },
+    donut: { pmax: 55, search: 25, shopping: 20 },
   },
   {
     id: '30D',
@@ -69,7 +69,7 @@ const dateRanges = [
     sparkConv: 'M0,17 Q15,10 32,8 T48,4 T60,2',
     sparkCpa: 'M0,4 Q15,10 30,12 T48,15 T60,17',
     sparkVal: 'M0,17 Q14,9 28,10 T46,4 T60,1',
-    donut: { search: 58, pmax: 28, shopping: 14 },
+    donut: { pmax: 58, search: 28, shopping: 14 },
   },
   {
     id: '90D',
@@ -95,7 +95,7 @@ const dateRanges = [
     sparkConv: 'M0,18 Q16,12 32,8 T48,3 T60,1',
     sparkCpa: 'M0,3 Q16,8 32,12 T48,15 T60,18',
     sparkVal: 'M0,18 Q15,10 30,7 T48,3 T60,1',
-    donut: { search: 62, pmax: 26, shopping: 12 },
+    donut: { pmax: 62, search: 26, shopping: 12 },
   },
   {
     id: 'Year',
@@ -121,7 +121,7 @@ const dateRanges = [
     sparkConv: 'M0,18 Q16,13 32,7 T48,3 T60,1',
     sparkCpa: 'M0,2 Q16,8 32,13 T48,16 T60,18',
     sparkVal: 'M0,18 Q15,9 30,6 T48,2 T60,1',
-    donut: { search: 65, pmax: 24, shopping: 11 },
+    donut: { pmax: 65, search: 24, shopping: 11 },
   }
 ];
 
@@ -301,7 +301,7 @@ const tabConfigs = {
         bgGradient: 'from-emerald-50/70 to-white',
         border: 'border-emerald-100',
         label: 'PMax Share',
-        value: `${data.donut.pmax + 35}%`,
+        value: `${data.donut.pmax}%`,
         growth: '↑ Primary Scale',
         growthColor: 'text-emerald-600',
         spark: 'M0,16 Q15,7 30,10 T45,4 T60,1',
@@ -1203,26 +1203,26 @@ export default function Hero({ onBookCall }) {
                     <div className="w-11 h-11 relative flex items-center justify-center shrink-0">
                       <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
                         <circle cx="18" cy="18" r="14" fill="transparent" stroke="#F1F5F9" strokeWidth="4" />
-                        {/* Search % */}
-                        <circle
-                          cx="18" cy="18" r="14" fill="transparent"
-                          stroke="#059669" strokeWidth="4"
-                          strokeDasharray={`${activeData.donut.search} 100`}
-                          strokeDashoffset="0"
-                        />
                         {/* PMax % */}
                         <circle
                           cx="18" cy="18" r="14" fill="transparent"
-                          stroke="#0D9488" strokeWidth="4"
+                          stroke="#059669" strokeWidth="4"
                           strokeDasharray={`${activeData.donut.pmax} 100`}
-                          strokeDashoffset={`-${activeData.donut.search}`}
+                          strokeDashoffset="0"
+                        />
+                        {/* Search % */}
+                        <circle
+                          cx="18" cy="18" r="14" fill="transparent"
+                          stroke="#0D9488" strokeWidth="4"
+                          strokeDasharray={`${activeData.donut.search} 100`}
+                          strokeDashoffset={`-${activeData.donut.pmax}`}
                         />
                         {/* Shopping % */}
                         <circle
                           cx="18" cy="18" r="14" fill="transparent"
                           stroke="#F59E0B" strokeWidth="4"
                           strokeDasharray={`${activeData.donut.shopping} 100`}
-                          strokeDashoffset={`-${activeData.donut.search + activeData.donut.pmax}`}
+                          strokeDashoffset={`-${activeData.donut.pmax + activeData.donut.search}`}
                         />
                       </svg>
                     </div>
@@ -1231,15 +1231,15 @@ export default function Hero({ onBookCall }) {
                     <div className="space-y-1 text-[9.5px] font-bold text-slate-700">
                       <div className="flex items-center justify-between gap-3">
                         <span className="flex items-center gap-1 text-slate-600">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" /> Search
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" /> PMax
                         </span>
-                        <span className="text-slate-900 font-extrabold">{activeData.donut.search}%</span>
+                        <span className="text-slate-900 font-extrabold">{activeData.donut.pmax}%</span>
                       </div>
                       <div className="flex items-center justify-between gap-3">
                         <span className="flex items-center gap-1 text-slate-600">
-                          <span className="w-1.5 h-1.5 rounded-full bg-teal-600" /> PMax
+                          <span className="w-1.5 h-1.5 rounded-full bg-teal-600" /> Search
                         </span>
-                        <span className="text-slate-900 font-extrabold">{activeData.donut.pmax}%</span>
+                        <span className="text-slate-900 font-extrabold">{activeData.donut.search}%</span>
                       </div>
                       <div className="flex items-center justify-between gap-3">
                         <span className="flex items-center gap-1 text-slate-600">

@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {
   X, Mail, User, Phone, Globe, Send, CheckCircle2,
-  AlertCircle, ShieldCheck
+  AlertCircle, ShieldCheck, Copy, Check, ExternalLink,
+  MessageCircle, RotateCcw, ArrowRight, Laptop
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
+import {
+  isMacDevice,
+  dispatchMailto,
+  dispatchGmail,
+  dispatchWhatsApp,
+  copyToClipboard,
+  buildMailtoUrl,
+  buildGmailUrl,
+  buildWhatsAppUrl
+} from '../utils/mailDispatcher';
 
 export default function BookingModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
@@ -18,6 +29,18 @@ export default function BookingModal({ isOpen, onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [isMac, setIsMac] = useState(false);
+  const [selectedChannel, setSelectedChannel] = useState('gmail');
+
+  useEffect(() => {
+    const mac = isMacDevice();
+    setIsMac(mac);
+    // On Mac, default to Gmail since 80%+ users don't configure Apple Mail
+    if (mac) {
+      setSelectedChannel('gmail');
+    }
+  }, []);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -31,15 +54,36 @@ export default function BookingModal({ isOpen, onClose }) {
     };
   }, [isOpen]);
 
+  // Reset modal state whenever modal is closed
+  useEffect(() => {
+    if (!isOpen) {
+      setErrors({});
+      setErrorMessage('');
+      setSubmitted(false);
+      setCopied(false);
+    }
+  }, [isOpen]);
+
   const handleClose = () => {
     setErrors({});
     setErrorMessage('');
+    setSubmitted(false);
+    setCopied(false);
     onClose();
-    setTimeout(() => {
-      if (!isOpen) {
-        setSubmitted(false);
-      }
-    }, 300);
+  };
+
+  const handleResetForm = () => {
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      website: '',
+      message: ''
+    });
+    setErrors({});
+    setErrorMessage('');
+    setSubmitted(false);
+    setCopied(false);
   };
 
   const validate = () => {
@@ -62,22 +106,45 @@ export default function BookingModal({ isOpen, onClose }) {
     return Object.keys(errs).length === 0;
   };
 
-  const buildMailtoUrl = () => {
-    const subject = encodeURIComponent(`Google Ads Growth Consultation - ${formData.name.trim()} (${formData.website.trim()})`);
-    const body = encodeURIComponent(
+  const getSubject = () => {
+    return `Google Ads Growth Consultation - ${formData.name.trim()} (${formData.website.trim() || 'Store'})`;
+  };
+
+  const getBodyText = () => {
+    return (
       `Hi Shehzad,\n\n` +
       `I would like to request a Google Ads strategy consultation for my e-commerce business.\n\n` +
-      `Here are my details:\n` +
+      `📋 Client Details:\n` +
       `• Full Name: ${formData.name.trim()}\n` +
       `• Email Address: ${formData.email.trim()}\n` +
       `• Phone / WhatsApp: ${formData.phone.trim()}\n` +
       `• Website / Store URL: ${formData.website.trim()}\n` +
-      (formData.message.trim() ? `• Project Notes & Goals: ${formData.message.trim()}\n\n` : '\n') +
+      (formData.message.trim() ? `• Project Notes & Goals:\n${formData.message.trim()}\n\n` : '\n') +
       `Looking forward to discussing our growth strategy.\n\n` +
       `Best regards,\n` +
       `${formData.name.trim()}`
     );
-    return `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+  };
+
+  const handleCopyDetails = async () => {
+    const success = await copyToClipboard(getBodyText());
+    if (success) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
+  };
+
+  const handleChannelSelectAndDispatch = (channel) => {
+    const subject = getSubject();
+    const body = getBodyText();
+
+    if (channel === 'gmail') {
+      dispatchGmail(buildGmailUrl(personalInfo.email, subject, body));
+    } else if (channel === 'whatsapp') {
+      dispatchWhatsApp(buildWhatsAppUrl(personalInfo.whatsapp, body));
+    } else {
+      dispatchMailto(buildMailtoUrl(personalInfo.email, subject, body));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -89,23 +156,33 @@ export default function BookingModal({ isOpen, onClose }) {
     }
 
     setIsSubmitting(true);
+    const subject = getSubject();
+    const body = getBodyText();
 
+    // Auto copy full notes to clipboard in background as an immediate safety net
+    copyToClipboard(body).catch(() => {});
+
+    // Safe multi-channel dispatch (Mac & cross-browser safe, no about:blank tabs)
     try {
-      const mailtoUrl = buildMailtoUrl();
-      window.location.href = mailtoUrl;
-      setSubmitted(true);
+      if (selectedChannel === 'gmail') {
+        dispatchGmail(buildGmailUrl(personalInfo.email, subject, body));
+      } else if (selectedChannel === 'whatsapp') {
+        dispatchWhatsApp(buildWhatsAppUrl(personalInfo.whatsapp, body));
+      } else {
+        dispatchMailto(buildMailtoUrl(personalInfo.email, subject, body));
+      }
     } catch (err) {
-      console.error('Submission error:', err);
-      setErrorMessage('Unable to open mail client. You can reach out directly at ' + personalInfo.email);
-    } finally {
-      setIsSubmitting(false);
+      console.warn('Dispatch notice:', err);
     }
+
+    setSubmitted(true);
+    setIsSubmitting(false);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto select-none">
       {/* Backdrop */}
       <div
         onClick={handleClose}
@@ -115,7 +192,7 @@ export default function BookingModal({ isOpen, onClose }) {
       {/* Modal Dialog Card */}
       <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden z-10 my-auto animate-in fade-in zoom-in-95 duration-200">
         
-        {/* Decorative Top Accent */}
+        {/* Decorative Top Accent Gradient */}
         <div className="h-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
 
         {/* Close Button */}
@@ -130,15 +207,15 @@ export default function BookingModal({ isOpen, onClose }) {
         {/* Header */}
         <div className="px-6 pt-6 pb-4 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200/60">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200/60 shadow-xs">
               <Mail className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
-                Send Your Information
+                {submitted ? 'Send Your Consultation Request' : 'Get Free Strategy Audit'}
               </h2>
               <p className="text-xs text-slate-500 mt-0.5">
-                Direct message to <strong className="text-emerald-700">{personalInfo.email}</strong> &bull; Google Ads Specialist
+                Direct to <strong className="text-emerald-700">{personalInfo.email}</strong> &bull; Google Ads Specialist
               </p>
             </div>
           </div>
@@ -148,38 +225,110 @@ export default function BookingModal({ isOpen, onClose }) {
         <div className="p-6">
           {submitted ? (
             /* ═══════════════════════════════════════════════════════════
-               SUCCESS SCREEN: EMAIL CLIENT OPENED
+               SUCCESS SCREEN / MULTI-CHANNEL DISPATCH HUB (100% MAC SAFE)
                ═══════════════════════════════════════════════════════════ */
-            <div className="py-6 text-center space-y-4">
-              <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-10 h-10" />
+            <div className="space-y-4 text-center">
+              <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
+                <CheckCircle2 className="w-8 h-8" />
               </div>
 
               <div>
-                <h3 className="text-2xl font-extrabold text-slate-900">
-                  Email Opened!
+                <h3 className="text-xl font-black text-slate-900">
+                  Ready to Send, {formData.name.split(' ')[0]}!
                 </h3>
-                <p className="text-sm text-slate-600 max-w-sm mx-auto mt-2 leading-relaxed">
-                  Thank you, <strong>{formData.name}</strong>! Your email client has been opened with your consultation details ready to send to <strong>{personalInfo.email}</strong>.
+                <p className="text-xs sm:text-sm text-slate-600 max-w-sm mx-auto mt-1 leading-relaxed">
+                  We've prepared your details. If your email didn't pop up automatically, choose an option below to dispatch to <strong className="text-emerald-700">{personalInfo.email}</strong>:
                 </p>
               </div>
 
-              {/* Action Buttons */}
-              <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <a
-                  href={buildMailtoUrl()}
-                  className="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-full shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer text-center"
+              {/* Multi-Channel Options (Mac & All Browsers Friendly) */}
+              <div className="space-y-2.5 pt-1 text-left">
+                {/* 1. Gmail Web (100% Reliable on Mac) */}
+                <button
+                  type="button"
+                  onClick={() => handleChannelSelectAndDispatch('gmail')}
+                  className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 flex items-center justify-between transition-all cursor-pointer group"
                 >
-                  <Mail className="w-4 h-4" />
-                  <span>Send Email</span>
-                </a>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center text-white shrink-0">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="leading-tight">Send via Gmail Web</p>
+                      <p className="text-[10.5px] text-emerald-100/90 font-normal">Opens directly in browser &bull; Recommended for Mac & PC</p>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 opacity-75 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                </button>
+
+                {/* 2. Direct WhatsApp Delivery */}
+                <button
+                  type="button"
+                  onClick={() => handleChannelSelectAndDispatch('whatsapp')}
+                  className="w-full p-3.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 text-emerald-900 font-bold text-sm flex items-center justify-between transition-all cursor-pointer group"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                      <MessageCircle className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="leading-tight text-emerald-950 font-black">Send via WhatsApp</p>
+                      <p className="text-[10.5px] text-emerald-700 font-medium">{personalInfo.whatsapp} &bull; Instant Response</p>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+
+                {/* 3. Default Mail Client (Apple Mail / Outlook) */}
+                <button
+                  type="button"
+                  onClick={() => handleChannelSelectAndDispatch('native')}
+                  className="w-full p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 text-slate-800 font-semibold text-xs flex items-center justify-between transition-all cursor-pointer group"
+                >
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-3.5 h-3.5 text-slate-500" />
+                    <span>Open in Default Mail App (Apple Mail / Outlook)</span>
+                  </div>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+
+                {/* 4. One-Click Copy All Information */}
+                <button
+                  type="button"
+                  onClick={handleCopyDetails}
+                  className="w-full p-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <span className="text-emerald-700 font-bold">Details Copied to Clipboard!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Copy Full Consultation Notes</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Bottom Actions: Reset/Edit Form or Close */}
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-3 text-xs">
+                <button
+                  type="button"
+                  onClick={handleResetForm}
+                  className="inline-flex items-center gap-1.5 text-slate-500 hover:text-emerald-700 font-bold transition-colors cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Fill New Request / Edit Details</span>
+                </button>
 
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="w-full sm:w-auto px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-full transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-full transition-colors cursor-pointer"
                 >
-                  Close
+                  Done
                 </button>
               </div>
             </div>
@@ -205,7 +354,7 @@ export default function BookingModal({ isOpen, onClose }) {
                   <input
                     type="text"
                     required
-                    placeholder="John Smith"
+                    placeholder="e.g. John Smith"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${
@@ -226,7 +375,7 @@ export default function BookingModal({ isOpen, onClose }) {
                   <input
                     type="email"
                     required
-                    placeholder="john@example.com"
+                    placeholder="john@yourstore.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${
@@ -247,7 +396,7 @@ export default function BookingModal({ isOpen, onClose }) {
                   <input
                     type="tel"
                     required
-                    placeholder="+92 300 0000000"
+                    placeholder="+1 (555) 000-0000 or WhatsApp"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${
@@ -266,9 +415,9 @@ export default function BookingModal({ isOpen, onClose }) {
                 <div className="relative">
                   <Globe className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                   <input
-                    type="url"
+                    type="text"
                     required
-                    placeholder="https://yourstore.com"
+                    placeholder="e.g. yourstore.com"
                     value={formData.website}
                     onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                     className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${
@@ -282,15 +431,69 @@ export default function BookingModal({ isOpen, onClose }) {
               {/* Message / Goals (Optional) */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Project Notes / Target Goals <span className="text-slate-400 font-normal">(Optional)</span>
+                  Current Monthly Ad Spend or Target Goal <span className="text-slate-400 font-normal">(Optional)</span>
                 </label>
                 <textarea
                   rows={2}
-                  placeholder="Tell me a bit about your current ad spend, challenges, or targets..."
+                  placeholder="e.g. Scaling PMax from $10k/mo to $50k/mo, lowering CPA..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all resize-none"
                 />
+              </div>
+
+              {/* Send Method Selector */}
+              <div className="pt-1">
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-[11px] font-bold text-slate-700">
+                    Dispatch Request Via:
+                  </label>
+                  {isMac && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+                      <Laptop className="w-3 h-3" /> Mac Optimized
+                    </span>
+                  )}
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedChannel('gmail')}
+                    className={`p-2 rounded-xl border text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+                      selectedChannel === 'gmail'
+                        ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-400 shadow-xs'
+                        : 'bg-slate-50/80 border-slate-200 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <Mail className={`w-4 h-4 ${selectedChannel === 'gmail' ? 'text-emerald-600' : 'text-slate-400'}`} />
+                    <span className="text-[11px] leading-tight">Gmail Web</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedChannel('native')}
+                    className={`p-2 rounded-xl border text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+                      selectedChannel === 'native'
+                        ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-400 shadow-xs'
+                        : 'bg-slate-50/80 border-slate-200 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <Mail className={`w-4 h-4 ${selectedChannel === 'native' ? 'text-emerald-600' : 'text-slate-400'}`} />
+                    <span className="text-[11px] leading-tight">{isMac ? 'Apple Mail' : 'Mail App'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedChannel('whatsapp')}
+                    className={`p-2 rounded-xl border text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+                      selectedChannel === 'whatsapp'
+                        ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-400 shadow-xs'
+                        : 'bg-slate-50/80 border-slate-200 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <MessageCircle className={`w-4 h-4 ${selectedChannel === 'whatsapp' ? 'text-emerald-600' : 'text-slate-400'}`} />
+                    <span className="text-[11px] leading-tight">WhatsApp</span>
+                  </button>
+                </div>
               </div>
 
               {/* Submit Button */}
@@ -298,10 +501,28 @@ export default function BookingModal({ isOpen, onClose }) {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] disabled:opacity-50"
+                  className="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] disabled:opacity-50"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>Send via Email</span>
+                  {selectedChannel === 'gmail' && (
+                    <>
+                      <Mail className="w-4 h-4" />
+                      <span>Open & Send via Gmail Web</span>
+                      <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                    </>
+                  )}
+                  {selectedChannel === 'native' && (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>Open in {isMac ? 'Apple Mail' : 'Default Mail App'}</span>
+                    </>
+                  )}
+                  {selectedChannel === 'whatsapp' && (
+                    <>
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Send via WhatsApp Chat</span>
+                      <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                    </>
+                  )}
                 </button>
               </div>
 
