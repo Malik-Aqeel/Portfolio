@@ -33,6 +33,7 @@
 .pb-safe {
   padding-bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
 }
+
 .bottom-safe {
   bottom: max(1rem, calc(1rem + env(safe-area-inset-bottom, 0px)));
 }
@@ -64,13 +65,15 @@
 }
 
 /* Ensure no headings or text gradients get clipped at the bottom (g, y, p, q, j descenders) */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   line-height: 1.22;
 }
 
 /* Premium ambient mesh gradient backgrounds */
 .hero-gradient-bg {
-  background: 
+  background:
     radial-gradient(circle at 12% 25%, rgba(16, 185, 129, 0.16) 0%, transparent 45%),
     radial-gradient(circle at 88% 35%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
     radial-gradient(circle at 50% 90%, rgba(20, 184, 166, 0.1) 0%, transparent 60%),
@@ -107,15 +110,13 @@ h1, h2, h3 {
 
 /* Running Gradient Text Animation for Google Ads */
 .animated-gradient-text {
-  background: linear-gradient(
-    90deg,
-    #059669 0%,
-    #10B981 20%,
-    #0284C7 40%,
-    #2563EB 60%,
-    #0D9488 80%,
-    #059669 100%
-  );
+  background: linear-gradient(90deg,
+      #059669 0%,
+      #10B981 20%,
+      #0284C7 40%,
+      #2563EB 60%,
+      #0D9488 80%,
+      #059669 100%);
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
@@ -129,6 +130,7 @@ h1, h2, h3 {
   0% {
     background-position: 0% center;
   }
+
   100% {
     background-position: 200% center;
   }
@@ -136,16 +138,14 @@ h1, h2, h3 {
 
 /* High-Contrast Dynamic Color Wave Animation for 'Maximum Growth.' */
 .animated-growth-gradient {
-  background: linear-gradient(
-    90deg,
-    #059669 0%,
-    #10B981 16%,
-    #06B6D4 33%,
-    #2563EB 50%,
-    #10B981 66%,
-    #0D9488 83%,
-    #059669 100%
-  );
+  background: linear-gradient(90deg,
+      #059669 0%,
+      #10B981 16%,
+      #06B6D4 33%,
+      #2563EB 50%,
+      #10B981 66%,
+      #0D9488 83%,
+      #059669 100%);
   background-size: 300% auto;
   color: transparent;
   -webkit-background-clip: text;
@@ -160,6 +160,7 @@ h1, h2, h3 {
   0% {
     background-position: 0% 50%;
   }
+
   100% {
     background-position: 100% 50%;
   }
@@ -181,6 +182,7 @@ h1, h2, h3 {
   from {
     stroke-dashoffset: 240;
   }
+
   to {
     stroke-dashoffset: 0;
   }
@@ -190,6 +192,7 @@ h1, h2, h3 {
   0% {
     stroke-dashoffset: 300;
   }
+
   100% {
     stroke-dashoffset: 0;
   }
@@ -201,7 +204,9 @@ h1, h2, h3 {
 }
 
 @keyframes radar-ping {
-  75%, 100% {
+
+  75%,
+  100% {
     transform: scale(2.2);
     opacity: 0;
   }
@@ -220,12 +225,10 @@ h1, h2, h3 {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(16, 185, 129, 0.12) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(16, 185, 129, 0.12) 50%,
+      transparent 100%);
   animation: scanline-pass 3.5s ease-in-out infinite;
 }
 
@@ -233,7 +236,9 @@ h1, h2, h3 {
   0% {
     left: -100%;
   }
-  60%, 100% {
+
+  60%,
+  100% {
     left: 100%;
   }
 }
@@ -248,20 +253,27 @@ h1, h2, h3 {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(0.5deg); }
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(0.5deg);
+  }
 }
 
 /* Glass & Card Elevation Shadows */
 .dashboard-card-shadow {
-  box-shadow: 
+  box-shadow:
     0 25px 50px -12px rgba(16, 24, 40, 0.09),
     0 0 0 1px rgba(226, 232, 240, 0.9),
     0 8px 30px rgba(16, 185, 129, 0.08);
 }
 
 .badge-card-shadow {
-  box-shadow: 
+  box-shadow:
     0 12px 28px -6px rgba(16, 24, 40, 0.09),
     0 0 0 1px rgba(226, 232, 240, 0.9);
 }
@@ -271,6 +283,7 @@ h1, h2, h3 {
   position: relative;
   overflow: hidden;
 }
+
 .button-shine::after {
   content: '';
   position: absolute;
@@ -278,16 +291,15 @@ h1, h2, h3 {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(
-    60deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.25) 50%,
-    transparent 70%
-  );
+  background: linear-gradient(60deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.25) 50%,
+      transparent 70%);
   transform: rotate(30deg);
   transition: all 0.6s ease;
   opacity: 0;
 }
+
 .button-shine:hover::after {
   opacity: 1;
   left: 100%;
@@ -297,13 +309,16 @@ h1, h2, h3 {
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: #F7F9F8;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #CBD5E1;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
 }
@@ -323,6 +338,7 @@ h1, h2, h3 {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -334,7 +350,7 @@ h1, h2, h3 {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(226, 232, 240, 0.85);
-  box-shadow: 
+  box-shadow:
     0 20px 40px -15px rgba(15, 23, 42, 0.07),
     0 0 0 1px rgba(255, 255, 255, 0.9) inset;
 }
@@ -344,7 +360,7 @@ h1, h2, h3 {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(16, 185, 129, 0.25);
-  box-shadow: 
+  box-shadow:
     0 4px 15px -3px rgba(16, 185, 129, 0.12),
     0 0 0 1px rgba(255, 255, 255, 0.8) inset;
 }
@@ -380,10 +396,7 @@ h1, h2, h3 {
 .dark-card-luxury {
   background: linear-gradient(150deg, #0F172A 0%, #0B132B 45%, #064E3B 100%);
   border: 1px solid rgba(16, 185, 129, 0.28);
-  box-shadow: 
+  box-shadow:
     0 25px 50px -12px rgba(15, 23, 42, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.08) inset;
 }
-
-
-

@@ -2,19 +2,9 @@ import React, { useState, useEffect } from 'react';
 import {
   X, Mail, User, Phone, Globe, Send, CheckCircle2,
   AlertCircle, ShieldCheck, Copy, Check, ExternalLink,
-  MessageCircle, RotateCcw, ArrowRight, Laptop
+  MessageCircle, RotateCcw, ArrowRight
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
-import {
-  isMacDevice,
-  dispatchMailto,
-  dispatchGmail,
-  dispatchWhatsApp,
-  copyToClipboard,
-  buildMailtoUrl,
-  buildGmailUrl,
-  buildWhatsAppUrl
-} from '../utils/mailDispatcher';
 
 export default function BookingModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
@@ -30,17 +20,6 @@ export default function BookingModal({ isOpen, onClose }) {
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [copied, setCopied] = useState(false);
-  const [isMac, setIsMac] = useState(false);
-  const [selectedChannel, setSelectedChannel] = useState('gmail');
-
-  useEffect(() => {
-    const mac = isMacDevice();
-    setIsMac(mac);
-    // On Mac, default to Gmail since 80%+ users don't configure Apple Mail
-    if (mac) {
-      setSelectedChannel('gmail');
-    }
-  }, []);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -126,24 +105,34 @@ export default function BookingModal({ isOpen, onClose }) {
     );
   };
 
-  const handleCopyDetails = async () => {
-    const success = await copyToClipboard(getBodyText());
-    if (success) {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    }
+  // 1. Native Mailto URL
+  const buildMailtoUrl = () => {
+    const subject = encodeURIComponent(getSubject());
+    const body = encodeURIComponent(getBodyText());
+    return `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
   };
 
-  const handleChannelSelectAndDispatch = (channel) => {
-    const subject = getSubject();
-    const body = getBodyText();
+  // 2. Direct Web Gmail Compose URL (Works 100% reliably on Mac/Windows in browser)
+  const buildGmailUrl = () => {
+    const subject = encodeURIComponent(getSubject());
+    const body = encodeURIComponent(getBodyText());
+    return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(personalInfo.email)}&su=${subject}&body=${body}`;
+  };
 
-    if (channel === 'gmail') {
-      dispatchGmail(buildGmailUrl(personalInfo.email, subject, body));
-    } else if (channel === 'whatsapp') {
-      dispatchWhatsApp(buildWhatsAppUrl(personalInfo.whatsapp, body));
-    } else {
-      dispatchMailto(buildMailtoUrl(personalInfo.email, subject, body));
+  // 3. Direct WhatsApp URL (Ideal for Mac, iOS & Android)
+  const buildWhatsAppUrl = () => {
+    const body = encodeURIComponent(getBodyText());
+    const cleanPhone = personalInfo.whatsapp.replace(/[^0-9]/g, '');
+    return `https://wa.me/${cleanPhone}?text=${body}`;
+  };
+
+  const handleCopyDetails = async () => {
+    try {
+      await navigator.clipboard.writeText(getBodyText());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch (err) {
+      console.error('Failed to copy details:', err);
     }
   };
 
@@ -156,23 +145,19 @@ export default function BookingModal({ isOpen, onClose }) {
     }
 
     setIsSubmitting(true);
-    const subject = getSubject();
-    const body = getBodyText();
 
-    // Auto copy full notes to clipboard in background as an immediate safety net
-    copyToClipboard(body).catch(() => {});
-
-    // Safe multi-channel dispatch (Mac & cross-browser safe, no about:blank tabs)
+    // Attempt default mail dispatch via safe hidden anchor click (immune to Mac Safari blocking)
     try {
-      if (selectedChannel === 'gmail') {
-        dispatchGmail(buildGmailUrl(personalInfo.email, subject, body));
-      } else if (selectedChannel === 'whatsapp') {
-        dispatchWhatsApp(buildWhatsAppUrl(personalInfo.whatsapp, body));
-      } else {
-        dispatchMailto(buildMailtoUrl(personalInfo.email, subject, body));
-      }
+      const mailtoUrl = buildMailtoUrl();
+      const link = document.createElement('a');
+      link.href = mailtoUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (err) {
-      console.warn('Dispatch notice:', err);
+      console.warn('Mail client dispatch notice:', err);
     }
 
     setSubmitted(true);
@@ -191,7 +176,7 @@ export default function BookingModal({ isOpen, onClose }) {
 
       {/* Modal Dialog Card */}
       <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden z-10 my-auto animate-in fade-in zoom-in-95 duration-200">
-        
+
         {/* Decorative Top Accent Gradient */}
         <div className="h-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
 
@@ -237,16 +222,17 @@ export default function BookingModal({ isOpen, onClose }) {
                   Ready to Send, {formData.name.split(' ')[0]}!
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 max-w-sm mx-auto mt-1 leading-relaxed">
-                  We've prepared your details. If your email didn't pop up automatically, choose an option below to dispatch to <strong className="text-emerald-700">{personalInfo.email}</strong>:
+                  Choose your preferred option below to dispatch your details to <strong className="text-emerald-700">{personalInfo.email}</strong>:
                 </p>
               </div>
 
               {/* Multi-Channel Options (Mac & All Browsers Friendly) */}
               <div className="space-y-2.5 pt-1 text-left">
                 {/* 1. Gmail Web (100% Reliable on Mac) */}
-                <button
-                  type="button"
-                  onClick={() => handleChannelSelectAndDispatch('gmail')}
+                <a
+                  href={buildGmailUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 flex items-center justify-between transition-all cursor-pointer group"
                 >
                   <div className="flex items-center gap-2.5">
@@ -255,16 +241,17 @@ export default function BookingModal({ isOpen, onClose }) {
                     </div>
                     <div>
                       <p className="leading-tight">Send via Gmail Web</p>
-                      <p className="text-[10.5px] text-emerald-100/90 font-normal">Opens directly in browser &bull; Recommended for Mac & PC</p>
+                      <p className="text-[10.5px] text-emerald-100/90 font-normal">Opens in browser &bull; Recommended for Mac & PC</p>
                     </div>
                   </div>
                   <ExternalLink className="w-4 h-4 opacity-75 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
-                </button>
+                </a>
 
                 {/* 2. Direct WhatsApp Delivery */}
-                <button
-                  type="button"
-                  onClick={() => handleChannelSelectAndDispatch('whatsapp')}
+                <a
+                  href={buildWhatsAppUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full p-3.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 text-emerald-900 font-bold text-sm flex items-center justify-between transition-all cursor-pointer group"
                 >
                   <div className="flex items-center gap-2.5">
@@ -277,12 +264,11 @@ export default function BookingModal({ isOpen, onClose }) {
                     </div>
                   </div>
                   <ExternalLink className="w-4 h-4 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
-                </button>
+                </a>
 
                 {/* 3. Default Mail Client (Apple Mail / Outlook) */}
-                <button
-                  type="button"
-                  onClick={() => handleChannelSelectAndDispatch('native')}
+                <a
+                  href={buildMailtoUrl()}
                   className="w-full p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 text-slate-800 font-semibold text-xs flex items-center justify-between transition-all cursor-pointer group"
                 >
                   <div className="flex items-center gap-2">
@@ -290,7 +276,7 @@ export default function BookingModal({ isOpen, onClose }) {
                     <span>Open in Default Mail App (Apple Mail / Outlook)</span>
                   </div>
                   <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
-                </button>
+                </a>
 
                 {/* 4. One-Click Copy All Information */}
                 <button
@@ -357,9 +343,8 @@ export default function BookingModal({ isOpen, onClose }) {
                     placeholder="e.g. John Smith"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${
-                      errors.name ? 'border-rose-400 ring-1 ring-rose-300' : 'border-slate-200'
-                    }`}
+                    className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${errors.name ? 'border-rose-400 ring-1 ring-rose-300' : 'border-slate-200'
+                      }`}
                   />
                 </div>
                 {errors.name && <p className="text-[10px] text-rose-600 font-semibold mt-1">{errors.name}</p>}
@@ -378,9 +363,8 @@ export default function BookingModal({ isOpen, onClose }) {
                     placeholder="john@yourstore.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${
-                      errors.email ? 'border-rose-400 ring-1 ring-rose-300' : 'border-slate-200'
-                    }`}
+                    className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${errors.email ? 'border-rose-400 ring-1 ring-rose-300' : 'border-slate-200'
+                      }`}
                   />
                 </div>
                 {errors.email && <p className="text-[10px] text-rose-600 font-semibold mt-1">{errors.email}</p>}
@@ -399,9 +383,8 @@ export default function BookingModal({ isOpen, onClose }) {
                     placeholder="+1 (555) 000-0000 or WhatsApp"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${
-                      errors.phone ? 'border-rose-400 ring-1 ring-rose-300' : 'border-slate-200'
-                    }`}
+                    className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${errors.phone ? 'border-rose-400 ring-1 ring-rose-300' : 'border-slate-200'
+                      }`}
                   />
                 </div>
                 {errors.phone && <p className="text-[10px] text-rose-600 font-semibold mt-1">{errors.phone}</p>}
@@ -420,9 +403,8 @@ export default function BookingModal({ isOpen, onClose }) {
                     placeholder="e.g. yourstore.com"
                     value={formData.website}
                     onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                    className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${
-                      errors.website ? 'border-rose-400 ring-1 ring-rose-300' : 'border-slate-200'
-                    }`}
+                    className={`w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all ${errors.website ? 'border-rose-400 ring-1 ring-rose-300' : 'border-slate-200'
+                      }`}
                   />
                 </div>
                 {errors.website && <p className="text-[10px] text-rose-600 font-semibold mt-1">{errors.website}</p>}
@@ -442,60 +424,6 @@ export default function BookingModal({ isOpen, onClose }) {
                 />
               </div>
 
-              {/* Send Method Selector */}
-              <div className="pt-1">
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-[11px] font-bold text-slate-700">
-                    Dispatch Request Via:
-                  </label>
-                  {isMac && (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
-                      <Laptop className="w-3 h-3" /> Mac Optimized
-                    </span>
-                  )}
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedChannel('gmail')}
-                    className={`p-2 rounded-xl border text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
-                      selectedChannel === 'gmail'
-                        ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-400 shadow-xs'
-                        : 'bg-slate-50/80 border-slate-200 text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    <Mail className={`w-4 h-4 ${selectedChannel === 'gmail' ? 'text-emerald-600' : 'text-slate-400'}`} />
-                    <span className="text-[11px] leading-tight">Gmail Web</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedChannel('native')}
-                    className={`p-2 rounded-xl border text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
-                      selectedChannel === 'native'
-                        ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-400 shadow-xs'
-                        : 'bg-slate-50/80 border-slate-200 text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    <Mail className={`w-4 h-4 ${selectedChannel === 'native' ? 'text-emerald-600' : 'text-slate-400'}`} />
-                    <span className="text-[11px] leading-tight">{isMac ? 'Apple Mail' : 'Mail App'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedChannel('whatsapp')}
-                    className={`p-2 rounded-xl border text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
-                      selectedChannel === 'whatsapp'
-                        ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-400 shadow-xs'
-                        : 'bg-slate-50/80 border-slate-200 text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    <MessageCircle className={`w-4 h-4 ${selectedChannel === 'whatsapp' ? 'text-emerald-600' : 'text-slate-400'}`} />
-                    <span className="text-[11px] leading-tight">WhatsApp</span>
-                  </button>
-                </div>
-              </div>
-
               {/* Submit Button */}
               <div className="pt-2">
                 <button
@@ -503,26 +431,8 @@ export default function BookingModal({ isOpen, onClose }) {
                   disabled={isSubmitting}
                   className="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] disabled:opacity-50"
                 >
-                  {selectedChannel === 'gmail' && (
-                    <>
-                      <Mail className="w-4 h-4" />
-                      <span>Open & Send via Gmail Web</span>
-                      <ExternalLink className="w-3.5 h-3.5 opacity-80" />
-                    </>
-                  )}
-                  {selectedChannel === 'native' && (
-                    <>
-                      <Send className="w-4 h-4" />
-                      <span>Open in {isMac ? 'Apple Mail' : 'Default Mail App'}</span>
-                    </>
-                  )}
-                  {selectedChannel === 'whatsapp' && (
-                    <>
-                      <MessageCircle className="w-4 h-4" />
-                      <span>Send via WhatsApp Chat</span>
-                      <ExternalLink className="w-3.5 h-3.5 opacity-80" />
-                    </>
-                  )}
+                  <Send className="w-4 h-4" />
+                  <span>Send Consultation Request</span>
                 </button>
               </div>
 
