@@ -7,7 +7,7 @@ export const personalInfo = {
   marketsCount: "12+",
   totalAdSpendManaged: "$15M+",
   avgRoasIncrease: "3.4x",
-  email: "shehzadsadiq172@gmail.com",
+  email: "Shehzad@advitz.com",
   linkedin: "https://www.linkedin.com/in/shehzad-sadiq/",
   whatsapp: "+92 329 9780299",
   location: "Global / Remote",
