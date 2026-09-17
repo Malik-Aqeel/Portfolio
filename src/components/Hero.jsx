@@ -4,9 +4,10 @@ import {
   ArrowRight, TrendingUp, TrendingDown, Target, Rocket,
   LineChart, Grid, Users, Star, ChevronDown,
   ShieldCheck, Zap, Activity, Home, Settings, Calendar, Check, CheckCircle2,
-  Award, Sparkles, Clock, CheckCircle
+  Award, Sparkles, Clock, CheckCircle, RefreshCw, ArrowUpRight
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
+import profilePic from '../assets/profile_img2.jpeg';
 import googleAdsImg from '../assets/google_ads_img.jpeg';
 import faviconImg from '../assets/febicon_img.jpeg';
 
@@ -17,7 +18,7 @@ import logoAT from '../assets/at.jpeg';
 import logoHI from '../assets/hi.jpeg';
 import logoTH from '../assets/th.jpeg';
 
-// Interactive Date Ranges Dataset
+// Interactive Date Ranges Dataset with Milestone Nodes
 const dateRanges = [
   {
     id: '7D',
@@ -36,9 +37,16 @@ const dateRanges = [
     clicksArea: '0,65 20,62 45,50 70,55 95,38 120,44 150,32 180,36 210,24 240,28 270,16 295,20 320,8 320,100 0,100',
     convLine: 'M0,85 Q20,80 45,86 T95,78 T150,68 T210,56 T270,45 T320,38',
     convArea: '0,85 20,80 45,86 70,72 95,78 120,65 150,68 180,52 210,56 240,42 270,45 295,30 320,38 320,100 0,100',
-    peakX: 320,
+    peakX: 310,
     peakY: 8,
     dates: ['Day 1', 'Day 2', 'Day 4', 'Day 6', 'Day 7'],
+    nodes: [
+      { x: 10, y: 65, y2: 85, l: 'Day 1', v1: '1.8K', v2: '180' },
+      { x: 80, y: 44, y2: 78, l: 'Day 2', v1: '4.2K', v2: '460' },
+      { x: 155, y: 32, y2: 68, l: 'Day 4', v1: '7.6K', v2: '890' },
+      { x: 235, y: 20, y2: 52, l: 'Day 6', v1: '10.5K', v2: '1.24K' },
+      { x: 310, y: 8, y2: 38, l: 'Day 7', v1: '12.6K', v2: '1.46K' },
+    ],
     sparkClicks: 'M0,14 Q10,4 20,11 T40,6 T60,2',
     sparkConv: 'M0,15 Q15,6 28,12 T45,7 T60,3',
     sparkCpa: 'M0,5 Q15,14 30,8 T45,13 T60,16',
@@ -62,9 +70,16 @@ const dateRanges = [
     clicksArea: '0,75 25,60 55,42 85,52 110,48 140,36 165,30 195,38 220,35 250,22 275,18 300,16 320,12 320,100 0,100',
     convLine: 'M0,90 Q25,82 55,70 T110,72 T165,55 T220,58 T275,40 T320,32',
     convArea: '0,90 25,82 55,70 85,76 110,72 140,62 165,55 195,62 220,58 250,46 275,40 300,38 320,32 320,100 0,100',
-    peakX: 320,
+    peakX: 310,
     peakY: 12,
     dates: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Current'],
+    nodes: [
+      { x: 10, y: 75, y2: 90, l: 'Week 1', v1: '9.4K', v2: '1.12K' },
+      { x: 80, y: 50, y2: 74, l: 'Week 2', v1: '21.5K', v2: '2.54K' },
+      { x: 155, y: 32, y2: 58, l: 'Week 3', v1: '34.8K', v2: '4.15K' },
+      { x: 235, y: 22, y2: 44, l: 'Week 4', v1: '42.1K', v2: '5.10K' },
+      { x: 310, y: 12, y2: 32, l: 'Current', v1: '48.2K', v2: '5.82K' },
+    ],
     sparkClicks: 'M0,16 Q15,8 30,12 T45,5 T60,2',
     sparkConv: 'M0,17 Q15,10 32,8 T48,4 T60,2',
     sparkCpa: 'M0,4 Q15,10 30,12 T48,15 T60,17',
@@ -88,9 +103,16 @@ const dateRanges = [
     clicksArea: '0,82 30,70 65,55 95,60 130,45 160,35 195,28 230,24 260,18 290,12 320,6 320,100 0,100',
     convLine: 'M0,95 Q30,85 65,75 T130,65 T195,48 T260,36 T320,24',
     convArea: '0,95 30,85 65,75 95,80 130,65 160,56 195,48 230,42 260,36 290,28 320,24 320,100 0,100',
-    peakX: 320,
+    peakX: 310,
     peakY: 6,
-    dates: ['Month 1', 'Month 2', 'Month 3', 'Current'],
+    dates: ['Month 1', 'Month 2', 'Month 2.5', 'Month 3', 'Current'],
+    nodes: [
+      { x: 10, y: 82, y2: 95, l: 'Month 1', v1: '35K', v2: '4.2K' },
+      { x: 80, y: 58, y2: 78, l: 'Month 2', v1: '72K', v2: '8.6K' },
+      { x: 155, y: 38, y2: 56, l: 'Month 2.5', v1: '108K', v2: '13.1K' },
+      { x: 235, y: 20, y2: 40, l: 'Month 3', v1: '135K', v2: '16.4K' },
+      { x: 310, y: 6, y2: 24, l: 'Current', v1: '154K', v2: '18.4K' },
+    ],
     sparkClicks: 'M0,17 Q15,12 30,9 T45,4 T60,1',
     sparkConv: 'M0,18 Q16,12 32,8 T48,3 T60,1',
     sparkCpa: 'M0,3 Q16,8 32,12 T48,15 T60,18',
@@ -114,9 +136,16 @@ const dateRanges = [
     clicksArea: '0,88 35,74 70,60 105,50 140,38 175,28 210,22 245,15 280,10 300,6 320,4 320,100 0,100',
     convLine: 'M0,96 Q35,88 70,78 T140,56 T210,40 T280,26 T320,16',
     convArea: '0,96 35,88 70,78 105,68 140,56 175,46 210,40 245,32 280,26 300,20 320,16 320,100 0,100',
-    peakX: 320,
+    peakX: 310,
     peakY: 4,
     dates: ['Q1', 'Q2', 'Q3', 'Q4', 'Current'],
+    nodes: [
+      { x: 10, y: 88, y2: 96, l: 'Q1', v1: '45K', v2: '5.4K' },
+      { x: 80, y: 56, y2: 74, l: 'Q2', v1: '110K', v2: '13.2K' },
+      { x: 155, y: 32, y2: 50, l: 'Q3', v1: '175K', v2: '21.0K' },
+      { x: 235, y: 16, y2: 32, l: 'Q4', v1: '235K', v2: '28.1K' },
+      { x: 310, y: 4, y2: 16, l: 'Current', v1: '272K', v2: '32.6K' },
+    ],
     sparkClicks: 'M0,18 Q16,14 32,9 T48,4 T60,1',
     sparkConv: 'M0,18 Q16,13 32,7 T48,3 T60,1',
     sparkCpa: 'M0,2 Q16,8 32,13 T48,16 T60,18',
@@ -142,7 +171,7 @@ const tabConfigs = {
     legend1: 'Clicks Trend',
     legend2: 'Conversions',
     yAxis: ['1.5K', '1K', '500', '0'],
-    telemetrySuffix: 'Live Telemetry',
+    statusBadge: 'Scale Trend',
     getMetrics: (data) => [
       {
         icon: LineChart,
@@ -215,7 +244,7 @@ const tabConfigs = {
     legend1: 'Net Revenue',
     legend2: 'Target ROAS',
     yAxis: ['6.0x', '4.0x', '2.0x', '1.0x'],
-    telemetrySuffix: 'Real-Time ROI',
+    statusBadge: 'Profit Max',
     getMetrics: (data) => {
       const roasMap = { '7D': '4.12x', '30D': '4.85x', '90D': '5.20x', 'Year': '5.64x' };
       const spendMap = { '7D': '$9.8K', '30D': '$38.2K', '90D': '$114K', 'Year': '$218K' };
@@ -293,7 +322,7 @@ const tabConfigs = {
     legend1: 'Performance Max',
     legend2: 'Search & Shopping',
     yAxis: ['100%', '75%', '50%', '25%'],
-    telemetrySuffix: 'Channel Mix',
+    statusBadge: 'Channel Max',
     getMetrics: (data) => [
       {
         icon: Grid,
@@ -355,7 +384,7 @@ const tabConfigs = {
       color2: '#0D9488',
       fill2: 'url(#tealHeroFill)',
       strokeWidth2: '2',
-      peakX: 320,
+      peakX: 310,
       peakY: 5,
     }),
   },
@@ -366,7 +395,7 @@ const tabConfigs = {
     legend1: 'Conv. Rate %',
     legend2: 'CPA Drop ($)',
     yAxis: ['6.0%', '4.5%', '3.0%', '1.5%'],
-    telemetrySuffix: 'Cost Down / Conv Up',
+    statusBadge: 'Efficiency Boost',
     getMetrics: (data) => [
       {
         icon: Target,
@@ -428,7 +457,7 @@ const tabConfigs = {
       color2: '#F59E0B',
       fill2: 'url(#amberHeroFill)',
       strokeWidth2: '2',
-      peakX: 320,
+      peakX: 310,
       peakY: 6,
     }),
   },
@@ -439,7 +468,7 @@ const tabConfigs = {
     legend1: 'New Buyers',
     legend2: 'Repeat Buyers (LTV)',
     yAxis: ['80%', '60%', '40%', '20%'],
-    telemetrySuffix: 'Cohort Scaling',
+    statusBadge: 'High LTV',
     getMetrics: (data) => [
       {
         icon: Users,
@@ -501,23 +530,101 @@ const tabConfigs = {
       color2: '#0D9488',
       fill2: 'url(#tealHeroFill)',
       strokeWidth2: '2',
-      peakX: 320,
+      peakX: 310,
       peakY: 4,
     }),
   },
 };
 
+// Helper to extract rich tooltip data for the hovered graph node
+function getNodeDetails(activeTab, activeData, nodeIndex) {
+  const node = activeData.nodes?.[nodeIndex];
+  if (!node) return null;
+  const tab = tabConfigs[activeTab] || tabConfigs.home;
+
+  let val1 = node.v1;
+  let val2 = node.v2;
+
+  if (activeTab === 'analytics') {
+    val1 = activeData.convValue;
+    val2 = activeData.badge;
+  } else if (activeTab === 'campaigns') {
+    val1 = `${activeData.donut.pmax}% PMax`;
+    val2 = `${activeData.donut.search}% Search`;
+  } else if (activeTab === 'target') {
+    val1 = '4.85% Conv.';
+    val2 = activeData.cpa;
+  } else if (activeTab === 'users') {
+    val1 = '74.5% New';
+    val2 = '25.5% Ret.';
+  }
+
+  return {
+    label: node.l,
+    val1,
+    val2,
+    legend1: tab.legend1,
+    legend2: tab.legend2,
+    badge: activeData.badge,
+  };
+}
+
 export default function Hero({ onBookCall }) {
   const shouldReduceMotion = useReducedMotion();
+  // Hero section right-column 3-state view: 'graph' | 'profile' | 'profit'
+  const [heroMode, setHeroMode] = useState('graph');
   const [activeTab, setActiveTab] = useState('home');
   const [selectedRangeIndex, setSelectedRangeIndex] = useState(1); // Default to Last 30 Days
   const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
+  const [hoveredNodeIndex, setHoveredNodeIndex] = useState(null);
+  const [cursorX, setCursorX] = useState(null);
+  const [isHoveringGraph, setIsHoveringGraph] = useState(false);
   const dropdownRef = useRef(null);
+
+  // Cycle through: graph -> profile -> profit -> graph
+  const cycleHeroMode = () => {
+    setHeroMode((prev) => {
+      if (prev === 'graph') return 'profile';
+      if (prev === 'profile') return 'profit';
+      return 'graph';
+    });
+  };
 
   const activeData = dateRanges[selectedRangeIndex];
   const currentTabConfig = tabConfigs[activeTab] || tabConfigs.home;
   const currentMetrics = currentTabConfig.getMetrics(activeData);
   const currentGraph = currentTabConfig.getGraph(activeData);
+
+  const hoveredNodeData = hoveredNodeIndex !== null ? getNodeDetails(activeTab, activeData, hoveredNodeIndex) : null;
+
+  const handleGraphMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+    const ratio = x / rect.width;
+    const svgX = ratio * 320;
+    setCursorX(svgX);
+    setIsHoveringGraph(true);
+
+    const nodes = activeData.nodes || [];
+    if (nodes.length > 0) {
+      let closestIdx = 0;
+      let minDist = Infinity;
+      nodes.forEach((n, idx) => {
+        const dist = Math.abs(n.x - svgX);
+        if (dist < minDist) {
+          minDist = dist;
+          closestIdx = idx;
+        }
+      });
+      setHoveredNodeIndex(closestIdx);
+    }
+  };
+
+  const handleGraphMouseLeave = () => {
+    setIsHoveringGraph(false);
+    setHoveredNodeIndex(null);
+    setCursorX(null);
+  };
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -810,365 +917,899 @@ export default function Hero({ onBookCall }) {
           {/* ═════════════════════════════════════════════════════
               RIGHT COLUMN: Next-Gen Ad-Tech Perspective Dashboard
           ═════════════════════════════════════════════════════ */}
-          <div className="lg:col-span-7 relative flex items-center justify-center pb-8 sm:pb-4 lg:pb-0">
+          <div className="lg:col-span-7 relative flex flex-col items-center justify-center pb-12 sm:pb-14 lg:pb-10">
 
             {/* Ambient Optical Halo Behind Dashboard */}
             <div className="dashboard-halo" />
 
-            {/* ─── Floating Badge: Google Partner Certified (Top-Right) ─── */}
-            {!shouldReduceMotion && (
-              <motion.div
-                variants={floatBadge}
-                animate="animate"
-                className="absolute -top-5 -right-1 sm:-right-3 z-30 pointer-events-none hidden sm:flex items-center gap-2.5 px-3.5 py-2 rounded-2xl glass-card-luxury border border-emerald-200/80 shadow-xl"
-              >
-                <div className="w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-600 shadow-xs shrink-0">
-                  <Award className="w-4 h-4 text-emerald-600" />
-                </div>
-                <div className="text-left">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-black text-slate-900 leading-none">Google Partner</span>
-                    <span className="flex gap-0.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    </span>
-                  </div>
-                  <p className="text-[10px] font-bold text-emerald-700 leading-tight mt-0.5">Top 3% Specialist</p>
-                </div>
-              </motion.div>
-            )}
-
-            {/* ─── Main Perspective Angled Tablet Dashboard ─── */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="relative w-full max-w-[670px] rounded-3xl bg-white shadow-2xl shadow-emerald-950/15 border border-slate-200/90 overflow-hidden flex flex-col transform lg:rotate-[-1.5deg] lg:hover:rotate-0 transition-transform duration-500"
-            >
-
-              {/* ── macOS Style Luxury Window Header Bar ── */}
-              <div className="bg-[#0B132B] px-4 py-2.5 flex items-center justify-between border-b border-slate-800 shrink-0">
-                {/* Traffic light control dots */}
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] shadow-xs" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] shadow-xs" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] shadow-xs" />
-                </div>
-
-                {/* Simulated Live API Address Bar */}
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-[11px] font-mono text-slate-400">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-slate-300 font-semibold">ads.google.com</span>
-                  <span className="text-slate-500">//</span>
-                  <span className="text-emerald-400 font-bold">real-time-telemetry</span>
-                </div>
-
-                {/* Live Stream Indicator */}
-                <div className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 px-2 py-0.5 rounded-full">
-                  <Activity className="w-3 h-3 text-emerald-400 animate-pulse" />
-                  <span>SYNCED</span>
-                </div>
+            {/* ─── Interactive 3-State View Switcher Control Bar (Graph / Profile / Profit Arrow) ─── */}
+            <div className="w-full max-w-[670px] flex items-center justify-between gap-2 mb-3.5 z-30">
+              {/* Segmented View Mode Tabs */}
+              <div className="flex items-center p-1 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-xs">
+                {[
+                  { id: 'graph', label: 'Live Graph', icon: LineChart },
+                  { id: 'profile', label: 'My Profile', icon: Users },
+                  { id: 'profit', label: 'Profit Arrow', icon: TrendingUp },
+                ].map((tab) => {
+                  const Icon = tab.icon;
+                  const isActive = heroMode === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setHeroMode(tab.id)}
+                      className={`relative px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer select-none ${
+                        isActive ? 'text-white' : 'text-slate-600 hover:text-slate-950'
+                      }`}
+                    >
+                      {isActive && (
+                        <motion.div
+                          layoutId="heroActiveViewPill"
+                          className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 shadow-md shadow-emerald-500/30"
+                          transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                        />
+                      )}
+                      <span className="relative z-10 flex items-center gap-1.5">
+                        <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-slate-500'}`} />
+                        <span className="text-[11px] sm:text-xs">{tab.label}</span>
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
 
-              {/* ── Inner Body Split: Left Sidebar + Main Content ── */}
-              <div className="flex flex-1 min-w-0">
+              {/* High-Impact 1-Click Interactive Cycle Switcher Button */}
+              <button
+                onClick={cycleHeroMode}
+                title="Click to cycle to next view"
+                className="group flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-2xl bg-slate-900 hover:bg-emerald-950 text-white text-xs font-bold border border-slate-700/80 hover:border-emerald-400/80 shadow-md transition-all cursor-pointer select-none"
+              >
+                <RefreshCw className="w-3.5 h-3.5 text-emerald-400 group-hover:rotate-180 transition-transform duration-500 shrink-0" />
+                <span className="text-[10.5px] sm:text-xs">
+                  {heroMode === 'graph' ? 'Switch to Profile →' : heroMode === 'profile' ? 'Switch to Profit Arrow →' : 'Switch to Graph →'}
+                </span>
+              </button>
+            </div>
 
-                {/* ── Dark Left Sidebar (Deep Navy Slate with Emerald Active Highlights) ── */}
-                <div className="w-14 sm:w-16 bg-[#0E1726] text-slate-400 flex flex-col items-center py-4 justify-between shrink-0 border-r border-slate-800">
-                  <div className="space-y-5 flex flex-col items-center">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white shadow-xs border border-slate-200/60 flex items-center justify-center p-1.5 overflow-hidden group hover:scale-105 transition-transform">
-                      <img
-                        src={googleAdsImg}
-                        alt="Google Ads"
-                        className="w-full h-full object-contain"
-                      />
+            {/* ─── 3-State Morphing Container (Graph -> Profile -> Profit Arrow -> Graph) ─── */}
+            <AnimatePresence mode="wait">
+              {/* STATE 1: LIVE GRAPH DASHBOARD (DEFAULT VIEW) */}
+              {heroMode === 'graph' && (
+                <motion.div
+                  key="hero-view-graph"
+                  initial={{ opacity: 0, scale: 0.94, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.94, y: -20 }}
+                  transition={{ duration: 0.4, ease: [0.215, 0.61, 0.355, 1] }}
+                  className="relative w-full max-w-[670px] rounded-3xl bg-white shadow-2xl shadow-emerald-950/15 border border-slate-200/90 overflow-hidden flex flex-col transform lg:rotate-[-1.5deg] lg:hover:rotate-0 transition-transform duration-500"
+                >
+                  {/* ── macOS Style Luxury Window Header Bar ── */}
+                  <div className="bg-[#0B132B] px-4 py-2.5 flex items-center justify-between border-b border-slate-800 shrink-0">
+                    {/* Traffic light control dots */}
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] shadow-xs" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] shadow-xs" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] shadow-xs" />
                     </div>
 
-                    <div className="space-y-2.5 flex flex-col items-center">
-                      {sidebarTabs.map((tab) => {
-                        const Icon = tab.icon;
-                        const isActive = activeTab === tab.id;
-                        return (
-                          <button
-                            key={tab.id}
-                            onClick={() => setActiveTab(tab.id)}
-                            className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer relative group ${
-                              isActive
-                                ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/40 ring-2 ring-emerald-400/40 scale-105'
-                                : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
-                            }`}
-                            aria-label={tab.name}
-                          >
-                            <Icon className="w-4 h-4" />
-                            {/* Tooltip on hover */}
-                            <span className="absolute left-full ml-3 px-2.5 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-slate-700 hidden sm:block">
-                              {tab.name}
-                            </span>
-                          </button>
-                        );
-                      })}
+                    {/* Elegant Centered Window Title */}
+                    <div className="hidden sm:flex items-center gap-2 px-3.5 py-0.5 rounded-full bg-slate-900/80 border border-slate-800 text-[11px] font-semibold text-slate-300">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-xs" />
+                      <span>Campaign Performance Dashboard</span>
                     </div>
+
+                    {/* Quick Switch Button directly in Header */}
+                    <button
+                      onClick={cycleHeroMode}
+                      className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 hover:text-white bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full transition-colors cursor-pointer"
+                      title="Click to switch to Profile"
+                    >
+                      <Activity className="w-3 h-3 text-emerald-400 animate-pulse" />
+                      <span>SYNCED • VIEW PROFILE →</span>
+                    </button>
                   </div>
 
-                  <button
-                    onClick={() => {
-                      setActiveTab('home');
-                      setSelectedRangeIndex(1);
-                    }}
-                    title="Reset to Default Overview"
-                    className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all cursor-pointer relative group"
-                    aria-label="Reset to Default"
-                  >
-                    <Settings className="w-4 h-4" />
-                    <span className="absolute left-full ml-3 px-2 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-slate-700 hidden sm:block">
-                      Reset View
-                    </span>
-                  </button>
-                </div>
+                  {/* ── Inner Body Split: Left Sidebar + Main Content ── */}
+                  <div className="flex flex-1 min-w-0">
 
-                {/* ── Main Dashboard Body ── */}
-                <div className="flex-1 p-3.5 sm:p-5 lg:p-6 bg-white space-y-3.5 sm:space-y-4 min-w-0 relative">
+                    {/* ── Dark Left Sidebar (Deep Navy Slate with Emerald Active Highlights) ── */}
+                    <div className="w-14 sm:w-16 bg-[#0E1726] text-slate-400 flex flex-col items-center py-4 justify-between shrink-0 border-r border-slate-800">
+                      <div className="space-y-5 flex flex-col items-center">
+                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white shadow-xs border border-slate-200/60 flex items-center justify-center p-1.5 overflow-hidden group hover:scale-105 transition-transform">
+                          <img
+                            src={googleAdsImg}
+                            alt="Google Ads"
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
 
-                  {/* Top Header Row with Direct Timeframe Quick-Pills & Title */}
-                  <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 relative z-30">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                      <motion.h3
-                        key={currentTabConfig.title}
-                        initial={{ opacity: 0, x: -4 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.25 }}
-                        className="font-extrabold text-slate-900 text-xs sm:text-base tracking-tight truncate"
+                        <div className="space-y-2.5 flex flex-col items-center">
+                          {sidebarTabs.map((tab) => {
+                            const Icon = tab.icon;
+                            const isActive = activeTab === tab.id;
+                            return (
+                              <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer relative group ${
+                                  isActive
+                                    ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/40 ring-2 ring-emerald-400/40 scale-105'
+                                    : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
+                                }`}
+                                aria-label={tab.name}
+                              >
+                                <Icon className="w-4 h-4" />
+                                {/* Tooltip on hover */}
+                                <span className="absolute left-full ml-3 px-2.5 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-slate-700 hidden sm:block">
+                                  {tab.name}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          setActiveTab('home');
+                          setSelectedRangeIndex(1);
+                        }}
+                        title="Reset to Default Overview"
+                        className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all cursor-pointer relative group"
+                        aria-label="Reset to Default"
                       >
-                        {currentTabConfig.title}
-                      </motion.h3>
-                      <span className="hidden md:inline-flex text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full shrink-0">
-                        {currentTabConfig.badge}
-                      </span>
+                        <Settings className="w-4 h-4" />
+                        <span className="absolute left-full ml-3 px-2 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-slate-700 hidden sm:block">
+                          Reset View
+                        </span>
+                      </button>
                     </div>
 
-                    {/* ── Direct Timeframe Quick-Pills (Desktop) + Dropdown (Mobile) ── */}
-                    <div className="flex items-center gap-1 shrink-0">
-                      {/* Desktop Quick-Select Pills */}
-                      <div className="hidden sm:flex items-center p-0.5 rounded-xl bg-slate-100/90 border border-slate-200/70">
-                        {dateRanges.map((range, idx) => {
-                          const isSelected = selectedRangeIndex === idx;
-                          return (
+                    {/* ── Main Dashboard Body ── */}
+                    <div className="flex-1 p-3.5 sm:p-5 lg:p-6 pb-6 sm:pb-8 bg-white space-y-3.5 sm:space-y-4 min-w-0 relative">
+
+                      {/* Top Header Row with Direct Timeframe Quick-Pills & Title */}
+                      <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 relative z-30">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                          <motion.h3
+                            key={currentTabConfig.title}
+                            initial={{ opacity: 0, x: -4 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="font-extrabold text-slate-900 text-xs sm:text-base tracking-tight truncate"
+                          >
+                            {currentTabConfig.title}
+                          </motion.h3>
+                          <span className="hidden md:inline-flex text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full shrink-0">
+                            {currentTabConfig.badge}
+                          </span>
+                        </div>
+
+                        {/* ── Direct Timeframe Quick-Pills (Desktop) + Dropdown (Mobile) ── */}
+                        <div className="flex items-center gap-1 shrink-0">
+                          {/* Desktop Quick-Select Pills */}
+                          <div className="hidden sm:flex items-center p-0.5 rounded-xl bg-slate-100/90 border border-slate-200/70">
+                            {dateRanges.map((range, idx) => {
+                              const isSelected = selectedRangeIndex === idx;
+                              return (
+                                <button
+                                  key={range.id}
+                                  onClick={() => setSelectedRangeIndex(idx)}
+                                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                                    isSelected
+                                      ? 'bg-white text-emerald-700 shadow-xs border border-slate-200/70'
+                                      : 'text-slate-500 hover:text-slate-800'
+                                  }`}
+                                >
+                                  {range.shortLabel}
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          {/* Mobile Dropdown Button */}
+                          <div className="relative sm:hidden" ref={dropdownRef}>
                             <button
-                              key={range.id}
-                              onClick={() => setSelectedRangeIndex(idx)}
-                              className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
-                                isSelected
-                                  ? 'bg-white text-emerald-700 shadow-xs border border-slate-200/70'
-                                  : 'text-slate-500 hover:text-slate-800'
-                              }`}
+                              onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
+                              className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 text-[11px] font-bold text-slate-700"
                             >
-                              {range.shortLabel}
+                              <Calendar className="w-3 h-3 text-emerald-600" />
+                              <span>{activeData.shortLabel}</span>
+                              <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform ${isDateDropdownOpen ? 'rotate-180' : ''}`} />
                             </button>
+
+                            <AnimatePresence>
+                              {isDateDropdownOpen && (
+                                <motion.div
+                                  initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                                  exit={{ opacity: 0, y: 4, scale: 0.95 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="absolute right-0 top-full mt-1 w-48 rounded-2xl bg-white border border-slate-200 shadow-2xl p-1 z-50 text-left"
+                                >
+                                  {dateRanges.map((range, idx) => (
+                                    <button
+                                      key={range.id}
+                                      onClick={() => {
+                                        setSelectedRangeIndex(idx);
+                                        setIsDateDropdownOpen(false);
+                                      }}
+                                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-semibold ${
+                                        selectedRangeIndex === idx
+                                          ? 'bg-emerald-50 text-emerald-800 font-bold'
+                                          : 'text-slate-700 hover:bg-slate-50'
+                                      }`}
+                                    >
+                                      <span>{range.label}</span>
+                                      {selectedRangeIndex === idx && <Check className="w-3.5 h-3.5 text-emerald-600" />}
+                                    </button>
+                                  ))}
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 4 Metric Cards Grid (Dynamic values based on Selected Tab & Date) */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+                        {currentMetrics.map((metric, idx) => {
+                          const MetricIcon = metric.icon;
+                          return (
+                            <motion.div
+                              key={`${activeTab}-${metric.label}-${activeData.id}`}
+                              initial={{ opacity: 0, y: 6 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.25, delay: idx * 0.04 }}
+                              className={`p-2.5 sm:p-3 rounded-2xl bg-gradient-to-br ${metric.bgGradient} border ${metric.border} shadow-soft-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-default group`}
+                            >
+                              <div className="flex items-center gap-1 text-[9.5px] sm:text-[10px] font-bold text-slate-500">
+                                <MetricIcon className={`w-3 h-3 ${metric.iconColor} group-hover:scale-110 transition-transform`} />
+                                <span className="truncate">{metric.label}</span>
+                              </div>
+                              <p className="text-base sm:text-lg lg:text-xl font-black text-slate-900 mt-0.5 tracking-tight truncate">
+                                {metric.value}
+                              </p>
+                              <p className={`text-[9.5px] sm:text-[10px] font-bold ${metric.growthColor} mt-0.5 truncate`}>
+                                {metric.growth}
+                              </p>
+                              {/* Dynamic Sparkline */}
+                              <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
+                                <path d={metric.spark} fill="none" stroke={metric.sparkStroke} strokeWidth="2" strokeLinecap="round" />
+                              </svg>
+                            </motion.div>
                           );
                         })}
                       </div>
 
-                      {/* Mobile Dropdown Button */}
-                      <div className="relative sm:hidden" ref={dropdownRef}>
-                        <button
-                          onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
-                          className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 text-[11px] font-bold text-slate-700"
-                        >
-                          <Calendar className="w-3 h-3 text-emerald-600" />
-                          <span>{activeData.shortLabel}</span>
-                          <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform ${isDateDropdownOpen ? 'rotate-180' : ''}`} />
-                        </button>
+                      {/* ── Main Dual-Line Graph Area (Changes dynamically on tab & date selection) ── */}
+                      <div className="p-3 sm:p-4 rounded-2xl bg-gradient-to-br from-slate-900/[0.02] via-emerald-500/[0.03] to-slate-50/80 border border-slate-200/90 shadow-xs space-y-2.5 relative overflow-hidden group">
+                        {/* Header with Legends and Performance Status */}
+                        <div className="flex items-center justify-between text-[11px] text-slate-500">
+                          <div className="flex items-center gap-2 sm:gap-3">
+                            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-white/95 border border-slate-200/80 shadow-2xs">
+                              <span className="w-2 h-2 rounded-full shadow-xs" style={{ backgroundColor: currentGraph.color1 }} />
+                              <span className="font-extrabold text-slate-800 text-[10px] sm:text-[11px]">{currentTabConfig.legend1}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-white/95 border border-slate-200/80 shadow-2xs">
+                              <span className="w-2 h-2 rounded-full shadow-xs" style={{ backgroundColor: currentGraph.color2 }} />
+                              <span className="font-extrabold text-slate-800 text-[10px] sm:text-[11px]">{currentTabConfig.legend2}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1.5 font-bold text-emerald-700 text-[10px] sm:text-[10.5px] bg-emerald-50/95 px-2.5 py-0.5 rounded-full border border-emerald-200/80 shadow-2xs">
+                            <TrendingUp className="w-3 h-3 text-emerald-600" />
+                            <span>{activeData.label} • {currentTabConfig.statusBadge || 'Optimized Growth'}</span>
+                          </div>
+                        </div>
 
-                        <AnimatePresence>
-                          {isDateDropdownOpen && (
+                        {/* Dynamic SVG Chart with Neon Glow & Interactive Scrubbing */}
+                        <div
+                          className="h-32 sm:h-38 w-full relative cursor-crosshair select-none"
+                          onMouseMove={handleGraphMouseMove}
+                          onMouseLeave={handleGraphMouseLeave}
+                        >
+                          {/* Floating Tooltip on Hover */}
+                          <AnimatePresence>
+                            {isHoveringGraph && hoveredNodeData && (
+                              <motion.div
+                                key={`tooltip-${hoveredNodeIndex}`}
+                                initial={{ opacity: 0, y: 4, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.12 }}
+                                style={{
+                                  left: `${Math.min(82, Math.max(18, (activeData.nodes[hoveredNodeIndex].x / 320) * 100))}%`
+                                }}
+                                className="absolute -top-10 -translate-x-1/2 z-40 pointer-events-none px-3 py-1.5 rounded-xl bg-slate-900/95 backdrop-blur-md border border-emerald-500/40 shadow-2xl shadow-emerald-950/40 flex items-center gap-2 whitespace-nowrap text-white"
+                              >
+                                <div className="flex items-center gap-1.5">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                  <span className="text-[10.5px] font-bold text-slate-300">{hoveredNodeData.label}</span>
+                                </div>
+                                <span className="w-px h-3 bg-slate-700" />
+                                <div className="flex items-center gap-1 text-[11px] font-extrabold text-white">
+                                  <span className="text-slate-400 text-[9.5px]">{hoveredNodeData.legend1}:</span>
+                                  <span className="text-emerald-400 font-black">{hoveredNodeData.val1}</span>
+                                </div>
+                                <span className="text-[9px] font-extrabold text-emerald-300 bg-emerald-950/80 border border-emerald-700/60 px-1.5 py-0.5 rounded-md">
+                                  {hoveredNodeData.badge}
+                                </span>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          {/* Default High-Water Mark Badge when NOT hovering */}
+                          {!isHoveringGraph && (
                             <motion.div
-                              initial={{ opacity: 0, y: 6, scale: 0.95 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              exit={{ opacity: 0, y: 4, scale: 0.95 }}
-                              transition={{ duration: 0.15 }}
-                              className="absolute right-0 top-full mt-1 w-48 rounded-2xl bg-white border border-slate-200 shadow-2xl p-1 z-50 text-left"
+                              initial={{ opacity: 0, scale: 0.9 }}
+                              animate={{ opacity: 1, scale: 1, y: [0, -3, 0] }}
+                              transition={{ y: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' } }}
+                              style={{
+                                left: `${Math.min(86, Math.max(14, (currentGraph.peakX / 320) * 100))}%`,
+                                top: `${Math.max(4, (currentGraph.peakY / 100) * 100 - 18)}%`
+                              }}
+                              className="absolute -translate-x-1/2 pointer-events-none hidden sm:flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 text-white text-[9.5px] font-black shadow-lg shadow-emerald-600/35 border border-emerald-300/40 whitespace-nowrap z-20"
                             >
-                              {dateRanges.map((range, idx) => (
-                                <button
-                                  key={range.id}
-                                  onClick={() => {
-                                    setSelectedRangeIndex(idx);
-                                    setIsDateDropdownOpen(false);
-                                  }}
-                                  className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-semibold ${
-                                    selectedRangeIndex === idx
-                                      ? 'bg-emerald-50 text-emerald-800 font-bold'
-                                      : 'text-slate-700 hover:bg-slate-50'
-                                  }`}
-                                >
-                                  <span>{range.label}</span>
-                                  {selectedRangeIndex === idx && <Check className="w-3.5 h-3.5 text-emerald-600" />}
-                                </button>
-                              ))}
+                              <Sparkles className="w-2.5 h-2.5 text-amber-300" />
+                              <span>Peak Scale {activeData.badge}</span>
                             </motion.div>
                           )}
-                        </AnimatePresence>
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* 4 Metric Cards Grid (Dynamic values based on Selected Tab & Date) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
-                    {currentMetrics.map((metric, idx) => {
-                      const MetricIcon = metric.icon;
-                      return (
-                        <motion.div
-                          key={`${activeTab}-${metric.label}-${activeData.id}`}
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.25, delay: idx * 0.04 }}
-                          className={`p-2.5 sm:p-3 rounded-2xl bg-gradient-to-br ${metric.bgGradient} border ${metric.border} shadow-soft-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-default group`}
-                        >
-                          <div className="flex items-center gap-1 text-[9.5px] sm:text-[10px] font-bold text-slate-500">
-                            <MetricIcon className={`w-3 h-3 ${metric.iconColor} group-hover:scale-110 transition-transform`} />
-                            <span className="truncate">{metric.label}</span>
+                          {/* Y-axis markers */}
+                          <div className="absolute left-0 inset-y-0 flex flex-col justify-between text-[9px] font-semibold text-slate-400 pointer-events-none pr-2">
+                            {currentTabConfig.yAxis.map((val, idx) => (
+                              <span key={idx}>{val}</span>
+                            ))}
                           </div>
-                          <p className="text-base sm:text-lg lg:text-xl font-black text-slate-900 mt-0.5 tracking-tight truncate">
-                            {metric.value}
-                          </p>
-                          <p className={`text-[9.5px] sm:text-[10px] font-bold ${metric.growthColor} mt-0.5 truncate`}>
-                            {metric.growth}
-                          </p>
-                          {/* Dynamic Sparkline */}
-                          <svg viewBox="0 0 60 18" className="w-full h-4 mt-1.5 overflow-visible">
-                            <path d={metric.spark} fill="none" stroke={metric.sparkStroke} strokeWidth="2" strokeLinecap="round" />
+
+                          <svg className="w-full h-full pl-6 overflow-visible" viewBox="0 0 320 100" preserveAspectRatio="none">
+                            <defs>
+                              {/* Multi-stop glowing gradients */}
+                              <linearGradient id="emeraldHeroFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#10B981" stopOpacity="0.35" />
+                                <stop offset="45%" stopColor="#059669" stopOpacity="0.14" />
+                                <stop offset="100%" stopColor="#047857" stopOpacity="0.0" />
+                              </linearGradient>
+                              <linearGradient id="tealHeroFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.22" />
+                                <stop offset="50%" stopColor="#0EA5E9" stopOpacity="0.08" />
+                                <stop offset="100%" stopColor="#0284C7" stopOpacity="0.0" />
+                              </linearGradient>
+                              <linearGradient id="amberHeroFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.25" />
+                                <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.0" />
+                              </linearGradient>
+                              <linearGradient id="blueHeroFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.24" />
+                                <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.0" />
+                              </linearGradient>
+
+                              {/* Laser stroke gradients */}
+                              <linearGradient id="laserStrokeEmerald" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stopColor="#059669" />
+                                <stop offset="35%" stopColor="#10B981" />
+                                <stop offset="75%" stopColor="#14B8A6" />
+                                <stop offset="100%" stopColor="#06B6D4" />
+                              </linearGradient>
+
+                              <linearGradient id="laserStrokeTeal" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stopColor="#0D9488" />
+                                <stop offset="60%" stopColor="#0284C7" />
+                                <stop offset="100%" stopColor="#6366F1" />
+                              </linearGradient>
+
+                              {/* Subtle background cyber dot grid */}
+                              <pattern id="chartGridDots" width="16" height="16" patternUnits="userSpaceOnUse">
+                                <circle cx="1.5" cy="1.5" r="0.75" fill="#CBD5E1" opacity="0.35" />
+                              </pattern>
+                            </defs>
+
+                            {/* Background Grid Pattern */}
+                            <rect x="0" y="0" width="320" height="100" fill="url(#chartGridDots)" opacity="0.45" />
+
+                            {/* Horizontal Grid lines */}
+                            <line x1="0" y1="10" x2="320" y2="10" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.7" />
+                            <line x1="0" y1="40" x2="320" y2="40" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.7" />
+                            <line x1="0" y1="70" x2="320" y2="70" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.7" />
+                            <line x1="0" y1="98" x2="320" y2="98" stroke="#CBD5E1" strokeWidth="1" opacity="0.8" />
+
+                            {/* Vertical Scanning Guide Line when hovering */}
+                            {isHoveringGraph && cursorX !== null && (
+                              <line
+                                x1={cursorX}
+                                y1="5"
+                                x2={cursorX}
+                                y2="98"
+                                stroke="#10B981"
+                                strokeWidth="1.2"
+                                strokeDasharray="2 2"
+                                className="pointer-events-none"
+                                opacity="0.75"
+                              />
+                            )}
+
+                            {/* Area 2 Fill */}
+                            <motion.polygon
+                              key={`area2-${activeTab}-${activeData.id}`}
+                              points={currentGraph.area2}
+                              fill={currentGraph.fill2}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.35 }}
+                            />
+                            {/* Line 2 */}
+                            <motion.path
+                              key={`line2-${activeTab}-${activeData.id}`}
+                              d={currentGraph.line2}
+                              fill="none"
+                              stroke={currentGraph.color2}
+                              strokeWidth={currentGraph.strokeWidth2}
+                              strokeLinecap="round"
+                              className="neon-graph-glow-secondary"
+                              initial={{ pathLength: 0 }}
+                              animate={{ pathLength: 1 }}
+                              transition={{ duration: 0.65, ease: 'easeOut' }}
+                            />
+
+                            {/* Area 1 Fill */}
+                            <motion.polygon
+                              key={`area1-${activeTab}-${activeData.id}`}
+                              points={currentGraph.area1}
+                              fill={currentGraph.fill1}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.35 }}
+                            />
+                            {/* Line 1 with Neon Laser Glow */}
+                            <motion.path
+                              key={`line1-${activeTab}-${activeData.id}`}
+                              d={currentGraph.line1}
+                              fill="none"
+                              stroke={currentGraph.color1}
+                              strokeWidth={currentGraph.strokeWidth1}
+                              strokeLinecap="round"
+                              className="neon-graph-glow"
+                              initial={{ pathLength: 0 }}
+                              animate={{ pathLength: 1 }}
+                              transition={{ duration: 0.65, ease: 'easeOut' }}
+                            />
+
+                            {/* Interactive Data Nodes along Curve 1 */}
+                            {activeData.nodes?.map((node, idx) => {
+                              const isHovered = isHoveringGraph && hoveredNodeIndex === idx;
+                              return (
+                                <g key={idx} className="pointer-events-none transition-all duration-200">
+                                  {isHovered && (
+                                    <circle
+                                      cx={node.x}
+                                      cy={node.y}
+                                      r="9"
+                                      fill={currentGraph.color1}
+                                      opacity="0.3"
+                                      className="animate-ping"
+                                    />
+                                  )}
+                                  <circle
+                                    cx={node.x}
+                                    cy={node.y}
+                                    r={isHovered ? '4.5' : '2.8'}
+                                    fill="#FFFFFF"
+                                    stroke={currentGraph.color1}
+                                    strokeWidth={isHovered ? '2.5' : '1.8'}
+                                    className="transition-all duration-200"
+                                  />
+                                </g>
+                              );
+                            })}
+
+                            {/* Peak Interactive Radar Ping (When not hovering) */}
+                            {!isHoveringGraph && (
+                              <>
+                                <circle cx={currentGraph.peakX} cy={currentGraph.peakY} r="3.5" fill={currentGraph.color1} />
+                                <circle cx={currentGraph.peakX} cy={currentGraph.peakY} r="9" fill={currentGraph.color1} opacity="0.45" className="animate-ping" />
+                              </>
+                            )}
                           </svg>
+
+                          {/* Dynamic Date labels along bottom */}
+                          <div className="pl-6 pt-2 flex items-center justify-between text-[9.5px] font-bold text-slate-400 select-none">
+                            {activeData.dates.map((d, i) => {
+                              const isNodeActive = isHoveringGraph && hoveredNodeIndex === i;
+                              return (
+                                <span
+                                  key={i}
+                                  className={`transition-colors duration-150 ${
+                                    isNodeActive ? 'text-emerald-600 font-black' : 'hover:text-slate-600'
+                                  }`}
+                                >
+                                  {d}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* STATE 2: SPECIALIST PROFILE PICTURE SHOWCASE (1st CLICK) */}
+              {heroMode === 'profile' && (
+                <motion.div
+                  key="hero-view-profile"
+                  initial={{ opacity: 0, scale: 0.94, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.94, y: -20 }}
+                  transition={{ duration: 0.45, ease: [0.215, 0.61, 0.355, 1] }}
+                  className="relative w-full max-w-[670px] rounded-3xl bg-[#0B132B] shadow-2xl shadow-emerald-950/25 border border-emerald-500/30 overflow-hidden flex flex-col transform lg:rotate-[1deg] lg:hover:rotate-0 transition-transform duration-500 text-white"
+                >
+                  {/* macOS Style Luxury Window Header Bar */}
+                  <div className="bg-[#070E22] px-4 py-2.5 flex items-center justify-between border-b border-slate-800 shrink-0">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] shadow-xs" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] shadow-xs" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] shadow-xs" />
+                    </div>
+
+                    <div className="hidden sm:flex items-center gap-2 px-3.5 py-0.5 rounded-full bg-slate-900/80 border border-slate-800 text-[11px] font-semibold text-slate-300">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Senior Google Ads & DTC Growth Specialist</span>
+                    </div>
+
+                    <button
+                      onClick={cycleHeroMode}
+                      className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-300 hover:text-white bg-emerald-950/80 hover:bg-emerald-900/90 border border-emerald-700/80 px-2.5 py-0.5 rounded-full transition-colors cursor-pointer"
+                      title="Click to view Profit Arrow"
+                    >
+                      <RefreshCw className="w-3 h-3 text-emerald-400" />
+                      <span>NEXT: PROFIT ARROW →</span>
+                    </button>
+                  </div>
+
+                  {/* Profile Content Body */}
+                  <div className="p-5 sm:p-6 lg:p-7 relative overflow-hidden bg-gradient-to-br from-[#0B132B] via-[#0E1B33] to-[#042B20] flex-1 flex flex-col justify-between">
+                    {/* Ambient background glows */}
+                    <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-emerald-500/15 filter blur-3xl pointer-events-none" />
+                    <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-cyan-500/10 filter blur-3xl pointer-events-none" />
+
+                    {/* Top Identity Block */}
+                    <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 pb-4 border-b border-slate-800/80">
+                      {/* Profile Avatar with Dual Rotating Glowing Rings */}
+                      <div className="relative w-24 h-24 sm:w-28 sm:h-28 shrink-0">
+                        <motion.div
+                          animate={shouldReduceMotion ? {} : { rotate: 360 }}
+                          transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+                          className="absolute -inset-2 rounded-full border border-dashed border-emerald-400/40"
+                        />
+                        <motion.div
+                          animate={shouldReduceMotion ? {} : { rotate: -360 }}
+                          transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+                          className="absolute -inset-1 rounded-full border border-teal-400/30"
+                        />
+                        <div className="w-full h-full rounded-full overflow-hidden ring-4 ring-emerald-500/60 shadow-2xl shadow-emerald-950/60 bg-slate-800">
+                          <img
+                            src={profilePic}
+                            alt={personalInfo.name}
+                            className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                        {/* Active Online Badge */}
+                        <div className="absolute bottom-0.5 right-0.5 px-2 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[9px] font-black border-2 border-[#0B132B] shadow-md flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                          <span>ONLINE</span>
+                        </div>
+                      </div>
+
+                      {/* Profile Info */}
+                      <div className="flex-1 text-center sm:text-left space-y-1.5">
+                        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                          <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-[10px] font-black text-emerald-300 uppercase tracking-wider">
+                            Google Ads Partner
+                          </span>
+                          <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/15 text-[10px] font-bold text-slate-300 flex items-center gap-1">
+                            <span className="flex gap-0.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                            </span>
+                            <span>Top 3% Specialist</span>
+                          </span>
+                        </div>
+
+                        <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                          {personalInfo.name}
+                        </h3>
+                        <p className="text-xs sm:text-sm font-semibold text-emerald-400">
+                          E-Commerce Scaling & Full-Funnel Google Ads Architect
+                        </p>
+
+                        <div className="flex items-center justify-center sm:justify-start gap-1.5 pt-0.5">
+                          <div className="flex text-amber-400">
+                            {[...Array(5)].map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
+                            ))}
+                          </div>
+                          <span className="text-xs font-black text-slate-200">5.0</span>
+                          <span className="text-xs text-slate-400 font-medium">• 100+ Global DTC Clients</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Key Proof Metrics 4-Grid */}
+                    <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3">
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 transition-colors text-center sm:text-left">
+                        <p className="text-[10px] font-bold text-slate-400">Ad Spend Managed</p>
+                        <p className="text-base sm:text-lg font-black text-white mt-0.5">$15M+</p>
+                        <p className="text-[9.5px] font-bold text-emerald-400">Profitable DTC</p>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 transition-colors text-center sm:text-left">
+                        <p className="text-[10px] font-bold text-slate-400">Average ROAS</p>
+                        <p className="text-base sm:text-lg font-black text-emerald-400 mt-0.5">3.4x - 6.8x</p>
+                        <p className="text-[9.5px] font-bold text-teal-400">Scale Multiplier</p>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 transition-colors text-center sm:text-left">
+                        <p className="text-[10px] font-bold text-slate-400">CPA Reduction</p>
+                        <p className="text-base sm:text-lg font-black text-white mt-0.5">-34%</p>
+                        <p className="text-[9.5px] font-bold text-emerald-400">Cut Waste</p>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 transition-colors text-center sm:text-left">
+                        <p className="text-[10px] font-bold text-slate-400">Turnaround</p>
+                        <p className="text-base sm:text-lg font-black text-white mt-0.5">48 Hours</p>
+                        <p className="text-[9.5px] font-bold text-amber-400">Audit Delivery</p>
+                      </div>
+                    </div>
+
+                    {/* Expertise Pill Tags */}
+                    <div className="relative z-10 flex flex-wrap gap-1.5 py-1">
+                      {[
+                        'Performance Max Scaling',
+                        'Negative Keyword Precision',
+                        'Server-Side CAPI Tracking',
+                        'Google Merchant Feeds',
+                        'High-Intent Search',
+                      ].map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-800/60 text-[10px] font-bold text-emerald-300"
+                        >
+                          ✓ {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Bottom CTA Row */}
+                    <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800/80 mt-2">
+                      <button
+                        onClick={onBookCall}
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs shadow-lg shadow-emerald-500/30 transition-all cursor-pointer flex items-center gap-1.5"
+                      >
+                        <span>Claim Free 30-Min Audit</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        onClick={cycleHeroMode}
+                        className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-colors cursor-pointer"
+                      >
+                        <span>Next: Profit Arrow</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* STATE 3: PROFIT ARROW WITH UPWARD ANIMATION (2nd CLICK) */}
+              {heroMode === 'profit' && (
+                <motion.div
+                  key="hero-view-profit"
+                  initial={{ opacity: 0, scale: 0.94, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.94, y: -20 }}
+                  transition={{ duration: 0.45, ease: [0.215, 0.61, 0.355, 1] }}
+                  className="relative w-full max-w-[670px] rounded-3xl bg-[#091024] shadow-2xl shadow-emerald-950/25 border border-emerald-500/35 overflow-hidden flex flex-col transform lg:rotate-[-1deg] lg:hover:rotate-0 transition-transform duration-500 text-white"
+                >
+                  {/* macOS Style Luxury Window Header Bar */}
+                  <div className="bg-[#050B1A] px-4 py-2.5 flex items-center justify-between border-b border-slate-800 shrink-0">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] shadow-xs" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] shadow-xs" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] shadow-xs" />
+                    </div>
+
+                    <div className="hidden sm:flex items-center gap-2 px-3.5 py-0.5 rounded-full bg-slate-900/90 border border-slate-800 text-[11px] font-semibold text-slate-300">
+                      <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Compounded Profit Acceleration Trajectory</span>
+                    </div>
+
+                    <button
+                      onClick={cycleHeroMode}
+                      className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-300 hover:text-white bg-emerald-950/80 hover:bg-emerald-900/90 border border-emerald-700/80 px-2.5 py-0.5 rounded-full transition-colors cursor-pointer"
+                      title="Click to cycle back to Graph"
+                    >
+                      <RefreshCw className="w-3 h-3 text-emerald-400" />
+                      <span>BACK TO GRAPH →</span>
+                    </button>
+                  </div>
+
+                  {/* Profit Arrow Animation Body */}
+                  <div className="p-5 sm:p-6 lg:p-7 relative overflow-hidden bg-gradient-to-br from-[#091024] via-[#0B172E] to-[#04281E] flex-1 flex flex-col justify-between">
+                    {/* Ambient Glows */}
+                    <div className="absolute -top-12 -right-12 w-96 h-96 rounded-full bg-emerald-500/20 filter blur-3xl pointer-events-none" />
+                    <div className="absolute -bottom-12 -left-12 w-80 h-80 rounded-full bg-teal-500/15 filter blur-3xl pointer-events-none" />
+
+                    {/* Main Grid: Animated Upward Arrow + Stats */}
+                    <div className="relative z-10 grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
+                      {/* Left: Large Animated Upward Rocket / Laser Arrow Vector */}
+                      <div className="sm:col-span-6 relative flex flex-col items-center justify-center p-5 rounded-2xl bg-slate-950/60 border border-emerald-500/30 overflow-hidden min-h-[220px]">
+                        {/* Subtle cyber grid */}
+                        <div
+                          className="absolute inset-0 opacity-15 pointer-events-none"
+                          style={{
+                            backgroundImage: 'radial-gradient(circle, #10B981 1px, transparent 1px)',
+                            backgroundSize: '20px 20px',
+                          }}
+                        />
+
+                        {/* Floating Rising Profit Badges */}
+                        <motion.div
+                          animate={{ y: [0, -36], opacity: [0, 1, 0] }}
+                          transition={{ duration: 2.8, repeat: Infinity, ease: 'easeOut', delay: 0.2 }}
+                          className="absolute top-6 left-5 px-2 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-400/40 text-[9px] font-black text-emerald-300"
+                        >
+                          +$45.2K Profit
                         </motion.div>
-                      );
-                    })}
-                  </div>
 
-                  {/* ── Main Dual-Line Graph Area (Changes dynamically on tab & date selection) ── */}
-                  <div className="p-4 rounded-2xl bg-slate-50/80 border border-slate-100 space-y-2">
-                    <div className="flex items-center justify-between text-[11px] text-slate-500">
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-1.5">
-                          <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: currentGraph.color1 }} />
-                          <span className="font-bold text-slate-800">{currentTabConfig.legend1}</span>
+                        <motion.div
+                          animate={{ y: [0, -40], opacity: [0, 1, 0] }}
+                          transition={{ duration: 3.2, repeat: Infinity, ease: 'easeOut', delay: 1.2 }}
+                          className="absolute bottom-10 right-5 px-2 py-0.5 rounded-md bg-teal-500/20 border border-teal-400/40 text-[9px] font-black text-teal-300"
+                        >
+                          6.8x Peak ROAS
+                        </motion.div>
+
+                        {/* The High-Tech 3D Upward Arrow Canvas */}
+                        <div className="relative w-40 h-40 flex items-center justify-center">
+                          {/* Animated Laser Pulse Halo */}
+                          <motion.div
+                            animate={{ scale: [0.95, 1.2, 0.95], opacity: [0.3, 0.65, 0.3] }}
+                            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+                            className="absolute inset-3 rounded-full bg-emerald-500/20 filter blur-lg"
+                          />
+
+                          <svg viewBox="0 0 140 140" className="w-full h-full overflow-visible">
+                            <defs>
+                              <linearGradient id="profitLaserGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stopColor="#059669" />
+                                <stop offset="35%" stopColor="#10B981" />
+                                <stop offset="70%" stopColor="#14B8A6" />
+                                <stop offset="100%" stopColor="#06B6D4" />
+                              </linearGradient>
+                              <filter id="profitArrowGlow" x="-25%" y="-25%" width="150%" height="150%">
+                                <feDropShadow dx="0" dy="0" stdDeviation="8" floodColor="#10B981" floodOpacity="0.8" />
+                              </filter>
+                            </defs>
+
+                            {/* Diagonal Upward Guideline Track */}
+                            <line x1="20" y1="120" x2="115" y2="25" stroke="#1E293B" strokeWidth="8" strokeLinecap="round" />
+
+                            {/* Animated Continuous Rising Laser Stream */}
+                            <motion.line
+                              x1="20"
+                              y1="120"
+                              x2="115"
+                              y2="25"
+                              stroke="url(#profitLaserGrad)"
+                              strokeWidth="6"
+                              strokeLinecap="round"
+                              filter="url(#profitArrowGlow)"
+                              initial={{ pathLength: 0 }}
+                              animate={{ pathLength: [0, 1, 1] }}
+                              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+                            />
+
+                            {/* Dynamic Upward Arrow Head with Floating Bounce */}
+                            <motion.g
+                              animate={{
+                                x: [0, 6, 0],
+                                y: [0, -6, 0],
+                              }}
+                              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                            >
+                              <path
+                                d="M72 20 L120 20 L120 68 L104 52 L68 88 L52 72 L88 36 Z"
+                                fill="url(#profitLaserGrad)"
+                                filter="url(#profitArrowGlow)"
+                              />
+                            </motion.g>
+
+                            {/* Glowing Arrow Beacon Tip */}
+                            <circle cx="118" cy="22" r="4.5" fill="#FFFFFF" />
+                            <circle cx="118" cy="22" r="12" fill="#10B981" opacity="0.45" className="animate-ping" />
+                          </svg>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                          <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: currentGraph.color2 }} />
-                          <span className="font-bold text-slate-800">{currentTabConfig.legend2}</span>
+
+                        <div className="mt-1 flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 text-[10px] font-black">
+                          <Sparkles className="w-3 h-3 text-amber-300 animate-spin-slow" />
+                          <span>Upward Profit Velocity</span>
                         </div>
                       </div>
-                      <span className="font-bold text-emerald-700 text-[10.5px] bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/50">
-                        {activeData.label} • {currentTabConfig.telemetrySuffix}
-                      </span>
-                    </div>
 
-                    {/* Dynamic SVG Chart with Neon Glow */}
-                    <div className="h-32 sm:h-36 w-full relative">
-                      {/* Y-axis markers */}
-                      <div className="absolute left-0 inset-y-0 flex flex-col justify-between text-[9px] font-semibold text-slate-400 pointer-events-none pr-2">
-                        {currentTabConfig.yAxis.map((val, idx) => (
-                          <span key={idx}>{val}</span>
-                        ))}
-                      </div>
+                      {/* Right: Compounding ROAS Metrics & Strategy Track */}
+                      <div className="sm:col-span-6 space-y-3">
+                        <div>
+                          <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-950/70 border border-emerald-800/80 px-2.5 py-0.5 rounded-md">
+                            Compounded Revenue Lift
+                          </span>
+                          <div className="flex items-baseline gap-2 mt-1">
+                            <h3 className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 tracking-tight">
+                              +342%
+                            </h3>
+                            <span className="text-xs font-bold text-emerald-300">Average ROAS Lift</span>
+                          </div>
+                          <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                            Targeted high-intent bidding architectures convert ad spend into compounding net profits.
+                          </p>
+                        </div>
 
-                      <svg className="w-full h-full pl-6 overflow-visible" viewBox="0 0 320 100" preserveAspectRatio="none">
-                        {/* Horizontal Grid lines */}
-                        <line x1="0" y1="10" x2="320" y2="10" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
-                        <line x1="0" y1="40" x2="320" y2="40" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
-                        <line x1="0" y1="70" x2="320" y2="70" stroke="#E2E8F0" strokeWidth="0.8" strokeDasharray="3 3" />
-                        <line x1="0" y1="98" x2="320" y2="98" stroke="#CBD5E1" strokeWidth="1" />
+                        {/* Before vs After Comparison Bars */}
+                        <div className="space-y-2 p-3 rounded-2xl bg-slate-950/70 border border-slate-800">
+                          <div className="flex items-center justify-between text-[10.5px]">
+                            <span className="text-slate-400 font-bold">Previous Setup:</span>
+                            <span className="font-bold text-red-400">1.8x ROAS • $8.40 CPA</span>
+                          </div>
+                          <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                            <div className="w-[28%] h-full bg-red-500/70 rounded-full" />
+                          </div>
 
-                        <defs>
-                          <linearGradient id="emeraldHeroFill" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#059669" stopOpacity="0.25" />
-                            <stop offset="100%" stopColor="#059669" stopOpacity="0.0" />
-                          </linearGradient>
-                          <linearGradient id="tealHeroFill" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#0D9488" stopOpacity="0.2" />
-                            <stop offset="100%" stopColor="#0D9488" stopOpacity="0.0" />
-                          </linearGradient>
-                          <linearGradient id="amberHeroFill" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.2" />
-                            <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.0" />
-                          </linearGradient>
-                          <linearGradient id="blueHeroFill" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#0284C7" stopOpacity="0.2" />
-                            <stop offset="100%" stopColor="#0284C7" stopOpacity="0.0" />
-                          </linearGradient>
-                        </defs>
+                          <div className="flex items-center justify-between text-[10.5px] pt-1">
+                            <span className="text-emerald-400 font-bold">Antigravity Growth:</span>
+                            <span className="font-black text-emerald-300">5.4x - 6.8x ROAS • $3.20 CPA</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: '94%' }}
+                              transition={{ duration: 1.2, delay: 0.3 }}
+                              className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 rounded-full shadow-xs shadow-emerald-400"
+                            />
+                          </div>
+                        </div>
 
-                        {/* Area 2 Fill */}
-                        <motion.polygon
-                          key={`area2-${activeTab}-${activeData.id}`}
-                          points={currentGraph.area2}
-                          fill={currentGraph.fill2}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.35 }}
-                        />
-                        {/* Line 2 */}
-                        <motion.path
-                          key={`line2-${activeTab}-${activeData.id}`}
-                          d={currentGraph.line2}
-                          fill="none"
-                          stroke={currentGraph.color2}
-                          strokeWidth={currentGraph.strokeWidth2}
-                          strokeLinecap="round"
-                          className="neon-graph-glow-secondary"
-                          initial={{ pathLength: 0 }}
-                          animate={{ pathLength: 1 }}
-                          transition={{ duration: 0.65, ease: 'easeOut' }}
-                        />
+                        {/* Action Row */}
+                        <div className="flex items-center gap-2 pt-1">
+                          <button
+                            onClick={onBookCall}
+                            className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs shadow-lg shadow-emerald-500/30 transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                          >
+                            <span>Scale My Brand</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </button>
 
-                        {/* Area 1 Fill */}
-                        <motion.polygon
-                          key={`area1-${activeTab}-${activeData.id}`}
-                          points={currentGraph.area1}
-                          fill={currentGraph.fill1}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.35 }}
-                        />
-                        {/* Line 1 with Neon Laser Glow */}
-                        <motion.path
-                          key={`line1-${activeTab}-${activeData.id}`}
-                          d={currentGraph.line1}
-                          fill="none"
-                          stroke={currentGraph.color1}
-                          strokeWidth={currentGraph.strokeWidth1}
-                          strokeLinecap="round"
-                          className="neon-graph-glow"
-                          initial={{ pathLength: 0 }}
-                          animate={{ pathLength: 1 }}
-                          transition={{ duration: 0.65, ease: 'easeOut' }}
-                        />
-
-                        {/* Peak Interactive Radar Ping */}
-                        <circle cx={currentGraph.peakX} cy={currentGraph.peakY} r="3.5" fill={currentGraph.color1} />
-                        <circle cx={currentGraph.peakX} cy={currentGraph.peakY} r="8" fill={currentGraph.color1} opacity="0.45" className="animate-ping" />
-                      </svg>
-
-                      {/* Dynamic Date labels along bottom */}
-                      <div className="pl-6 pt-1 flex items-center justify-between text-[9px] font-semibold text-slate-400">
-                        {activeData.dates.map((d, i) => (
-                          <span key={i}>{d}</span>
-                        ))}
+                          <button
+                            onClick={cycleHeroMode}
+                            className="py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-xs border border-slate-700 transition-colors cursor-pointer flex items-center gap-1"
+                          >
+                            <RefreshCw className="w-3 h-3 text-emerald-400" />
+                            <span className="hidden xs:inline">Graph</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                </div>
-              </div>
-            </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* ─── Floating Card 1: 100+ Happy Clients (Bottom-Left) ─── */}
             {!shouldReduceMotion && (
               <motion.div
                 variants={floatSlow}
                 animate="animate"
-                className="absolute -bottom-6 left-1 sm:left-3 z-30 glass-card-luxury rounded-2xl p-2.5 sm:p-3.5 shadow-2xl border border-emerald-100/90 flex items-center gap-2.5 sm:gap-3 max-w-[calc(100%-12px)] sm:max-w-none"
+                className="absolute -bottom-7 sm:-bottom-8 left-1 sm:left-3 z-30 glass-card-luxury rounded-2xl p-2.5 sm:p-3.5 shadow-2xl border border-emerald-100/90 flex items-center gap-2.5 sm:gap-3 max-w-[calc(100%-12px)] sm:max-w-none"
               >
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-md shadow-emerald-500/30 shrink-0">
                   <Star className="w-5 h-5 fill-white" />
@@ -1192,7 +1833,7 @@ export default function Hero({ onBookCall }) {
               <motion.div
                 variants={floatReverse}
                 animate="animate"
-                className="absolute -bottom-8 right-2 sm:right-6 z-30 glass-card-luxury rounded-2xl p-3 sm:p-3.5 shadow-2xl border border-slate-200/90 hidden sm:flex items-center gap-3.5"
+                className="absolute -bottom-8 sm:-bottom-9 right-2 sm:right-6 z-30 glass-card-luxury rounded-2xl p-3 sm:p-3.5 shadow-2xl border border-slate-200/90 hidden sm:flex items-center gap-3.5"
               >
                 <div>
                   <p className="text-[9.5px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">
